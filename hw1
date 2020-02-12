@@ -11,3 +11,31 @@ class State(Enum):
     Ud = 5
     
     ERR = 6
+
+ont_dict = {
+              "ontology": {
+                "ontapptype":
+                    [
+                        "ontfitness",
+                        "ontproductivity",
+                        "ontsocialmedia",
+                        "ontstorage",
+                        "ontstreaming"
+                    ],
+                "ontfitness":
+                    [
+                      "frog",
+                      "salamander"
+                    ],
+                "ontfitness":
+                    [
+                      "frog",
+                      "salamander"
+                    ],
+                "ontfitness":
+                    [
+                      "frog",
+                      "salamander"
+                    ]
+              }
+           }
