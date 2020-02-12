@@ -27,15 +27,21 @@ ont_dict = {
                       "frog",
                       "salamander"
                     ],
-                "ontfitness":
+                "ontproductivity":
                     [
                       "frog",
                       "salamander"
                     ],
-                "ontfitness":
+                "onts":
                     [
                       "frog",
                       "salamander"
                     ]
+                "ontstreaming":
+                    [
+                       "spotify",
+                       "netflix",
+                       "hulu",
+                       
               }
            }
