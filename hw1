@@ -32,7 +32,7 @@ ont_dict = {
                       "frog",
                       "salamander"
                     ],
-                "onts":
+                "ontstreaming":
                     [
                       "frog",
                       "salamander"
@@ -42,6 +42,8 @@ ont_dict = {
                        "spotify",
                        "netflix",
                        "hulu",
-                       
+                       "twitch",
+                       "amazon"
+                   ]
               }
            }
