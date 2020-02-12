@@ -1,3 +1,13 @@
 from emora_stdm import KnowledgeBase, DialogueFlow
 from enum import Enum
 
+
+class State(Enum):
+    START = 0
+    P1 = 1
+    Ua = 2
+    Ub = 3
+    Uc = 4
+    Ud = 5
+    
+    ERR = 6
