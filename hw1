@@ -61,7 +61,9 @@ ont_dict = {
                 "ontfitness":
                     [
                       "ontsleeptracker",
-                      "ontcaloriecounter"
+                      "ontcaloriecounter",
+                      "ontpedometer",
+                      "ontmoodlog"
                     ]
               }
            }
