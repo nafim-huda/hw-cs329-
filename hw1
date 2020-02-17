@@ -7,10 +7,11 @@ class State(Enum):
     P1 = 1
     Ua = 2
     Ub = 3
-    Uc = 4
-    Ud = 5
+    P2 = 4
+    Uc = 5
+    Ud = 6
     
-    ERR = 6
+    ERR = 7
     
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
