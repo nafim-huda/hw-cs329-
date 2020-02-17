@@ -27,19 +27,75 @@ ont_dict = {
                       "ontstudytimer",
                       "onthealth",
                       "onteducation",
-                      "ontnotes"
+                      "ontnotes",
+                      "onteducationalapps"
                     ],
-                "ontstudytimer":
+                "ontnotes":
                     [
-                      "
+                      "ontgoodnotes",
+                      "ontapplenotes",
+                      "ontnotepad",
+                      "ontonenote",
+                      "ontother"
                     ],
-                    
+                "onthealth":
+                    [
+                      "ontpedometer",
+                      "ontstudytimer",
+                      "ontcaloriecounter",
+                      "ontsleeptracker",
+                      "moodlog",
+                      "ontother"
+                    ],
+                "onteducationalapps":
+                    [
+                      "ontcoursera",
+                      "ontedx",
+                      "ontduolingo"
+                    ],   
+                "ontcoursera":
+                    [
+                     "ontmath,
+                     "ontphysics",
+                     "ontchemistry"
+                    ],
+                "ontduolingo":
+                    [
+                     "ontenglish",
+                     "ontspanish",
+                     "ontgerman",
+                     "ontrussian",
+                     "ontfrench",
+                     "ontjapanese",
+                     "ontitalian",
+                     "ontmandarin",
+                     "ontportuguese",
+                     "ontarabic",
+                     "ontturkish",
+                     "ontdutch",
+                     "ontswedish",
+                     "ontenglish",
+                     "onthindi",
+                     "ontgreek",
+                     "ontirish",
+                     "ontpolish",
+                     "onthighvalerian",
+                     "hebrew"
+                    ]
                 "ontsocialmedia":
                     [
                       "ontsnapchat",
                       "ontinstagram",
                       "ontfacebook",
                       "onttwitter"
+                    ],
+                "ontinstagram":
+                    [
+                      2000
+                    ],
+                "ontsnapchat":
+                    [
+                      10
                     ],
                 "ontstorage":
                     [
@@ -48,8 +104,7 @@ ont_dict = {
                     ],
                 "ontfitness":
                     [
-                      "frog",
-                      "salamander"
+                     "onthealth"
                     ]
               }
            }
