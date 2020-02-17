@@ -64,7 +64,13 @@ ont_dict = {
                       "ontcaloriecounter",
                       "ontpedometer",
                       "ontmoodlog"
-                    ]
+                    ],
+                "ontdating":
+                    [
+                      "onttinder",
+                      "ontbumble",
+                      "ontokcupid"
+                    ],
               }
            }
 
