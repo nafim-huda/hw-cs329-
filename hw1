@@ -42,14 +42,6 @@ ont_dict = {
                     [
                       "
                     ],
-                    
-                "ontsocialmedia":
-                    [
-                      "ontsnapchat",
-                      "ontinstagram",
-                      "ontfacebook",
-                      "onttwitter"
-                    ],
                 "ontstorage":
                     [
                       "ontdropbox",
@@ -57,12 +49,25 @@ ont_dict = {
                       "onticloud",
                       
                     ],
-                    
-                "ontfitness":
+                    "ontdropbox":
+                        [
+                            
+                        ],
+                   
+                 "ontsocialmedia":
                     [
-                      "ontsleeptracker",
-                      "ontcaloriecounter"
+                      "ontsnapchat",
+                      "ontinstagram",
+                      "ontfacebook",
+                      "onttwitter"
                     ]
+                    "ontsnapchat":
+                        [
+                            "ontfriends"
+                            "ontfamily"
+                        ],
+                    "ontinstagram":
+                        
               }
            }
 
