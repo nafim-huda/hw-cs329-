@@ -11,6 +11,8 @@ class State(Enum):
     Ud = 5
     
     ERR = 6
+    
+df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
 ont_dict = {
               "ontology": {
@@ -56,3 +58,4 @@ ont_dict = {
                     ]
               }
            }
+
