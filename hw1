@@ -22,30 +22,25 @@ ont_dict = {
                         "ontstorage",
                         "ontstreaming"
                     ],
-                "ontfitness":
+                "ontproductivity":
                     [
                       "frog",
                       "salamander"
                     ],
-                "ontproductivity":
-                    [
-                      "Optimal Study Timer",
-                      "Health"
-                      "Notes"
-                      "Google Docs"
-                    ],
-                "ontstorageapps":
-                    [
-                      "DropBox",
-                      "EmoryBox"
-                      "iCloud"
-                    ],
                 "ontsocialmedia":
                     [
-                      "Facebook", 
-                      "Instagram"
-                      "Twitter"
-                      "Snapchat"
+                      "frog",
+                      "salamander"
+                    ],
+                "ontstorage":
+                    [
+                      "frog",
+                      "salamander"
+                    ],
+                "ontfitness":
+                    [
+                      "frog",
+                      "salamander"
                     ]
               }
            }
