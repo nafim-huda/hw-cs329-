@@ -24,13 +24,22 @@ ont_dict = {
                     ],
                 "ontproductivity":
                     [
-                      "frog",
-                      "salamander"
+                      "ontstudytimer",
+                      "onthealth",
+                      "onteducation",
+                      "ontnotes"
                     ],
+                "ontstudytimer":
+                    [
+                      "
+                    ],
+                    
                 "ontsocialmedia":
                     [
-                      "frog",
-                      "salamander"
+                      "ontsnapchat",
+                      "ontinstagram",
+                      "ontfacebook",
+                      "onttwitter"
                     ],
                 "ontstorage":
                     [
