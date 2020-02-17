@@ -17,7 +17,7 @@ df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
 df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
 df.add_user_transition(State.P1, State.Ua, "$P1toUa={no}")
-df.add_user_transition(State.P1, State.Ub, "$animal=#ONT(ontyes)")
+df.add_user_transition(State.P1, State.Ub, "$response=#ONT(ontyes)")
 
 df.add_system_transition(State.Ub, State.P2, '"What type of mobile apps do you use?"')
 
