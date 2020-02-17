@@ -40,7 +40,7 @@ ont_dict = {
                     ],
                 "ontstudytimer":
                     [
-                      "
+                      ""
                     ],
                     
                 "ontsocialmedia":
@@ -53,8 +53,8 @@ ont_dict = {
                 "ontstorage":
                     [
                       "ontdropbox",
-                      "ontemorybox".
-                      "onticloud",
+                      "ontemorybox",
+                      "onticloud"
                       
                     ],
                     
