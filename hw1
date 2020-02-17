@@ -43,13 +43,16 @@ ont_dict = {
                     ],
                 "ontstorage":
                     [
-                      "frog",
-                      "salamander"
+                      "ontdropbox",
+                      "ontemorybox".
+                      "onticloud",
+                      
                     ],
+                    
                 "ontfitness":
                     [
-                      "frog",
-                      "salamander"
+                      "ontsleeptracker",
+                      "ontcaloriecounter"
                     ]
               }
            }
