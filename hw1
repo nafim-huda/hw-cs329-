@@ -14,8 +14,10 @@ class State(Enum):
     
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
-df.add_system_transition(State.START, State.PROMPT, '"Do you have a phone?"')
-df.add_user_transition(State.PROMPT, State.U1, "$U1response={yes, no}"
+df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
+df.add_user_transition(State.P1, State.U1, "$P1toUa={no}")
+
+df.
 
 ont_dict = {
               "ontology": {
