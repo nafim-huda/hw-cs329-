@@ -8,11 +8,12 @@ class State(Enum):
     Ua = 2
     Ub = 3
     P2 = 4
-    Uc = 5
-    Ud = 6
-    
-    ERR = 7
-    
+    P2B = 5
+    Uc = 6
+    Ud = 7
+
+    ERR = 8
+
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
 df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
@@ -20,6 +21,7 @@ df.add_user_transition(State.P1, State.Ua, "$P1toUa={no}")
 df.add_user_transition(State.P1, State.Ub, "$response=#ONT(ontyes)")
 
 df.add_system_transition(State.Ub, State.P2, '"What type of mobile apps do you use?"')
+df.add_system_transition(State.Ua, State.P2B, '" Do you use a phone?"')
 
 ont_dict = {
               "ontology": {
