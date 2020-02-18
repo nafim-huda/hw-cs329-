@@ -154,6 +154,10 @@ df.add_system_transition(State.U10, State.P6C, '"I have never used" $response "b
 df.add_system_transition(State.U11, State.P7L, '"Great! Thanks for suggesting it; I am going to go check it out now. Talk to you later!"')
 df.add_system_transition(State.U12, State.P7M, '"Oh, bummer. What other fitness apps do you use?"')
 #=====================================================================================================
+#THIS SECTION IS DATING APPS
+df.add_user_transition(State.P2A, State.U14, "$response={dating}")
+
+df.add_system_transition(State.U14, State.P7A, '"Cool, which dating app do you use?"')
 
 
 ont_dict = {
