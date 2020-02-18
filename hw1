@@ -58,26 +58,40 @@ class State(Enum):
     P5O = 52
     P5P = 53
     P5Q = 54
-    P6C = 73
-    U1 = 55
-    U2 = 56
-    U3 = 57
-    U4 = 58
-    U5 = 59
-    U6 = 60
-    U7 = 61
-    U8 = 62
-    U9 = 63
-    U10 = 64
-    U11 = 65
-    U13 = 66
-    U14 = 67
-    U15 = 68
-    U16 = 69
-    U17 = 70
-    U18 = 71
+    P6A = 55
+    P6B = 56
+    P6C = 57
+    P6D = 58
+    P6E = 59
+    P6F = 60
+    P6G = 61
+    P6H = 62
+    P6I = 63
+    P6J = 64
+    P6K = 65
+    P6L = 66
+    P7M = 85
+    P7L = 86
+    U1 = 67
+    U2 = 68
+    U3 = 69
+    U4 = 70
+    U5 = 71
+    U6 = 72
+    U7 = 73
+    U8 = 74
+    U9 = 75
+    U10 = 76
+    U11 = 77
+    U12 = 85
+    U13 = 78
+    U14 = 79
+    U15 = 80
+    U16 = 81
+    U17 = 82
+    U18 = 83
 
-    ERR = 72
+    ERR = 84
 
 
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
@@ -95,6 +109,9 @@ df.add_user_transition(State.P2A, State.U9, "$response={no}")
 df.add_user_transition(State.P4E, State.U8, "$response={strava}")
 df.add_user_transition(State.P2A, State.U13, "$response={yes}")
 df.add_user_transition(State.P5C, State.U10, r"[$response=/(caloriecounter)|(pedometer)|(sleeptracker)/]")
+df.add_user_transition(State.P6C, State.U11, "$response={yes}")
+df.add_user_transition(State.P6C, State.U12, "$response={no}")
+df.add_user_transition(State.P7M, State.U8, r"[$response=/(caloriecounter)|(pedometer)|(sleeptracker)/]")
 
 df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you use?"')
 df.add_system_transition(State.U1, State.P2C, '"Do you use a phone?"')
@@ -106,6 +123,8 @@ df.add_system_transition(State.U13, State.P4E, '"Which fitness app specifically?
 df.add_system_transition(State.U9, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
 df.add_system_transition(State.U8, State.P5C, '"What feature does" $response "have that you like most? Like, does it have calorie counting, sleep tracking, or a pedometer?"')
 df.add_system_transition(State.U10, State.P6C, '"I have never used" $response "before, as I have heard that it can become obsessive. Has it helped you grow healthier?"')
+df.add_system_transition(State.U11, State.P7L, '"Great! Thanks for suggesting it; I am going to go check it out now. Talk to you later!"')
+df.add_system_transition(State.U12, State.P7M, '"Oh, bummer. What other fitness apps do you use?"')
 
 
 ont_dict = {
