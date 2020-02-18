@@ -269,7 +269,11 @@ df.add_user_transition(State.P4Y, State.U86, ".*/")
 df.add_system_transition(State.U86, State.P4X, '"Ah, well what type of shows do you watch?"')
 
 #AMAZON
-df.add_system_transition(State.U73, State.P4Z, '"We
+df.add_system_transition(State.U73, State.P4Z, '"So do you pay for video seprately or do you use it through your prime subscription? I'm in the latter camp."')
+df.add_user_transition(State.P4Z, State.U74, ".*/")
+df.add_system_transition(State.U87, State.P5T, '"Outside of streaming, do you use Amazon for its more popular function as an ecommerce service? Originally, I started using Amazon for purchasing laundry items, and only found out about its streaming service much later. "')
+df.add_user_transition(State.P5T, State.U88, ".*/")
+df.add_system_transition(State.U88, State.P4X, '"Nice to know! Well, what type of shows do you watch?"')
 
 
 
