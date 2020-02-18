@@ -19,10 +19,10 @@ class State(Enum):
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
 df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
-df.add_user_transition(State.P1, State.Ua, "$P1toUa={no}")
-df.add_user_transition(State.P1, State.Ub, "$P1toUa={yes}")
-df.add_user_transition(State.P2B, State.Uc, "$P1toUa={yes}")
-df.add_user_transition(State.P2C, State.Ub, "$P1toUa={yes}")
+df.add_user_transition(State.P1, State.Ua, "$response={no}")
+df.add_user_transition(State.P1, State.Ub, "$response={yes}")
+df.add_user_transition(State.P2B, State.Uc, "$response={yes}")
+df.add_user_transition(State.P2C, State.Ub, "$response={yes}")
 
 df.add_system_transition(State.Ub, State.P2A, '"What type of mobile apps do you use?"')
 df.add_system_transition(State.Ua, State.P2C, '"Do you use a phone?"')
