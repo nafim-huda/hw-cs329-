@@ -58,6 +58,7 @@ class State(Enum):
     P5O = 52
     P5P = 53
     P5Q = 54
+    P6C = 73
     U1 = 55
     U2 = 56
     U3 = 57
@@ -93,6 +94,7 @@ df.add_user_transition(State.P2A, State.U9, "$response={no}")
 #df.add_user_transition(State.P4E, State.U8, "$animal=#ONT(ontfitnessappnames)")
 df.add_user_transition(State.P4E, State.U8, "$response={strava}")
 df.add_user_transition(State.P2A, State.U13, "$response={yes}")
+df.add_user_transition(State.P5C, State.U10, r"[$response=/(caloriecounter)|(pedometer)|(sleeptracker)/]")
 
 df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you use?"')
 df.add_system_transition(State.U1, State.P2C, '"Do you use a phone?"')
@@ -103,6 +105,7 @@ df.add_system_transition(State.U6, State.P4E, '"Which fitness app specifically? 
 df.add_system_transition(State.U13, State.P4E, '"Which fitness app specifically? I have been thinking about getting one."')
 df.add_system_transition(State.U9, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
 df.add_system_transition(State.U8, State.P5C, '"What feature does" $response "have that you like most? Like, does it have calorie counting, sleep tracking, or a pedometer?"')
+df.add_system_transition(State.U10, State.P6C, '"I have never used" $response "before, as I have heard that it can become obsessive. Has it helped you grow healthier?"')
 
 
 ont_dict = {
