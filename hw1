@@ -242,7 +242,10 @@ df.add_system_transition(State.U74, State.P5R, '"I enjoy listening to that genre
 df.add_user_transition(State.P5R, State.U75, "/.*/")
 df.add_system_transition(State.U76 State.P6L, '"Huh, you have bad taste! Just kidding:) Well, I would love to hear some recommendations if you have any?"')
 df.add_user_transition(State.P6L, State.U77, "/.*/")
-df.add_system_transition(State.U77 State.P7B, '"Thanks for the recommendations! I'll check them out later!"')
+df.add_system_transition(State.U77 State.P7B, '"I'll check them out later. Thanks! Anyways, have you heard about other music streaming services like Bandcamp, Soundcloud? Many people prefer to use Bandcamp since a lot of indie artists receive higher royalties compared to Spotify. Soundcloud is also seen as a more indie artist friendly alternative to Spotify."')
+df.add_user_transition(State.P7B, State.U78, "
+
+
 
 #NETFLIX
 df.add_system_transition(State.U71, State.P4X, '"Aha! I've heard Netflix is the top one for streaming entertainment shows and films. What type of shows do you usually like watching?"')
@@ -274,8 +277,6 @@ df.add_user_transition(State.P4Z, State.U74, ".*/")
 df.add_system_transition(State.U87, State.P5T, '"Outside of streaming, do you use Amazon for its more popular function as an ecommerce service? Originally, I started using Amazon for purchasing laundry items, and only found out about its streaming service much later. "')
 df.add_user_transition(State.P5T, State.U88, ".*/")
 df.add_system_transition(State.U88, State.P4X, '"Nice to know! Well, what type of shows do you watch?"')
-
-
 
 
 ont_dict = {
