@@ -10,9 +10,9 @@ class State(Enum):
     P2C = 4
     P3A = 5
     P3B = 6
-    P3C = 7
+   #not used P3C = 7
     P3D = 8
-    P3E = 9
+   #not used P3E = 9
     P3F = 10
     P3G = 11
     P3H = 12
@@ -40,14 +40,21 @@ class State(Enum):
     P4R = 34
     P4S = 35
     P4T = 36
-    P4U= 37
+    P4U = 37
     P4V = 38
     U1 = 39
     U2 = 40
     U3 = 41
     U4 = 42
+    U5 = 43
+    U6 = 44
+    U7 = 45
+    U8 = 46
+    U9 = 47
+    U10 = 48
+    U11 = 49
 
-    ERR = 43
+    ERR = 50
 
 
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
@@ -58,13 +65,14 @@ df.add_user_transition(State.P1, State.U2, "$response={yes}")
 df.add_user_transition(State.P2B, State.U3, "$response={yes}")
 df.add_user_transition(State.P2C, State.U2, "$response={yes}")
 df.add_user_transition(State.P2C, State.U4, "$response={no}")
+df.add_user_transition(State.P2A, State.U6, "$response={fitness}")
 
 df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you use?"')
 df.add_system_transition(State.U1, State.P2C, '"Do you use a phone?"')
 df.add_system_transition(State.U4, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
 df.add_system_transition(State.ERR, State.P2A, '"I am personally a fan of Strava. Do you use any fitness apps?"')
 df.set_error_successor(State.P2A, State.ERR)
-
+df.add_system_transition(State.U6, State.P4E, '"Which fitness app specifically? I have been thinking about getting one."')
 
 ont_dict = {
               "ontology": {
