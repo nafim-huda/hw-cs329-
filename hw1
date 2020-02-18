@@ -42,21 +42,41 @@ class State(Enum):
     P4T = 36
     P4U = 37
     P4V = 38
-    P5C = 51
-    U1 = 39
-    U2 = 40
-    U3 = 41
-    U4 = 42
-    U5 = 43
-    U6 = 44
-    U7 = 45
-    U8 = 46
-    U9 = 47
-    U10 = 48
-    U11 = 49
-    U13 = 52
+    P5A = 39
+    P5B = 40
+    P5C = 41
+    P5D = 42
+    P5E = 43
+    P5F = 44
+    P5G = 45
+    P5H = 46
+    P5J = 47
+    P5K = 48
+    P5L = 49
+    P5M = 50
+    P5N = 51
+    P5O = 52
+    P5P = 53
+    P5Q = 54
+    U1 = 55
+    U2 = 56
+    U3 = 57
+    U4 = 58
+    U5 = 59
+    U6 = 60
+    U7 = 61
+    U8 = 62
+    U9 = 63
+    U10 = 64
+    U11 = 65
+    U13 = 66
+    U14 = 67
+    U15 = 68
+    U16 = 69
+    U17 = 70
+    U18 = 71
 
-    ERR = 50
+    ERR = 72
 
 
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
