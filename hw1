@@ -5,28 +5,29 @@ from enum import Enum
 class State(Enum):
     START = 0
     P1 = 1
-    Ua = 2
-    Ub = 3
-    P2A = 4
-    P2B = 5
-    P2C = 6
-    Uc = 7
-    Ud = 8
+    U1 = 2
+    U2 = 3
+    U3 = 4
+    U4 = 5
+    P2A = 6
+    P2B = 7
+    P2C = 8
+    P3A = 9
+    P3B = 10
 
-    ERR = 9
+    ERR = 11
 
 
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
 df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
-df.add_user_transition(State.P1, State.Ua, "$response={no}")
-df.add_user_transition(State.P1, State.Ub, "$response={yes}")
-df.add_user_transition(State.P2B, State.Uc, "$response={yes}")
-df.add_user_transition(State.P2C, State.Ub, "$response={yes}")
+df.add_user_transition(State.P1, State.U1, "$response={no}")
+df.add_user_transition(State.P1, State.U2, "$response={yes}")
+df.add_user_transition(State.P2B, State.U3, "$response={yes}")
+df.add_user_transition(State.P2C, State.U2, "$response={yes}")
 
-df.add_system_transition(State.Ub, State.P2A, '"What type of mobile apps do you use?"')
-df.add_system_transition(State.Ua, State.P2C, '"Do you use a phone?"')
-
+df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you use?"')
+df.add_system_transition(State.U1, State.P2C, '"Do you use a phone?"')
 
 ont_dict = {
     "ontology": {
