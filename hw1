@@ -139,7 +139,7 @@ class State(Enum):
     U39 = 133
     U40 = 134
 
-    ERR = 120
+    ERR = 135
 
 #=============================================================================
 #THIS SECTION IS THE BEGINNING AND FITNESS BRANCH
