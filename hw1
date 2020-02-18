@@ -10,9 +10,9 @@ class State(Enum):
     P2C = 4
     P3A = 5
     P3B = 6
-   #not used P3C = 7
+    P3C = 7
     P3D = 8
-   #not used P3E = 9
+    P3E = 9
     P3F = 10
     P3G = 11
     P3H = 12
@@ -180,7 +180,6 @@ df.add_system_transition(State.U12, State.P7M, '"Oh, bummer. What other fitness 
 #mainly facebook
 df.add_user_transition(State.P2A, State.U14, "$response={social}")
 df.add_user_transition(State.P7A, State.U15, "$response={snap}")
-df.add_user_transition(State.P7A, State.U16, r"[$response=/(twit)|(twitter)/]")
 df.add_user_transition(State.P7A, State.U17, r"[$response=/(ig)|(insta)|(instagram)/]")
 df.add_user_transition(State.P7A, State.U18, r"[$response=/(fb)|(facebook)/]")
 df.add_user_transition(State.P4U, State.U19, "$response={no}")
@@ -216,10 +215,15 @@ df.add_system_transition(State.U28, State.P6K, '"Aw, I thought we were friends. 
 df.add_system_transition(State.U26, State.P7J, '"That\'s not a lot. I can be another one if you\'d like!"')
 df.add_system_transition(State.U29, State.P9C, '"I\'ll snap you as soon as I make an account. See you later!"')
 
-#mainly twitter
-
-
 #mainly facebook
+df.add_user_transition(State.P3E, State.U30, r"[$response=/(.*)/]")
+
+df.add_system_transition(State.U30, State.P7A, '"Oh, that\'s nice. I personally talk to my family using Facebook. What other social media apps do you use?"')
+df.add_system_transition(State.U18, State.P3E, '"Who do you communicate with most over Facebook?"')
+
+df.add_system_transition(State.ERR, State.P7A, '"Do you like any other social media apps?"')
+df.set_error_successor(State.P7A, State.ERR)
+
 
 #=========================================================================================================
 
