@@ -25,7 +25,6 @@ df.add_user_transition(State.P2B, State.Uc, "$P1toUa={yes}")
 df.add_user_transition(State.P2C, State.Ub, "$P1toUa={yes}")
 
 df.add_system_transition(State.Ub, State.P2A, '"What type of mobile apps do you use?"')
-df.add_system_transition(State.Ua, State.P2B, '"Do you use a phone?"')
 df.add_system_transition(State.Ua, State.P2C, '"Do you use a phone?"')
 
 
