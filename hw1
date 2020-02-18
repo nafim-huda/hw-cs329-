@@ -2,6 +2,112 @@ from emora_stdm import KnowledgeBase, DialogueFlow
 from enum import Enum
 
 
+ont_dict = {
+              "ontology": {
+                #"ontfitnessappnames":a 
+                #    [
+                #        "ontstrava",
+                #    ],
+                "ontapptype":
+                    [
+                        "ontfitness",
+                        "ontproductivity",
+                        "ontsocialmedia",
+                        "ontstorage",
+                        "ontstreaming"
+                    ],
+                "ontyes":
+                    [
+                         "ontyeah",
+                         "ontyes",
+                         "ontyea",
+                         "ontmmhmm",
+                         "ontyuh"
+                     ],
+                "ontproductivity":
+                    [
+                      "ontstudytimer",
+                      "onthealth",
+                      "onteducation",
+                      "ontnotes",
+                      "onteducationalapps"
+                    ],
+                "ontnotes":
+                    [
+                      "ontgoodnotes",
+                      "ontapplenotes",
+                      "ontnotepad",
+                      "ontonenote",
+                      "ontother"
+                    ],
+                "onthealth":
+                    [
+                      "ontpedometer",
+                      "ontstudytimer",
+                      "ontcaloriecounter",
+                      "ontsleeptracker",
+                      "moodlog",
+                      "ontother"
+                    ],
+                "ontsocialmedia":
+                    [
+                      "ontsnapchat",
+                      "ontinstagram",
+                      "ontfacebook",
+                      "onttwitter"
+                    ],
+                    "ontinstagram":
+                     [
+                        2000
+                     ],
+                    "ontsnapchat":
+                     [
+                      10
+                     ],
+               "ontstreaming":
+                    [
+                      "ontspotify"
+                      "ontnetflix"
+                      "onthulu"
+                      "ontamazon"
+                    ],
+                        "ontmusicgenres":
+                            [
+                                "hip hop"
+                                "rock"
+                                "edm"
+                            ],
+                         "ontentertainmentgenres":
+                            [
+                                "action"
+                                "comedy"
+                                "drama"
+                                "horror"
+                            ],
+    
+               "ontfitness":
+                    [
+                        "ontsleeptracker",
+                        "ontcaloriecounter",
+                        "ontpedometer",
+                        "ontmoodlog"
+                    ]
+               "ontstorage":
+                    [
+                        "onticloud",
+                        "ontgoogledrive",
+                        "ontdropbox",
+                        "ontemorybox"
+                    ]
+              }
+           }
+
+
+knowledge = KnowledgeBase()
+knowledge.load_json(ont_dict)
+df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge)
+
+
 class State(Enum):
     START = 0
     P1 = 1
@@ -346,105 +452,5 @@ df.add_user_transition(State.P6C, State.U11, "$response={yes}")
 df.add_user_transition(State.P6C, State.U12, "$response={no}")
 #below needs to use dictionary
 df.add_user_transition(State.P7M, State.U8, "$response={strava}")
-
-ont_dict = {
-              "ontology": {
-                #"ontfitnessappnames":a 
-                #    [
-                #        "ontstrava",
-                #    ],
-                "ontapptype":
-                    [
-                        "ontfitness",
-                        "ontproductivity",
-                        "ontsocialmedia",
-                        "ontstorage",
-                        "ontstreaming"
-                    ],
-                "ontyes":
-                    [
-                         "ontyeah",
-                         "ontyes",
-                         "ontyea",
-                         "ontmmhmm",
-                         "ontyuh"
-                     ],
-                "ontproductivity":
-                    [
-                      "ontstudytimer",
-                      "onthealth",
-                      "onteducation",
-                      "ontnotes",
-                      "onteducationalapps"
-                    ],
-                "ontnotes":
-                    [
-                      "ontgoodnotes",
-                      "ontapplenotes",
-                      "ontnotepad",
-                      "ontonenote",
-                      "ontother"
-                    ],
-                "onthealth":
-                    [
-                      "ontpedometer",
-                      "ontstudytimer",
-                      "ontcaloriecounter",
-                      "ontsleeptracker",
-                      "moodlog",
-                      "ontother"
-                    ],
-                "ontsocialmedia":
-                    [
-                      "ontsnapchat",
-                      "ontinstagram",
-                      "ontfacebook",
-                      "onttwitter"
-                    ],
-                    "ontinstagram":
-                     [
-                        2000
-                     ],
-                    "ontsnapchat":
-                     [
-                      10
-                     ],
-               "ontstreaming":
-                    [
-                      "ontspotify"
-                      "ontnetflix"
-                      "onthulu"
-                      "ontamazon"
-                    ],
-                        "ontmusicgenres":
-                            [
-                                "hip hop"
-                                "rock"
-                                "edm"
-                            ],
-                         "ontentertainmentgenres":
-                            [
-                                "action"
-                                "comedy"
-                                "drama"
-                                "horror"
-                            ],
-    
-               "ontfitness":
-                    [
-                        "ontsleeptracker",
-                        "ontcaloriecounter",
-                        "ontpedometer",
-                        "ontmoodlog"
-                    ]
-               "ontstorage":
-                    [
-                        "onticloud",
-                        "ontgoogledrive",
-                        "ontdropbox",
-                        "ontemorybox"
-                    ]
-              }
-           }
 
 df.run(debugging=False)
