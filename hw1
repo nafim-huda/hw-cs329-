@@ -270,41 +270,6 @@ ont_dict = {
                       "moodlog",
                       "ontother"
                     ],
-                "onteducationalapps":
-                    [
-                      "ontcoursera",
-                      "ontedx",
-                      "ontduolingo"
-                    ],
-                "ontcoursera":
-                    [
-                     "ontmath",
-                     "ontphysics",
-                     "ontchemistry"
-                    ],
-                "ontduolingo":
-                    [
-                     "ontenglish",
-                     "ontspanish",
-                     "ontgerman",
-                     "ontrussian",
-                     "ontfrench",
-                     "ontjapanese",
-                     "ontitalian",
-                     "ontmandarin",
-                     "ontportuguese",
-                     "ontarabic",
-                     "ontturkish",
-                     "ontdutch",
-                     "ontswedish",
-                     "ontenglish",
-                     "onthindi",
-                     "ontgreek",
-                     "ontirish",
-                     "ontpolish",
-                     "onthighvalerian",
-                     "hebrew"
-                    ],
                 "ontsocialmedia":
                     [
                       "ontsnapchat",
