@@ -139,7 +139,7 @@ class State(Enum):
     U39 = 133
     U40 = 134
 
-    ERR = 135
+    ERR = 120
 
 #=============================================================================
 #THIS SECTION IS THE BEGINNING AND FITNESS BRANCH
@@ -200,7 +200,7 @@ df.add_system_transition(State.U22, State.P6K, '"Aw, I thought we were friends. 
 df.add_user_transition(State.P4V, State.U23, "$response={yes}")
 df.add_user_transition(State.P4V, State.U24, "$response={no}")
 df.add_user_transition(State.P5P, State.U25, "$response={yes}")
-df.add_user_transition(State.P5P, State.U26, "$response={no}")
+df.add_user_transition(State.P5Q, State.U26, "$response={no}")
 df.add_user_transition(State.P7J, State.U27, "$response={yes}")
 df.add_user_transition(State.P7J, State.U28, "$response={no}")
 df.add_user_transition(State.P6K, State.U29, r"[$response=/(.)/]")
@@ -226,6 +226,28 @@ df.set_error_successor(State.P7A, State.ERR)
 
 
 #=========================================================================================================
+
+#THIS IS FOR STREAMING APPS
+df.add_system_transition(State.U2, State.P3G, '"What type of streaming apps(music, video) do you use?"')
+
+df.add_user_transition(State.P3G, State.U70, "$response={spotify}")
+df.add_user_transition(State.P3G, State.U71, "$response={netflix}")
+df.add_user_transition(State.P3G, State.U72, "$response={hulu}")
+df.add_user_transition(State.P3G, State.U73, "$response={amazon}")
+
+#SPOTIFY USER/SYSTEM TRANSITIONS
+df.add_system_transition(State.U70, State.P4W, '"Nice! I use that app too. What type of music do you listen?"'
+df.add_user_transition(State.P4W, State.U74, "$response={hip hop}")
+df.add_user_transition(State.P4W, State.U75 "$response={rock}")
+df.add_user_transition(State.P4W, State.U76 "$response={edm}")
+
+#HIP-HOP
+df.add_system_transition(State.U74, State.P5R, '"I enjoy listening to that genre as well. What artist have you been listening to lately?"')
+df.add_user_transition(State.P5R, State.U77, "r[$response=
+
+
+
+
 
 ont_dict = {
               "ontology": {
