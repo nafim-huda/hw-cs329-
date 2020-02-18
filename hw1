@@ -65,43 +65,99 @@ df.add_system_transition(State.U4, State.P3B, '"Oh, maybe you will in the future
 
 
 ont_dict = {
-    "ontology": {
-        #  "ontyes":
-        #      [
-        #         "ontyeah",
-        #         "ontyes",
-        #         "ontyea",
-        #         "ontmmhmm",
-        #         "ontyuh"
-        #     ],
-        "ontapptype":
-            [
-                "ontfitness",
-                "ontproductivity",
-                "ontsocialmedia",
-                "ontstorage",
-                "ontstreaming"
-            ],
-        "ontproductivity":
-            [
-                "ontstudytimer",
-                "onthealth",
-                "onteducation",
-                "ontnotes"
-            ],
-        "ontstudytimer":
-            [
-                ""
-            ],
-
-        "ontsocialmedia":
-            [
-                "ontsnapchat",
-                "ontinstagram",
-                "ontfacebook",
-                "onttwitter"
-            ],
-        "ontstorage":
+              "ontology": {
+                "ontapptype":
+                    [
+                        "ontfitness",
+                        "ontproductivity",
+                        "ontsocialmedia",
+                        "ontstorage",
+                        "ontstreaming"
+                    ],
+                "ontyes":
+                    [
+                         "ontyeah",
+                         "ontyes",
+                         "ontyea",
+                         "ontmmhmm",
+                         "ontyuh"
+                     ],
+                "ontproductivity":
+                    [
+                      "ontstudytimer",
+                      "onthealth",
+                      "onteducation",
+                      "ontnotes",
+                      "onteducationalapps"
+                    ],
+                "ontnotes":
+                    [
+                      "ontgoodnotes",
+                      "ontapplenotes",
+                      "ontnotepad",
+                      "ontonenote",
+                      "ontother"
+                    ],
+                "onthealth":
+                    [
+                      "ontpedometer",
+                      "ontstudytimer",
+                      "ontcaloriecounter",
+                      "ontsleeptracker",
+                      "moodlog",
+                      "ontother"
+                    ],
+                "onteducationalapps":
+                    [
+                      "ontcoursera",
+                      "ontedx",
+                      "ontduolingo"
+                    ],   
+                "ontcoursera":
+                    [
+                     "ontmath,
+                     "ontphysics",
+                     "ontchemistry"
+                    ],
+                "ontduolingo":
+                    [
+                     "ontenglish",
+                     "ontspanish",
+                     "ontgerman",
+                     "ontrussian",
+                     "ontfrench",
+                     "ontjapanese",
+                     "ontitalian",
+                     "ontmandarin",
+                     "ontportuguese",
+                     "ontarabic",
+                     "ontturkish",
+                     "ontdutch",
+                     "ontswedish",
+                     "ontenglish",
+                     "onthindi",
+                     "ontgreek",
+                     "ontirish",
+                     "ontpolish",
+                     "onthighvalerian",
+                     "hebrew"
+                    ]
+                "ontsocialmedia":
+                    [
+                      "ontsnapchat",
+                      "ontinstagram",
+                      "ontfacebook",
+                      "onttwitter"
+                    ],
+                "ontinstagram":
+                    [
+                      2000
+                    ],
+                "ontsnapchat":
+                    [
+                      10
+                    ],
+                "ontstorage":
             [
                 "ontdropbox",
                 "ontemorybox",
@@ -109,14 +165,12 @@ ont_dict = {
 
             ],
 
-        "ontfitness":
-            [
-                "ontsleeptracker",
-                "ontcaloriecounter",
-                "ontpedometer",
-                "ontmoodlog"
-            ]
-    }
-}
-
-df.run(debugging=False)
+                "ontfitness":
+                    [
+                        "ontsleeptracker",
+                        "ontcaloriecounter",
+                        "ontpedometer",
+                        "ontmoodlog"
+                    ]
+              }
+           }
