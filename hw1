@@ -89,7 +89,9 @@ df.add_user_transition(State.P2C, State.U2, "$response={yes}")
 df.add_user_transition(State.P2C, State.U4, "$response={no}")
 df.add_user_transition(State.P2A, State.U6, "$response={fitness}")
 df.add_user_transition(State.P2A, State.U9, "$response={no}")
-df.add_user_transition(State.P4E, State.U8, "$response=#ONT(ontfitnessappnames)")
+#I don't know how to use dictionary for below line so the line below is just a placeholder
+#df.add_user_transition(State.P4E, State.U8, "$animal=#ONT(ontfitnessappnames)")
+df.add_user_transition(State.P4E, State.U8, "$response={strava}")
 df.add_user_transition(State.P2A, State.U13, "$response={yes}")
 
 df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you use?"')
@@ -105,6 +107,10 @@ df.add_system_transition(State.U8, State.P5C, '"What feature does" $response "ha
 
 ont_dict = {
               "ontology": {
+                #"ontfitnessappnames":
+                #    [
+                #        "ontstrava",
+                #    ],
                 "ontapptype":
                     [
                         "ontfitness",
