@@ -111,7 +111,8 @@ df.add_user_transition(State.P2A, State.U13, "$response={yes}")
 df.add_user_transition(State.P5C, State.U10, r"[$response=/(caloriecounter)|(pedometer)|(sleeptracker)/]")
 df.add_user_transition(State.P6C, State.U11, "$response={yes}")
 df.add_user_transition(State.P6C, State.U12, "$response={no}")
-df.add_user_transition(State.P7M, State.U8, r"[$response=/(caloriecounter)|(pedometer)|(sleeptracker)/]")
+#below needs to use dictionary
+df.add_user_transition(State.P7M, State.U8, "$response={strava}")
 
 df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you use?"')
 df.add_system_transition(State.U1, State.P2C, '"Do you use a phone?"')
