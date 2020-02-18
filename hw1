@@ -7,76 +7,81 @@ class State(Enum):
     P1 = 1
     Ua = 2
     Ub = 3
-    P2 = 4
+    P2A = 4
     P2B = 5
-    Uc = 6
-    Ud = 7
+    P2C = 6
+    Uc = 7
+    Ud = 8
 
-    ERR = 8
+    ERR = 9
+
 
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
 df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
 df.add_user_transition(State.P1, State.Ua, "$P1toUa={no}")
 df.add_user_transition(State.P1, State.Ub, "$P1toUa={yes}")
+df.add_user_transition(State.P2B, State.Uc, "$P1toUa={yes}")
+df.add_user_transition(State.P2C, State.Ub, "$P1toUa={yes}")
 
-df.add_system_transition(State.Ub, State.P2, '"What type of mobile apps do you use?"')
-df.add_system_transition(State.Ua, State.P2B, '" Do you use a phone?"')
+df.add_system_transition(State.Ub, State.P2A, '"What type of mobile apps do you use?"')
+df.add_system_transition(State.Ua, State.P2B, '"Do you use a phone?"')
+df.add_system_transition(State.Ua, State.P2C, '"Do you use a phone?"')
+
 
 ont_dict = {
-              "ontology": {
-              #  "ontyes":
-              #      [
-              #         "ontyeah",
-              #         "ontyes",
-              #         "ontyea",
-              #         "ontmmhmm",
-              #         "ontyuh"
-              #     ],
-                "ontapptype":
-                    [
-                        "ontfitness",
-                        "ontproductivity",
-                        "ontsocialmedia",
-                        "ontstorage",
-                        "ontstreaming"
-                    ],
-                "ontproductivity":
-                    [
-                      "ontstudytimer",
-                      "onthealth",
-                      "onteducation",
-                      "ontnotes"
-                    ],
-                "ontstudytimer":
-                    [
-                      ""
-                    ],
-                    
-                "ontsocialmedia":
-                    [
-                      "ontsnapchat",
-                      "ontinstagram",
-                      "ontfacebook",
-                      "onttwitter"
-                    ],
-                "ontstorage":
-                    [
-                      "ontdropbox",
-                      "ontemorybox",
-                      "onticloud"
-                      
-                    ],
-                    
-                "ontfitness":
-                    [
-                      "ontsleeptracker",
-                      "ontcaloriecounter",
-                      "ontpedometer",
-                      "ontmoodlog"
-                    ]
-              }
-           }
-           
- df.run(debugging=False)
+    "ontology": {
+        #  "ontyes":
+        #      [
+        #         "ontyeah",
+        #         "ontyes",
+        #         "ontyea",
+        #         "ontmmhmm",
+        #         "ontyuh"
+        #     ],
+        "ontapptype":
+            [
+                "ontfitness",
+                "ontproductivity",
+                "ontsocialmedia",
+                "ontstorage",
+                "ontstreaming"
+            ],
+        "ontproductivity":
+            [
+                "ontstudytimer",
+                "onthealth",
+                "onteducation",
+                "ontnotes"
+            ],
+        "ontstudytimer":
+            [
+                ""
+            ],
 
+        "ontsocialmedia":
+            [
+                "ontsnapchat",
+                "ontinstagram",
+                "ontfacebook",
+                "onttwitter"
+            ],
+        "ontstorage":
+            [
+                "ontdropbox",
+                "ontemorybox",
+                "onticloud"
+
+            ],
+
+        "ontfitness":
+            [
+                "ontsleeptracker",
+                "ontcaloriecounter",
+                "ontpedometer",
+                "ontmoodlog"
+            ]
+    }
+}
+
+df.run(debugging=False)
