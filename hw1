@@ -246,7 +246,8 @@ df.add_system_transition(State.U77 State.P7B, '"I'll check them out later. Thank
 df.add_user_transition(State.P7B, State.U78, "#F=ont(yes) /.*/")
 df.add_system_transition(State.U78, State.P8D, '"I've worked in both the more popular and indie side of the music industry, and I can tell you that there is a sharp divide in opinion over the artist using Spotify vs. Bandcamp to distribute their content. Unfortuanately, in many contexts, Spotify distributes an artist's musician without any consultation. What do you think about this debate on how artists should seek to release their music?"')
 df.add_user_transition(State.P8D, State.U79, "/.*/")
-df.add_system_transition(State.U79, State.P9D, '"
+df.add_system_transition(State.U79, State.P9D, '"What about Soundcloud? For someone searching for music by a new artist(a close friend who just decided to release their content), soundcloud is seen as a more friendly medium for new artists who are not established. Do you think it matters ultimately what popular digital medium an artist uses to release their content?"')
+df.add_user_transition
 
 
 
