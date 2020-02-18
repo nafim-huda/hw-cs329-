@@ -70,30 +70,42 @@ class State(Enum):
     P6J = 64
     P6K = 65
     P6L = 66
-    P7M = 85
-    P7L = 86
-    U1 = 67
-    U2 = 68
-    U3 = 69
-    U4 = 70
-    U5 = 71
-    U6 = 72
-    U7 = 73
-    U8 = 74
-    U9 = 75
-    U10 = 76
-    U11 = 77
-    U12 = 85
-    U13 = 78
-    U14 = 79
-    U15 = 80
-    U16 = 81
-    U17 = 82
-    U18 = 83
+    P7A = 67
+    P7B = 68
+    P7C = 69
+    P7D = 70
+    P7E = 71
+    P7F = 72
+    P7G = 73
+    P7H = 74
+    P7I = 75
+    P7J = 76
+    P7K = 77
+    P7M = 78
+    P7L = 79
+    U1 = 80
+    U2 = 81
+    U3 = 82
+    U4 = 83
+    U5 = 84
+    U6 = 85
+    U7 = 86
+    U8 = 87
+    U9 = 88
+    U10 = 89
+    U11 = 90
+    U12 = 91
+    U13 = 92
+    U14 = 93
+    U15 = 94
+    U16 = 95
+    U17 = 96
+    U18 = 97
 
-    ERR = 84
+    ERR = 98
 
-
+#=============================================================================
+#THIS SECTION IS THE BEGINNING AND FITNESS BRANCH
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
 df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
@@ -126,6 +138,7 @@ df.add_system_transition(State.U8, State.P5C, '"What feature does" $response "ha
 df.add_system_transition(State.U10, State.P6C, '"I have never used" $response "before, as I have heard that it can become obsessive. Has it helped you grow healthier?"')
 df.add_system_transition(State.U11, State.P7L, '"Great! Thanks for suggesting it; I am going to go check it out now. Talk to you later!"')
 df.add_system_transition(State.U12, State.P7M, '"Oh, bummer. What other fitness apps do you use?"')
+#=====================================================================================================
 
 
 ont_dict = {
