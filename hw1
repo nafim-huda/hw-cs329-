@@ -131,10 +131,10 @@ ont_dict = {
                       "ontcoursera",
                       "ontedx",
                       "ontduolingo"
-                    ],   
+                    ],
                 "ontcoursera":
                     [
-                     "ontmath,
+                     "ontmath",
                      "ontphysics",
                      "ontchemistry"
                     ],
@@ -160,7 +160,7 @@ ont_dict = {
                      "ontpolish",
                      "onthighvalerian",
                      "hebrew"
-                    ]
+                    ],
                 "ontsocialmedia":
                     [
                       "ontsnapchat",
@@ -193,3 +193,5 @@ ont_dict = {
                     ]
               }
            }
+
+df.run(debugging=False)
