@@ -176,7 +176,8 @@ df.add_system_transition(State.U10, State.P6C, '"I have never used" $response "b
 df.add_system_transition(State.U11, State.P7L, '"Great! Thanks for suggesting it; I am going to go check it out now. Talk to you later!"')
 df.add_system_transition(State.U12, State.P7M, '"Oh, bummer. What other fitness apps do you use?"')
 #=====================================================================================================
-#THIS SECTION IS DATING APPS
+#THIS SECTION IS SOCIAL MEDIA APPS
+#mainly facebook
 df.add_user_transition(State.P2A, State.U14, "$response={social}")
 df.add_user_transition(State.P7A, State.U15, "$response={snap}")
 df.add_user_transition(State.P7A, State.U16, r"[$response=/(twit)|(twitter)/]")
@@ -195,6 +196,30 @@ df.add_system_transition(State.U19, State.P5O, '"That\'s cool, I have 346! Would
 df.add_system_transition(State.U20, State.P5N, '"Wow, that\'s a lot of followers! Would you like to follow each other?"')
 df.add_system_transition(State.U21, State.P6J, '"Great! My username is \@emoryuniversity. I\'ll go check out your feed, talk to you later!"')
 df.add_system_transition(State.U22, State.P6K, '"Aw, I thought we were friends. Good-bye then."')
+
+#mainly snapchat
+df.add_user_transition(State.P4V, State.U23, "$response={yes}")
+df.add_user_transition(State.P4V, State.U24, "$response={no}")
+df.add_user_transition(State.P5P, State.U25, "$response={yes}")
+df.add_user_transition(State.P5P, State.U26, "$response={no}")
+df.add_user_transition(State.P7J, State.U27, "$response={yes}")
+df.add_user_transition(State.P7J, State.U28, "$response={no}")
+df.add_user_transition(State.P6K, State.U29, r"[$response=/(.)/]")
+
+
+df.add_system_transition(State.U15, State.P4V, '"Do you use Snapchat a lot? I\'m thinking about getting one, but I prefer words over pictures."')
+df.add_system_transition(State.U23, State.P5P, '"Do you have more than 10 streaks?"')
+df.add_system_transition(State.U24, State.P5P, '"Do you have more than 10 streaks?"')
+df.add_system_transition(State.U25, State.P7J, '"Wow, that\'s a lot of streaks! Would you like to be my first one?"')
+df.add_system_transition(State.U27, State.P8C, '"Cool, what\'s your username?"')
+df.add_system_transition(State.U28, State.P6K, '"Aw, I thought we were friends. Good-bye then."')
+df.add_system_transition(State.U26, State.P7J, '"That\'s not a lot. I can be another one if you\'d like!"')
+df.add_system_transition(State.U29, State.P9C, '"I\'ll snap you as soon as I make an account. See you later!"')
+
+#mainly twitter
+
+
+#mainly facebook
 
 #=========================================================================================================
 
