@@ -237,21 +237,26 @@ df.add_user_transition(State.P3G, State.U73, "$response={amazon}")
 
 #SPOTIFY USER/SYSTEM TRANSITIONS
 df.add_system_transition(State.U70, State.P4W, '"Nice! I use that app too. What type of music do you listen?"'
-df.add_user_transition(State.P4W, State.U74, "$response={hip hop}")
-df.add_user_transition(State.P4W, State.U75 "$response={rock}")
-df.add_user_transition(State.P4W, State.U76 "$response={edm}")
+df.add_user_transition(State.P4W, State.U74, "$response=ONT(ontmusicgenres)")
 
-#HIP-HOP
+#HIP-HOP/ROCK/EDM 
 df.add_system_transition(State.U74, State.P5R, '"I enjoy listening to that genre as well. What artist have you been listening to lately?"')
-df.add_user_transition(State.P5R, State.U77, "r[$response=
+df.add_user_transition(State.P5R, State.U75, "/.*/")
+df.add_system_transition(State.U76 State.P6L, '"Huh, you have bad taste! Just kidding:) Well, I would love to hear some recommendations if you have any?"')
+df.add_user_transition(State.P6L, State.U77, "/.*/")
+df.add_system_transition(State.U77 State.P7B, '"Thanks for the recommendations! I'll check them out later!"')
 
-
-
+#NETFLIX
+df.add_system_transition(State.U71, State.P4X, '"Aha! I've heard Netflix is the top one for streaming entertainment shows" What type of shows do you usually like watching?"')
+df.add_user_transition(State.P4X, State.U78,"$response=ONT(ontentertainmentgenres)")
+df.add_system_transition(State.P5S, State.U79, '"Mhm, well I'm personally a fan of drama shows like Stranger Things, Peaky Blinders, even a borderline animated drama like Bojack Horsemen! Well, what about that genre makes you interested in watching those shows?"')
+df.add_user_transition(State.U79, State.P6M,  "/.*/")
+df.add_system_transition(State.P6M, State.U80, '"
 
 
 ont_dict = {
               "ontology": {
-                #"ontfitnessappnames":
+                #"ontfitnessappnames":a 
                 #    [
                 #        "ontstrava",
                 #    ],
@@ -303,23 +308,36 @@ ont_dict = {
                       "ontfacebook",
                       "onttwitter"
                     ],
-                "ontinstagram":
-                    [
-                      2000
-                    ],
-                "ontsnapchat":
-                    [
+                    "ontinstagram":
+                     [
+                        2000
+                     ],
+                    "ontsnapchat":
+                     [
                       10
+                     ],
+               "ontstreaming":
+                    [
+                      "ontspotify"
+                      "ontnetflix"
+                      "onthulu"
+                      "ontamazon"
                     ],
-                "ontstorage":
-            [
-                "ontdropbox",
-                "ontemorybox",
-                "onticloud"
-
-            ],
-
-                "ontfitness":
+                        "ontmusicgenres":
+                            [
+                                "hip hop"
+                                "rock"
+                                "edm"
+                            ],
+                         "ontentertainmentgenres":
+                            [
+                                "action"
+                                "comedy"
+                                "drama"
+                                "horror"
+                            ],
+    
+               "ontfitness":
                     [
                         "ontsleeptracker",
                         "ontcaloriecounter",
