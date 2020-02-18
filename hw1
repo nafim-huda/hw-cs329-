@@ -177,10 +177,26 @@ df.add_system_transition(State.U11, State.P7L, '"Great! Thanks for suggesting it
 df.add_system_transition(State.U12, State.P7M, '"Oh, bummer. What other fitness apps do you use?"')
 #=====================================================================================================
 #THIS SECTION IS DATING APPS
-df.add_user_transition(State.P2A, State.U14, "$response={dating}")
+df.add_user_transition(State.P2A, State.U14, "$response={social}")
+df.add_user_transition(State.P7A, State.U15, "$response={snap}")
+df.add_user_transition(State.P7A, State.U16, r"[$response=/(twit)|(twitter)/]")
+df.add_user_transition(State.P7A, State.U17, r"[$response=/(ig)|(insta)|(instagram)/]")
+df.add_user_transition(State.P7A, State.U18, r"[$response=/(fb)|(facebook)/]")
+df.add_user_transition(State.P4U, State.U19, "$response={no}")
+df.add_user_transition(State.P4U, State.U20, "$response={yes}")
+df.add_user_transition(State.P5O, State.U21, "$response={yes}")
+df.add_user_transition(State.P5O, State.U22, "$response={no}")
+df.add_user_transition(State.P5N, State.U21, "$response={yes}")
+df.add_user_transition(State.P5N, State.U22, "$response={no}")
 
-df.add_system_transition(State.U14, State.P7A, '"Cool, which dating app do you use?"')
+df.add_system_transition(State.U14, State.P7A, '"Cool, which social media app is your favorite?"')
+df.add_system_transition(State.U17, State.P4U, '"Do you have more than 2000 followers?"')
+df.add_system_transition(State.U19, State.P5O, '"That\'s cool, I have 346! Would you like to follow each other?"')
+df.add_system_transition(State.U20, State.P5N, '"Wow, that\'s a lot of followers! Would you like to follow each other?"')
+df.add_system_transition(State.U21, State.P6J, '"Great! My username is \@emoryuniversity. I\'ll go check out your feed, talk to you later!"')
+df.add_system_transition(State.U22, State.P6K, '"Aw, I thought we were friends. Good-bye then."')
 
+#=========================================================================================================
 
 ont_dict = {
               "ontology": {
