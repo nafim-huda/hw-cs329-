@@ -139,9 +139,8 @@ class State(Enum):
     U39 = 133
     U40 = 134
 
-
     ERR = 135
-    ERR2 = 136
+    
 
 #=============================================================================
 #THIS SECTION IS THE BEGINNING AND FITNESS BRANCH
@@ -202,7 +201,7 @@ df.add_system_transition(State.U22, State.P6K, '"Aw, I thought we were friends. 
 df.add_user_transition(State.P4V, State.U23, "$response={yes}")
 df.add_user_transition(State.P4V, State.U24, "$response={no}")
 df.add_user_transition(State.P5P, State.U25, "$response={yes}")
-df.add_user_transition(State.P5P, State.U26, "$response={no}")
+df.add_user_transition(State.P5Q, State.U26, "$response={no}")
 df.add_user_transition(State.P7J, State.U27, "$response={yes}")
 df.add_user_transition(State.P7J, State.U28, "$response={no}")
 df.add_user_transition(State.P6K, State.U29, r"[$response=/(.)/]")
@@ -223,8 +222,8 @@ df.add_user_transition(State.P3E, State.U30, r"[$response=/(.*)/]")
 df.add_system_transition(State.U30, State.P7A, '"Oh, that\'s nice. I personally talk to my family using Facebook. What other social media apps do you use?"')
 df.add_system_transition(State.U18, State.P3E, '"Who do you communicate with most over Facebook?"')
 
-df.add_system_transition(State.ERR2, State.P7A, '"Do you like any other social media apps?"')
-df.set_error_successor(State.P7A, State.ERR2)
+df.add_system_transition(State.ERR, State.P7A, '"Do you like any other social media apps?"')
+df.set_error_successor(State.P7A, State.ERR)
 
 
 #=========================================================================================================
@@ -284,6 +283,14 @@ df.add_system_transition(State.U87, State.P5T, '"Outside of streaming, do you us
 df.add_user_transition(State.P5T, State.U88, ".*/")
 df.add_system_transition(State.U88, State.P4X, '"Nice to know! Well, what type of shows do you watch?"')
 
+#Storage Apps
+df.add_user_transition(State.P2B, State.U41, "$response=#ONT(ontstorage)")
+df.add_user_transition(State.P2A, State.P3K, "$response={yes}")
+df.add_user_transition(State.P5C, State.U10, r"[$response=/(caloriecounter)|(pedometer)|(sleeptracker)/]")
+df.add_user_transition(State.P6C, State.U11, "$response={yes}")
+df.add_user_transition(State.P6C, State.U12, "$response={no}")
+#below needs to use dictionary
+df.add_user_transition(State.P7M, State.U8, "$response={strava}")
 
 ont_dict = {
               "ontology": {
@@ -374,6 +381,13 @@ ont_dict = {
                         "ontcaloriecounter",
                         "ontpedometer",
                         "ontmoodlog"
+                    ]
+               "ontstorage":
+                    [
+                        "onticloud",
+                        "ontgoogledrive",
+                        "ontdropbox",
+                        "ontemorybox"
                     ]
               }
            }
