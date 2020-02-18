@@ -227,7 +227,7 @@ df.set_error_successor(State.P7A, State.ERR)
 
 #=========================================================================================================
 
-#THIS IS FOR STREAMING APPS
+#STREAMING APPS
 df.add_system_transition(State.U2, State.P3G, '"What type of streaming apps(music, video) do you use?"')
 
 df.add_user_transition(State.P3G, State.U70, "$response={spotify}")
@@ -247,23 +247,29 @@ df.add_system_transition(State.U77 State.P7B, '"Thanks for the recommendations! 
 #NETFLIX
 df.add_system_transition(State.U71, State.P4X, '"Aha! I've heard Netflix is the top one for streaming entertainment shows and films. What type of shows do you usually like watching?"')
 df.add_user_transition(State.P4X, State.U78,"$response=ONT(ontentertainmentgenres)")
-df.add_system_transition(State.P5S, State.U79, '"Mhm, well I'm personally a fan of drama shows like Stranger Things, Peaky Blinders, even a borderline animated drama like Bojack Horsemen! Well, what about that genre makes you interested in watching those shows?"')
-df.add_user_transition(State.U79, State.P6M,  "/.*/")
+df.add_system_transition(State.U78, State.P5S, '"Mhm, well I'm personally a fan of drama shows like Stranger Things, Peaky Blinders, even a borderline animated drama like Bojack Horsemen! Well, what about that genre makes you interested in watching those shows?"')
+df.add_user_transition(State.P6M, State.U79,   "/.*/")
 
-df.add_system_transition(State.P6M, State.U80, '"I see. What about films? Have you seen anything that caught your eye recently?"')
-df.add_user_transition(State.U80, State.P7C, "$response=ONT(ontyes)")
-df.add_system_transition(State.P7C, State.U81, '"Really? Could you tell me a little bit about the film's plot?"')
-df.add_user_transition(State.U81, State.P8D, "/.*/")
-df.add_system_transition(State.P8D, State.U82, '"Hmm. The director must envision something I can't quite see. Is the acting good?"')
-df.add_user_transition(State.U82, State.P9D, ".*/")
-df.add_system_transition(State.P9D, State.U83, '"Plot, acting... I'm a bit anal with my movies, so could you tell me a bit about the cinematography?"')
-df.add_user_transition(State.U83, State.P10C, "$response={yes,yeah,no,maybe,haha}")
-df.add_system_transition(State.P10C, State.U84, '"Hold on... woah I didn't know it was that time! I have to get going. We'll chat more about this film later!"')
+df.add_system_transition(State.U79, State.P6M,  '"I see. What about films? Have you seen anything that caught your eye recently?"')
+df.add_user_transition(State.P7C, State.U80,  "$response=ONT(ontyes)")
+df.add_system_transition(State.U81, State.P7C,  '"Really? Could you tell me a little bit about the film's plot?"')
+df.add_user_transition(State.P8D, State.U81,  "/.*/")
+df.add_system_transition(State.U82, State.P8D,  '"Hmm. The director must envision something I can't quite see. Is the acting good?"')
+df.add_user_transition(State.P9D, State.U82,  ".*/")
+df.add_system_transition(State.U83, State.P9D,  '"Plot, acting... I'm a bit anal with my movies, so could you tell me a bit about the cinematography?"')
+df.add_user_transition(State.P10C, State.U83,  "$response={yes,yeah,no,maybe,haha}")
+df.add_system_transition( State.U84,State.P10C, '"Hold on... woah I didn't know it was that time! I have to get going. We'll chat more about this film later!"')
 
 df.add_user_transition(State.U80, State.P7D, "$response={no,nope,nah,idc}")
 df.add_system_transition(State.P7D, State.U85, '"Sigh...well I need to run. Catch you later!"')
 
-#HULU
+#HULU(after first two statements, follows exact same series of user/system transitions as in the Netflix ontology)
+df.add_system_transition(State.U72, State.P4Y, '"I have to ask: Why do you use Hulu over Netflix?"')
+df.add_user_transition(State.P4Y, State.U86, ".*/")
+df.add_system_transition(State.U86, State.P4X, '"Ah, well what type of shows do you watch?"')
+
+#AMAZON
+df.add_system_transition(State.U73, State.P4Z, '"We
 
 
 
