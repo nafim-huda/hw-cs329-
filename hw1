@@ -5,17 +5,49 @@ from enum import Enum
 class State(Enum):
     START = 0
     P1 = 1
-    U1 = 2
-    U2 = 3
-    U3 = 4
-    U4 = 5
-    P2A = 6
-    P2B = 7
-    P2C = 8
-    P3A = 9
-    P3B = 10
+    P2A = 2
+    P2B = 3
+    P2C = 4
+    P3A = 5
+    P3B = 6
+    P3C = 7
+    P3D = 8
+    P3E = 9
+    P3F = 10
+    P3G = 11
+    P3H = 12
+    P3I = 13
+    P3J = 14
+    P3K = 15
+    P3L = 16
+    P4A = 17
+    P4B = 18
+    P4C = 19
+    P4D = 20
+    P4E = 21
+    P4F = 22
+    P4G = 23
+    P4H = 24
+    P4I = 25
+    P4J = 26
+    P4K = 27
+    P4L = 28
+    P4M = 29
+    P4N = 30
+    P4O = 31
+    P4P = 32
+    P4Q = 33
+    P4R = 34
+    P4S = 35
+    P4T = 36
+    P4U= 37
+    P4V = 38
+    U1 = 39
+    U2 = 40
+    U3 = 41
+    U4 = 42
 
-    ERR = 11
+    ERR = 43
 
 
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
