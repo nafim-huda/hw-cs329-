@@ -42,6 +42,7 @@ class State(Enum):
     P4T = 36
     P4U = 37
     P4V = 38
+    P5C = 51
     U1 = 39
     U2 = 40
     U3 = 41
@@ -49,10 +50,11 @@ class State(Enum):
     U5 = 43
     U6 = 44
     U7 = 45
-    # not used U8 = 46
+    U8 = 46
     U9 = 47
     U10 = 48
     U11 = 49
+    U13 = 52
 
     ERR = 50
 
@@ -67,6 +69,8 @@ df.add_user_transition(State.P2C, State.U2, "$response={yes}")
 df.add_user_transition(State.P2C, State.U4, "$response={no}")
 df.add_user_transition(State.P2A, State.U6, "$response={fitness}")
 df.add_user_transition(State.P2A, State.U9, "$response={no}")
+df.add_user_transition(State.P4E, State.U8, "$response=#ONT(ontfitnessappnames)")
+df.add_user_transition(State.P2A, State.U13, "$response={yes}")
 
 df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you use?"')
 df.add_system_transition(State.U1, State.P2C, '"Do you use a phone?"')
@@ -74,7 +78,10 @@ df.add_system_transition(State.U4, State.P3B, '"Oh, maybe you will in the future
 df.add_system_transition(State.ERR, State.P2A, '"I am personally a fan of Strava. Do you use any fitness apps?"')
 df.set_error_successor(State.P2A, State.ERR)
 df.add_system_transition(State.U6, State.P4E, '"Which fitness app specifically? I have been thinking about getting one."')
+df.add_system_transition(State.U13, State.P4E, '"Which fitness app specifically? I have been thinking about getting one."')
 df.add_system_transition(State.U9, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
+df.add_system_transition(State.U8, State.P5C, '"What feature does" $response "have that you like most? Like, does it have calorie counting, sleep tracking, or a pedometer?"')
+
 
 ont_dict = {
               "ontology": {
