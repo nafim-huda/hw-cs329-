@@ -537,7 +537,7 @@ df.add_user_transition(State.P6N, State.U102, "r [$response=/(.*){yes,yeah,Yes,Y
 df.add_user_transition(State.P6N, State.U103, "r [$response=/(.*){no,nah,nope,Nah,No,Nope}(.*)/]")
 #YES BRANCH
 df.add_system_transition(State.U102, State.P7E, '"What type of films?"')
-df.add_user_transition(State.P7E, State.U104, "r [$response=/(.*)(ONT(entertainment))(.*)/]")
+df.add_user_transition(State.P7E, State.U104, "r [$response=/(.*)(action|comedy|horror|drama|Action|Comedy|Horror|Drama)(.*)/]")
 df.add_system_transition(State.U104, State.P8E, '"Great! Any film in particular catch your eye lately?"')
 #SECOND YES BRANCH
 df.add_user_transition(State.P8E, State.U105, "r [$response=/(.*){yes,yeah,Yes,Yeah)(.*)/]")
