@@ -448,24 +448,20 @@ df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you 
 df.add_system_transition(State.U1, State.P2C, '"Do you use a phone?"')
 df.add_system_transition(State.U4, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
 #
-df.add_user_transition(State.U4, State.END, "/.*/")
+df.add_user_transition(State.P3B, State.END, "/.*/")
 df.add_system_transition(State.END, State.END, '"Goodbye."')
 #
 df.add_system_transition(State.ERR, State.P2A, '"I am personally a fan of Strava. Do you use any fitness apps?"')
 df.set_error_successor(State.P2A, State.ERR)
 df.add_system_transition(State.U6, State.P4E, '"Which fitness app specifically? I have been thinking about getting one."')
 df.add_system_transition(State.U13, State.P4E, '"Which fitness app specifically? I have been thinking about getting one."')
-#
-df.add_user_transition(State.U9, State.END, "/.*/")
-#
 df.add_system_transition(State.U9, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
-#below line needs an error message
 df.add_system_transition(State.U8, State.P5C, '"What feature does" $response "have that you like most? Like, does it have calorie counting, sleep tracking, or a pedometer?"')
 df.add_system_transition(State.ERR5, State.P4E, '"What other fitness apps do you use?"')
 df.set_error_successor(State.P5C, State.ERR5)
 df.add_system_transition(State.U10, State.P6C, '"I have never used" $response "before, as I have heard that it can become obsessive. Has it helped you grow healthier?"')
 #
-df.add_user_transition(State.U11, State.END, "/.*/")
+df.add_user_transition(State.P7L, State.END, "/.*/")
 #
 df.add_system_transition(State.U11, State.P7L, '"Great! Thanks for suggesting it; I am going to go check it out now. Talk to you later!"')
 df.add_system_transition(State.U12, State.P7M, '"Oh, bummer. What other fitness apps do you use?"')
@@ -489,11 +485,11 @@ df.add_system_transition(State.U19, State.P5O, '"That\'s cool, I have 346! Would
 df.add_system_transition(State.U20, State.P5N, '"Wow, that\'s a lot of followers! Would you like to follow each other?"')
 df.add_system_transition(State.U21, State.P6J, '"Great! My username is @emoryuniversity. I\'ll go check out your feed, talk to you later!"')
 #
-df.add_user_transition(State.U21, State.END, "/.*/")
+df.add_user_transition(State.P6J, State.END, "/.*/")
 #
 df.add_system_transition(State.U22, State.P6K, '"Aw, I thought we were friends. Good-bye then."')
 #
-df.add_user_transition(State.U22, State.END, "/.*/")
+df.add_user_transition(State.P6K, State.END, "/.*/")
 #
 
 #mainly snapchat
