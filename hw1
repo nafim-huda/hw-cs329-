@@ -316,6 +316,7 @@ class State(Enum):
     U111 = 217
     U112 = 218
     U113 = 219
+    U114 = 220
 
     ERR = 135
     ERR2 = 136
@@ -477,7 +478,9 @@ df.set_error_successor(State.P7A, State.ERR2)
 
 # STREAMING APPS
 df.add_system_transition(State.ERR, State.ERR, r"[!i have failed]")
-df.add_system_transition(State.U2, State.P3G, '"What streaming apps(music, video) do you use?"')
+df.add_user_transition(State.P2A, State.U114,
+                       r"[$response=/(.*)(streaming|Streaming|music,Music|video|Video)(.*)/]")
+df.add_system_transition(State.U114, State.P3G, '"What streaming apps(music, video) do you use?"')
 
 df.add_user_transition(State.P3G, State.U70, "$response={spotify}")
 df.add_user_transition(State.P3G, State.U71, "$response={netflix}")
