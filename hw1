@@ -573,9 +573,9 @@ df.add_user_transition(State.P5T, State.U88, ".*/")
 df.add_system_transition(State.U88, State.P4X, '"Nice to know! Well, what type of shows do you watch?"')
 
 #Storage Apps
-df.add_user_transition(State.P2B, State.U88, "$apptype=#ONT(ontapptype)")
+df.add_user_transition(State.P2B, State.U91, "$apptype=#ONT(ontapptype)")
 df.add_system_transition(State.U88, State.P3K, r'[!"What $apptype do you use"?"]')
-df.add_user_transition(State.P3K, State.U89, "$storageapp=#ONT(ontstorage)")
+df.add_user_transition(State.P3K, State.U92, "$storageapp=#ONT(ontstorage)")
 df.add_system_transition(State.U89, State.P4S, '[!"I think  $storageapp is a great app"." Do you care about privacy of your information"?"]')
 
 df.run(debugging=False)
