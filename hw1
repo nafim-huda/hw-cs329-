@@ -448,68 +448,115 @@ df.add_system_transition(State.U18, State.P3E, '"Who do you communicate with mos
 df.add_system_transition(State.ERR2, State.P7A, '"Do you like any other social media apps?"')
 df.set_error_successor(State.P7A, State.ERR2)
 
-# =========================================================================================================
-# STREAMING APPS
-df.add_user_transition(State.P2A, State.U96,
-                       r"[$response=/(.*)(streaming)|(Streaming)|(movies)|(MOVIES)|(Movies)|(music)|(MUSIC)|(STREAMING)(.*)/]")
+#=========================================================================================================
 
-df.add_system_transition(State.U96, State.P3G, '"Which streaming app is your favorite?"')
+# STREAMING APPS
+df.add_system_transition(State.ERR, State.ERR, r"[!i have failed]")
+df.add_system_transition(State.U2, State.P3G, '"What streaming apps(music, video) do you use?"')
 
 df.add_user_transition(State.P3G, State.U70, "$response={spotify}")
 df.add_user_transition(State.P3G, State.U71, "$response={netflix}")
 df.add_user_transition(State.P3G, State.U72, "$response={hulu}")
 df.add_user_transition(State.P3G, State.U73, "$response={amazon}")
 
-# SPOTIFY
-df.add_system_transition(State.U70, State.P4W, '"Nice! I use that app too. What type of music do you listen to?"')
-df.add_user_transition(State.P4W, State.U74, "$response=ONT(ontmusicgenres)")
-df.add_system_transition(State.U74, State.P5R, '"I enjoy listening to that genre as well. What artist have you been listening to lately?"')
-df.add_user_transition(State.P5R, State.U75, "/.*/")
+#SPOTIFY
+df.add_system_transition(State.U70, State.P3G, '"Nice! I use that app too. What type of music do you listen to?"')
+df.add_user_transition(State.P3G, State.U74, "$response=#ONT(ontmusic)")
+df.add_system_transition(State.U74, State.P4N, '"I enjoy listening to that genre as well. What artist have you been listening to lately?"')
+df.add_user_transition(State.P4N, State.U75, "/.*/")
 df.add_system_transition(State.U76, State.P6L, '"Huh, you have bad taste! Just kidding:) Well, I would love to hear some recommendations if you have any?"')
 df.add_user_transition(State.P6L, State.U77, "/.*/")
-df.add_system_transition(State.U77, State.P7B, '"I\'ll check them out later.Thanks! Anyways, have you heard about other music streaming services like Bandcamp, Soundcloud? Many people prefer to use Bandcamp since a lot of indie artists receive higher royalties compared to Spotify.Soundcloud is also seen as a more indie artist friendly alternative to Spotify."')
-df.add_user_transition(State.P7B, State.U78, "#F=ont(yes) /.*/")
-df.add_system_transition(State.U78, State.P8D, '"I\'ve worked in both the more popular and indie side of the music industry\, and I can tell you that there is a sharp divide in opinion over the artist using Spotify versus Bandcamp to distribute their content.Unfortuanately\, in many contexts, Spotify distributes an artist\'s musician without any consultation. What do you think about this debate on how artists should seek to release their music?"')
+df.add_system_transition(State.U77, State.P7B, '"I\'ll check them out later. Thanks! Anyways, have you heard about other music streaming services like Bandcamp, Soundcloud? Many people prefer to use Bandcamp since a lot of indie artists receive higher royalties compared to Spotify. Soundcloud is also seen as a more indie artist friendly alternative to Spotify."')
+df.add_user_transition(State.P7B, State.U78, "r [$response=/(.*){yes,yeah,Yes,Yeah,Yea}(.*)/]")
+df.add_system_transition(State.U78, State.P8D, '"I\'ve worked in both the more popular and indie side of the music industry, and I can tell you that there is a sharp divide in opinion over the artist using Spotify vs. Bandcamp to distribute their content. Unfortuanately, in many contexts, Spotify distributes an artist\'s musician without any consultation. What do you think about this debate on how artists should seek to release their music?"')
 df.add_user_transition(State.P8D, State.U79, "/.*/")
-df.add_system_transition(State.U79, State.P9D, '"What about Soundcloud? For someone searching for music by a new artist(a close friend who just decided to release their content), soundcloud is seen as a more friendly medium for new artists who are not established. Do you think it matters ultimately what popular digital medium an artist uses to release their content?"')
-df.add_user_transition(State.P9D, State.U80, "$response=[soundcloud]")
+df.add_system_transition(State.U79, State.P9D, '"What about Soundcloud? For someone searching for music by a new artist, soundcloud is seen as a more friendly medium for new artists who are not established. Do you think it matters ultimately what popular digital medium an artist uses to release their content?"')
+df.add_user_transition(State.P9D, State.U80, "/.*/")
 df.add_system_transition(State.U80, State.P10C, '"Interesting, well I have to go now. See you later!"')
+df.add_system_transition(State.P10C, State.END, ''"Goodbye!"'')
 
-# NETFLIX
+df.set_error_successor(State.U74, error_successor=State.ERR)
+df.set_error_successor(State.U78, error_successor=State.ERR)
 
-df.add_system_transition(State.U71, State.P4X, '"Aha! I\'ve heard Netflix is the top one for streaming entertainment shows and films.What type of shows do you usually like watching?"')
-df.add_user_transition(State.P4X, State.U81, "$response=ONT(ontentertainmentgenres)")
+
+#NETFLIX
+
+df.add_system_transition(State.U71, State.P4X, '"Aha! I\'ve heard Netflix is the top one for streaming entertainment shows and films"." What type of shows do you usually like watching?"')
+df.add_user_transition(State.P4X, State.U81,"$response=ONT(ontentertainment)")
 df.add_system_transition(State.U81, State.P5S, '"Mhm, well I\'m personally a fan of drama shows like Stranger Things, Peaky Blinders, even a borderline animated drama like Bojack Horsemen! Well, what about that genre makes you interested in watching those shows?"')
-df.add_user_transition(State.P6M, State.U82, "/.*/")
+df.add_user_transition(State.P6M, State.U82,   "/.*/")
 
-df.add_system_transition(State.U82, State.P7C, '"I see. What about films? Have you seen anything that caught your eye recently?"')
-df.add_user_transition(State.P7C, State.U83, "$response=ONT(ontyes)")
-df.add_system_transition(State.U83, State.P8D, '"Really? Could you tell me a little bit about the film\'s plot?"')
-df.add_user_transition(State.P8D, State.U84, "/.*/")
-df.add_system_transition(State.U84, State.P9D, '"Hmm. The director must envision something I can\'t quite see. Is the acting good?"')
-df.add_user_transition(State.P9D, State.U85, ".*/")
-df.add_system_transition(State.U85, State.P10C, '"Plot, acting... I\'m a bit pedantic with my movies, so could you tell me a bit about the cinematography?"')
-df.add_user_transition(State.P10C, State.U86, "$response={yes,yeah,no,maybe,haha}")
-df.add_system_transition(State.U86, State.P11D, '"Thanks for going into detail about the film. I don\'t mean to kill the mood, but have you heard about the controversy surrounding the Netflix algorithm"')
-df.add_user_transition(State.P11D, State.U87, "$response=ONT(ontyes)")
-df.add_user_transition(State.P11D, State.U88, "$response=ONT(ontno)")
-df.add_system_transition(State.U87, State.P12C, '"I thought I was the only one! I\'m on the government\'s side when it comes to this debate...what side are you on? Netflix or FCC?]')
-
-df.add_user_transition(State.P12C, State.U88, "$side=ONT(ontdebate)")
-df.add_system_transition(State.U88, State.P13A, '"! $side. Alright well I have to get going now. It was nice talking to you!"')
-
-df.add_user_transition(State.U82, State.P7D, "$response={no,nope,nah,idc}")
-df.add_system_transition(State.P7D, State.U90, '"Sigh...well I need to run. Catch you later!"')
-
-df.add_system_transition(State.U88, State.P12D, '"The Netflix algorithm has to do with the Netflix Prize competition. The competition asked for its participiants to devise an algorithm that returns better recommendations to its users compared to its current algorithm. Netflix eventually ran into trouble with the FCC due to releasing private datasets into the public domain for the competition."')
+df.add_system_transition(State.U82, State.P7C,  '"I see. What about films? Have you seen anything that caught your eye recently?"')
+df.add_user_transition(State.P7C, State.U83,  "$response=ONT(ontyes)")
+df.add_system_transition(State.U83, State.P8D,  '"Really? Could you tell me a little bit about the film\'s plot?"')
+df.add_user_transition(State.P8D, State.U84,  "/.*/")
+df.add_system_transition(State.U84, State.P9D,  '"Hmm. The director must envision something I can\'t quite see. Is the acting good?"')
+df.add_user_transition(State.P9D, State.U85,  ".*/")
+df.add_system_transition(State.U85, State.P10C,  '"Plot, acting... I\'m a bit pedantic with my movies, so could you tell me a bit about the cinematography?"')
+df.add_user_transition(State.P10C, State.U86,  "$response= r[/(.*){yes,yeah,no,maybe,haha}(.*)/]")
+df.add_system_transition(State.U86,State.P11D, '"Thanks for going into detail about the film. I don\'t mean to kill the mood, but have you heard about the controversy surrounding the Netflix algorithm?"')
+df.add_user_transition(State.P11D, State.U87, "r [$response=/(.*){yes,yeah, Yes, Yeah}(.*)/]")
+df.add_user_transition(State.P11D, State.U88, "r [$response=/(.*){no, nah, nope, No, Nah, Nope}(.*)/]")
 
 
-# AMAZON
-df.add_system_transition(State.U73, State.P4Z, '"So do you pay for video seprately or do you use it through your prime subscription? I\'m in the latter camp."')
-df.add_user_transition(State.P4Z, State.U74, ".*/")
-df.add_system_transition(State.U87, State.P5T, '"Outside of streaming, do you use Amazon for its more popular function as an ecommerce service? Originally, I started using Amazon for purchasing laundry items, and only found out about its streaming service much later. "')
-df.add_user_transition(State.P5T, State.U88, ".*/")
-df.add_system_transition(State.U88, State.P4X, '"Nice to know! Well, what type of shows do you watch?"')
+df.add_system_transition(State.U87, State.P12C, '"I thought I was the only one. I\'m on the government\'s side when it comes to this debate...what side are you on? Netflix or FTC?]'"")
+df.add_user_transition(State.P12C, State.U89, "$side=ONT(ontdebate)")
+df.add_system_transition(State.U89, State.P13A, '"! $side. Alright well I have to get going now. It was nice talking to you!"')
+
+df.add_user_transition(State.P7C, State.U90, "r [$response=/(.*){no,nope,nah,idc}(.*)/]")
+df.add_system_transition(State.U90, State.P8G, '"Sigh...well I need to run. Catch you later!"')
+df.add_system_transition(State.P8G, State.END, '"Goodbye!"')
+
+df.add_system_transition(State.U88, State.P12D, '"The Netflix algorithm has to do with the Netflix Prize competition. The competition asked for its participiants to devise an algorithm that returns better recommendations to its users compared to its current algorithm. Netflix eventually ran into trouble with the FTC due to releasing private datasets into the public domain for the competition."')
+df.add_system_transition(State.P12D, State.END, '"Goodbye!"')
+
+df.set_error_successor(State.U81, error_successor=State.ERR)
+df.set_error_successor(State.U83, error_successor=State.ERR)
+df.set_error_successor(State.U86, error_successor=State.ERR)
+df.set_error_successor(State.U87, error_successor=State.ERR)
+df.set_error_successor(State.U88, error_successor=State.ERR)
+df.set_error_successor(State.U89, error_successor=State.ERR)
+df.set_error_successor(State.U90, error_successor=State.ERR)
+
+
+#AMAZON
+df.add_system_transition(State.U73, State.P4Z, '"Do you use Amazon more for eccomerce or video streaming??"')
+df.add_user_transition(State.P4Z, State.U100, "$eccomerce=ONT(onteccomerce)")
+df.add_user_transition(State.P4Z, State.U101, "#video=ONT(ontvideo)")
+#ECCOMERCE BRANCH
+df.add_system_transition(State.U100, State.P5T, '"I prefer $eccomerce as well, and see $video as a nice addition to the the overall service. Anyways, what type of shows do you watch?"')
+df.add_user_transition(State.P5T, State.U101, "$genres=ONT(ontentertainment)")
+df.add_system_transition(State.U101, State.P6N, '"! That $genres is a favorite of mine, but recently I \'ve started watching films more often... do you enjoy watching movies?"')
+df.add_user_transition(State.P6N, State.U102, "r [$response=/(.*){yes,yeah,Yes,Yeah}(.*)/]")
+df.add_user_transition(State.P6N, State.U103, "r [$response=/(.*){no,nah,nope,Nah,No,Nope}(.*)/]")
+#YES BRANCH
+df.add_system_transition(State.U102, State.P7E, '"What type of films?"')
+df.add_user_transition(State.P7E, State.U104, "r [$response=/(.*)(ONT(entertainment))(.*)/]")
+df.add_system_transition(State.U104, State.P8E, '"Great! Any film in particular catch your eye lately?"')
+#SECOND YES BRANCH
+df.add_user_transition(State.P8E, State.U105, "r [$response=/(.*){yes,yeah,Yes,Yeah)(.*)/]")
+df.add_system_transition(State.U105, State.P9E, "'Haven't heard that film yet, but I'll check it out whenever I've got a spare evening. Anyways, I have to go. Nice talking to you!'")
+df.add_system_transition(State.P9E, State.END, '"Goodbye!"')
+
+df.add_user_transition(State.P8F, State.U106, "r [$response=/(.*){no,nah,nope,Nah,No,Nope}(.*)/]")
+df.add_system_transition(State.U106, State.P9F, '"Oh, well I have to run. Nice talking to you!"')
+df.add_system_transition(State.P9F, State.END, '"Goodbye!"')
+
+#NO BRANCH
+df.add_system_transition(State.U103, State.P7G, '"Oh, well I have to run. Nice talking to you!"')
+df.add_system_transition(State.P7G, State.END, '"Goodbye!"')
+
+df.set_error_successor(State.U100, error_successor=State.ERR)
+df.set_error_successor(State.U101, error_successor=State.ERR)
+df.set_error_successor(State.U102, error_successor=State.ERR)
+df.set_error_successor(State.U103, error_successor=State.ERR)
+df.set_error_successor(State.U104, error_successor=State.ERR)
+df.set_error_successor(State.U105, error_successor=State.ERR)
+df.set_error_successor(State.U106, error_successor=State.ERR)
+
+
+# =============================================================================
+# THIS SECTION IS FOR STORAGE APPS
 
 # Storage Apps
 no = r"[{no,not really,nah,nope}]"
@@ -535,5 +582,6 @@ df.set_error_successor(State.U93, error_successor=State.ERR)
 df.set_error_successor(State.U94, error_successor=State.ERR)
 df.set_error_successor(State.ERR, error_successor=State.ERR)
 df.set_error_successor(State.END, error_successor=State.END)
+
 
 df.run(debugging=False)
