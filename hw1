@@ -65,10 +65,10 @@ ont_dict = {
                      ],
                "ontstreaming":
                     [
-                      "ontspotify"
-                      "ontnetflix"
-                      "onthulu"
-                      "ontamazon"
+                      "spotify"
+                      "netflix"
+                      "hulu"
+                      "amazon"
                     ],
                         "ontmusicgenres":
                             [
@@ -101,119 +101,6 @@ ont_dict = {
               }
            }
 
-ont_dict = {
-              "ontology": {
-                #"ontfitnessappnames":a 
-                #    [
-                #        "ontstrava",
-                #    ],
-                "ontapptype":
-                    [
-                        "ontfitness",
-                        "ontproductivity",
-                        "ontsocialmedia",
-                        "ontstorage",
-                        "ontstreaming"
-                    ],
-                "ontyes":
-                    [
-                         "ontyeah",
-                         "ontyes",
-                         "ontyea",
-                         "ontmmhmm",
-                         "ontyuh"
-                     ],
-                 "ontno":
-                    [
-                      "ontno",
-                      "ontnah",
-                      "ontnope"
-                    ],
-                "ontreaction":
-                    [
-                      "ontgreat",
-                    ],
-                "ontproductivity":
-                    [
-                      "ontstudytimer",
-                      "onthealth",
-                      "onteducation",
-                      "ontnotes",
-                      "onteducationalapps"
-                    ],
-                "ontnotes":
-                    [
-                      "ontgoodnotes",
-                      "ontapplenotes",
-                      "ontnotepad",
-                      "ontonenote",
-                      "ontother"
-                    ],
-                "onthealth":
-                    [
-                      "ontpedometer",
-                      "ontstudytimer",
-                      "ontcaloriecounter",
-                      "ontsleeptracker",
-                      "moodlog",
-                      "ontother"
-                    ],
-                "ontsocialmedia":
-                    [
-                      "ontsnapchat",
-                      "ontinstagram",
-                      "ontfacebook",
-                      "onttwitter"
-                    ],
-                    "ontinstagram":
-                     [
-                        "2000"
-                     ],
-                    "ontsnapchat":
-                     [
-                      "10"
-                     ],
-               "ontstreaming":
-                    [
-                      "ontspotify",
-                      "ontnetflix",
-                      "ontamazon",
-                    ],
-                        "ontmusicgenres":
-                            [
-                                "hip hop",
-                                "rock",
-                                "edm",
-                            ],
-                         "ontentertainmentgenres":
-                            [
-                                "action",
-                                "comedy",
-                                "drama",
-                                "horror"
-                            ],
-                         "ontdebate":
-                            [
-                              "netflix",
-                              "fcc"
-                            ],
-    
-               "ontfitness":
-                    [
-                        "ontsleeptracker",
-                        "ontcaloriecounter",
-                        "ontpedometer",
-                        "ontmoodlog"
-                    ]
-               "ontstorage":
-                    [
-                        "onticloud",
-                        "ontgoogledrive",
-                        "ontdropbox",
-                        "ontemorybox"
-                    ]
-              }
-           }
 
 
 knowledge = KnowledgeBase()
@@ -534,6 +421,7 @@ df.set_error_successor(State.P7A, State.ERR2)
 #=========================================================================================================
 
 #STREAMING APPS
+df.add_user_transition(State P2A, State.U2, "$response=ONT(ontstreaming)"
 df.add_system_transition(State.U2, State.P3G, '"What type of streaming apps(music, video) do you use?"')
 
 df.add_user_transition(State.P3G, State.U70, "$response={spotify}")
@@ -598,12 +486,12 @@ df.add_system_transition(State.U88, State.P4X, '"Nice to know! Well, what type o
 #Storage Apps
 no = r"[{no,not really,nah,nope}]"
 maybe = r"[{maybe,idk,IDK,Maybe}]"
-df.add_user_transition(State.P2B, State.U91, "$apptype=#ONT(ontapptype)")
-df.add_system_transition(State.U91, State.P3K, r'[!"What $apptype do you use"?"]')
-df.add_user_transition(State.P3K, State.U92, "$storageapp=#ONT(ontstorage)")
+#df.add_user_transition(State.P2B, State.U91, "$apptype=#ONT(ontapptype)")
+#df.add_system_transition(State.U91, State.P3K, r'[!"What $apptype do you use"?"]')
+df.add_user_transition(State.P2A, State.U92, "$storageapp=#ONT(ontstorage)")
 df.add_system_transition(State.U92, State.P4S, '[!"I think  $storageapp is a great app"." Do you think your information is safe in the cloud"?"]')
 df.add_user_transition(State.P4S, State.U93, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
-df.add_system_transition(State.U93, State.END, '"That\'s great, but be careful out there it\'s!"')
+df.add_system_transition(State.U93, State.END, '"That\'s great, but be careful out there it\'s dangerous!"')
 df.add_user_transition(State.P4S, State.U94, no)
 df.add_system_transition(State.U94, State.END, '"You should invest in a hard drive to store your information, or you can write everything down and store it in a vault."')
 df.add_user_transition(State.P4S, State.U95, maybe)
