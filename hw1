@@ -409,12 +409,12 @@ class State(Enum):
     U90 = 184
     U91 = 185
     U92 = 186
-
     ERR = 135
     ERR2 = 136
     ERR3 = 137
+    ERR5 = 138
 
-    END = 138
+    END = 139
 
 
 knowledge = KnowledgeBase()
@@ -459,7 +459,10 @@ df.add_system_transition(State.U13, State.P4E, '"Which fitness app specifically?
 df.add_user_transition(State.U9, State.END, "/.*/")
 #
 df.add_system_transition(State.U9, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
+#below line needs an error message
 df.add_system_transition(State.U8, State.P5C, '"What feature does" $response "have that you like most? Like, does it have calorie counting, sleep tracking, or a pedometer?"')
+df.add_system_transition(State.ERR5, State.P4E, '"What other fitness apps do you use?"')
+df.set_error_successor(State.P5C, State.ERR5)
 df.add_system_transition(State.U10, State.P6C, '"I have never used" $response "before, as I have heard that it can become obsessive. Has it helped you grow healthier?"')
 #
 df.add_user_transition(State.U11, State.END, "/.*/")
