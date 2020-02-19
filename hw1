@@ -528,7 +528,7 @@ df.add_user_transition(State.P11D, State.U88, r"[$response=/(.*)((no)|(nah)|(nop
 
 
 df.add_system_transition(State.U87, State.P12C, '"I thought I was the only one. I\'m on the government\'s side when it comes to this debate...what side are you on? Netflix or FTC?]'"")
-df.add_user_transition(State.P12C, State.U89, "$side=#ONT(ontdebate)")
+df.add_user_transition(State.P12C, State.U89, r"[$response=/(.*)(government)|(netflix)|(Netflix)(.*)/]")
 df.add_system_transition(State.U89, State.P13A, '"! $side. Alright well I have to get going now. It was nice talking to you!"')
 df.add_system_transition(State.P13A, State.END, '"Goodbye!')
 
@@ -550,8 +550,8 @@ df.set_error_successor(State.U90, error_successor=State.ERR)
 
 #AMAZON
 df.add_system_transition(State.U73, State.P4Z, '"Do you use Amazon more for eccomerce or video streaming??"')
-df.add_user_transition(State.P4Z, State.U100, "$eccomerce=#ONT(onteccomerce)")
-df.add_user_transition(State.P4Z, State.U101, "#video=#ONT(ontvideo)")
+df.add_user_transition(State.P4Z, State.U100, "r"[$eccomerce=/(.*)(eccomerce)(.*)/]")
+df.add_user_transition(State.P4Z, State.U101, r"[$video=/(.*)(video)(.*)/]")
 #ECCOMERCE BRANCH
 df.add_system_transition(State.U100, State.P5T, '"I prefer $eccomerce as well, and see $video as a nice addition to the the overall service. Anyways, what type of shows do you watch?"')
 df.add_user_transition(State.P5T, State.U101, r"[$genres=/(.*)((action)|(drama)|(horror)|(comedy))(.*)/]")
