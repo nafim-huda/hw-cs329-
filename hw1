@@ -409,37 +409,38 @@ class State(Enum):
     U90 = 184
     U91 = 185
     U92 = 186
-    
-    
-    
-    
-    ERR = 187
-    ERR2 = 188
-    
 
+    ERR = 135
+    ERR2 = 136
+    ERR3 = 137
+
+knowledge = KnowledgeBase()
+knowledge.load_json(ont_dict)
 #=============================================================================
 #THIS SECTION IS THE BEGINNING AND FITNESS BRANCH
 
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb =knowledge)
 
 df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
-df.add_user_transition(State.P1, State.U1, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
-df.add_user_transition(State.P1, State.U2, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P2B, State.U3, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P2C, State.U2, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P2C, State.U4, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
-df.add_user_transition(State.P2A, State.U6, "$response={fitness}")
-df.add_user_transition(State.P2A, State.U9, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
+df.add_user_transition(State.P1, State.U1, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
+df.add_user_transition(State.P1, State.U2, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P2B, State.U3, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P2C, State.U2, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P2C, State.U4, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
+df.add_user_transition(State.P2A, State.U6, r"[$response=/(.*)(fitness)|(Fitness)|(health)|(Health)|(working out)|(Working out)|(HEALTH)|(FITNESS)(.*)/]")
+df.add_user_transition(State.P2A, State.U9, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
 #I don't know how to use dictionary for below line so the line below is just a placeholder
 #df.add_user_transition(State.P4E, State.U8, "$animal=#ONT(ontfitnessappnames)")
 df.add_user_transition(State.P4E, State.U8, "$response=/.*/")
-df.add_user_transition(State.P2A, State.U13, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P5C, State.U10, r"[$response=/(caloriecounter)|(calorie-counter)|(caloriecounting)|(calorie-counting)|(calorie)|(pedometer)|(sleeptracker)|(sleep-tracker)|(sleeptracking)|(sleep-tracking)/]")
-df.add_user_transition(State.P6C, State.U11, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P6C, State.U12, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
+df.add_user_transition(State.P2A, State.U13, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P5C, State.U10, r"[$response=/(.*)(caloriecounter)|(calorie-counter)|(caloriecounting)|(calorie-counting)|(calorie)|(pedometer)|(sleeptracker)|(sleep-tracker)|(sleeptracking)|(sleep-tracking)(.*)/]")
+df.add_user_transition(State.P6C, State.U11, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P6C, State.U12, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
 #below needs to use dictionary
-df.add_user_transition(State.P7M, State.U8, "$response={strava}")
+df.add_user_transition(State.P7M, State.U8, "$response=/.*/")
 
+df.add_system_transition(State.ERR3, State.P1, '"Sorry, I missed that. Do you have a phone?"')
+df.set_error_successor(State.P1, State.ERR3)
 df.add_system_transition(State.U2, State.P2A, '"What type of mobile apps do you use?"')
 df.add_system_transition(State.U1, State.P2C, '"Do you use a phone?"')
 df.add_system_transition(State.U4, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
@@ -447,6 +448,7 @@ df.add_system_transition(State.ERR, State.P2A, '"I am personally a fan of Strava
 df.set_error_successor(State.P2A, State.ERR)
 df.add_system_transition(State.U6, State.P4E, '"Which fitness app specifically? I have been thinking about getting one."')
 df.add_system_transition(State.U13, State.P4E, '"Which fitness app specifically? I have been thinking about getting one."')
+##goodbye transition
 df.add_system_transition(State.U9, State.P3B, '"Oh, maybe you will in the future! Talk to you then."')
 df.add_system_transition(State.U8, State.P5C, '"What feature does" $response "have that you like most? Like, does it have calorie counting, sleep tracking, or a pedometer?"')
 df.add_system_transition(State.U10, State.P6C, '"I have never used" $response "before, as I have heard that it can become obsessive. Has it helped you grow healthier?"')
@@ -455,31 +457,31 @@ df.add_system_transition(State.U12, State.P7M, '"Oh, bummer. What other fitness 
 #=====================================================================================================
 #THIS SECTION IS SOCIAL MEDIA APPS
 #mainly instagram
-df.add_user_transition(State.P2A, State.U14, "$response={social}")
-df.add_user_transition(State.P7A, State.U15, "$response={snap}")
-df.add_user_transition(State.P7A, State.U17, r"[$response=/(ig)|(insta)|(instagram)/]")
-df.add_user_transition(State.P7A, State.U18, r"[$response=/(fb)|(facebook)/]")
-df.add_user_transition(State.P4U, State.U19, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
-df.add_user_transition(State.P4U, State.U20, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P5O, State.U21, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P5O, State.U22, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
-df.add_user_transition(State.P5N, State.U21, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P5N, State.U22, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
+df.add_user_transition(State.P2A, State.U14, r"[$response=/(.*)(social)|(socialmedia)|(social media)|(Social media)(.*)/]")
+df.add_user_transition(State.P7A, State.U15, r"[$response=/(.*)(snap)|(snapchat)|(Snapchat)|(SNAPCHAT)(.*)/]")
+df.add_user_transition(State.P7A, State.U17, r"[$response=/(.*)(ig)|(insta)|(instagram)(.*)/]")
+df.add_user_transition(State.P7A, State.U18, r"[$response=/(.*)(fb)|(facebook)|(Facebook)|(FACEBOOK)(.*)/]")
+df.add_user_transition(State.P4U, State.U19, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
+df.add_user_transition(State.P4U, State.U20, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P5O, State.U21, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P5O, State.U22, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
+df.add_user_transition(State.P5N, State.U21, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P5N, State.U22, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
 
 df.add_system_transition(State.U14, State.P7A, '"Cool, which social media app is your favorite?"')
 df.add_system_transition(State.U17, State.P4U, '"Do you have more than 2000 followers?"')
 df.add_system_transition(State.U19, State.P5O, '"That\'s cool, I have 346! Would you like to follow each other?"')
 df.add_system_transition(State.U20, State.P5N, '"Wow, that\'s a lot of followers! Would you like to follow each other?"')
-df.add_system_transition(State.U21, State.P6J, '"Great! My username is \@emoryuniversity. I\'ll go check out your feed, talk to you later!"')
+df.add_system_transition(State.U21, State.P6J, '"Great! My username is @emoryuniversity. I\'ll go check out your feed, talk to you later!"')
 df.add_system_transition(State.U22, State.P6K, '"Aw, I thought we were friends. Good-bye then."')
 
 #mainly snapchat
-df.add_user_transition(State.P4V, State.U23, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P4V, State.U24, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
-df.add_user_transition(State.P5P, State.U25, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P5P, State.U26, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
-df.add_user_transition(State.P7J, State.U27, r"[$response=/(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)/]")
-df.add_user_transition(State.P7J, State.U28, r"[$response=/(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)/]")
+df.add_user_transition(State.P4V, State.U23, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P4V, State.U24, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
+df.add_user_transition(State.P5P, State.U25, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P5P, State.U26, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
+df.add_user_transition(State.P7J, State.U27, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
+df.add_user_transition(State.P7J, State.U28, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
 df.add_user_transition(State.P6K, State.U29, r"[$response=/(.)/]")
 
 
