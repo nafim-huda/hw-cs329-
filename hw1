@@ -24,6 +24,16 @@ ont_dict = {
                          "ontmmhmm",
                          "ontyuh"
                      ],
+                 "ontno":
+                    [
+                      "ontno",
+                      "ontnah",
+                      "ontnope"
+                    ],
+                "ontreaction":
+                    [
+                      "ontgreat",
+                    ],
                 "ontproductivity":
                     [
                       "ontstudytimer",
@@ -58,31 +68,35 @@ ont_dict = {
                     ],
                     "ontinstagram":
                      [
-                        2000
+                        "2000"
                      ],
                     "ontsnapchat":
                      [
-                      10
+                      "10"
                      ],
                "ontstreaming":
                     [
-                      "ontspotify"
-                      "ontnetflix"
-                      "onthulu"
-                      "ontamazon"
+                      "ontspotify",
+                      "ontnetflix",
+                      "ontamazon",
                     ],
                         "ontmusicgenres":
                             [
-                                "hip hop"
-                                "rock"
-                                "edm"
+                                "hip hop",
+                                "rock",
+                                "edm",
                             ],
                          "ontentertainmentgenres":
                             [
-                                "action"
-                                "comedy"
-                                "drama"
+                                "action",
+                                "comedy",
+                                "drama",
                                 "horror"
+                            ],
+                         "ontdebate":
+                            [
+                              "netflix",
+                              "fcc"
                             ],
     
                "ontfitness":
@@ -320,6 +334,11 @@ df.add_user_transition(State.P2A, State.U9, "$response={no}")
 df.add_user_transition(State.P4E, State.U8, "$response={strava}")
 df.add_user_transition(State.P2A, State.U13, "$response={yes}")
 df.add_user_transition(State.P5C, State.U10, r"[$response=/(caloriecounter)|(pedometer)|(sleeptracker)/]")
+
+vars_ref1 = {ONT(ontfitness)}
+natexFitness = r"(/.*/)(?:?)"
+natexFitness2 = r"()(vars_ref1)()
+
 df.add_user_transition(State.P6C, State.U11, "$response={yes}")
 df.add_user_transition(State.P6C, State.U12, "$response={no}")
 #below needs to use dictionary
@@ -409,33 +428,40 @@ df.add_user_transition(State.P7B, State.U78, "#F=ont(yes) /.*/")
 df.add_system_transition(State.U78, State.P8D, '"I've worked in both the more popular and indie side of the music industry, and I can tell you that there is a sharp divide in opinion over the artist using Spotify vs. Bandcamp to distribute their content. Unfortuanately, in many contexts, Spotify distributes an artist's musician without any consultation. What do you think about this debate on how artists should seek to release their music?"')
 df.add_user_transition(State.P8D, State.U79, "/.*/")
 df.add_system_transition(State.U79, State.P9D, '"What about Soundcloud? For someone searching for music by a new artist(a close friend who just decided to release their content), soundcloud is seen as a more friendly medium for new artists who are not established. Do you think it matters ultimately what popular digital medium an artist uses to release their content?"')
-df.add_user_transition(State.P9D, State.U80, "
+df.add_user_transition(State.P9D, State.U80, "$response=[soundcloud]")
+df.add_system_transition(State.U80, State.P10C, '"Interesting, well I have to go now. See you later!"')
 
 
 
 #NETFLIX
+
 df.add_system_transition(State.U71, State.P4X, '"Aha! I've heard Netflix is the top one for streaming entertainment shows and films. What type of shows do you usually like watching?"')
-df.add_user_transition(State.P4X, State.U78,"$response=ONT(ontentertainmentgenres)")
-df.add_system_transition(State.U78, State.P5S, '"Mhm, well I'm personally a fan of drama shows like Stranger Things, Peaky Blinders, even a borderline animated drama like Bojack Horsemen! Well, what about that genre makes you interested in watching those shows?"')
-df.add_user_transition(State.P6M, State.U79,   "/.*/")
+df.add_user_transition(State.P4X, State.U81,"$response=ONT(ontentertainmentgenres)")
+df.add_system_transition(State.U81, State.P5S, '"Mhm, well I'm personally a fan of drama shows like Stranger Things, Peaky Blinders, even a borderline animated drama like Bojack Horsemen! Well, what about that genre makes you interested in watching those shows?"')
+df.add_user_transition(State.P6M, State.U82,   "/.*/")
 
-df.add_system_transition(State.U79, State.P6M,  '"I see. What about films? Have you seen anything that caught your eye recently?"')
-df.add_user_transition(State.P7C, State.U80,  "$response=ONT(ontyes)")
-df.add_system_transition(State.U81, State.P7C,  '"Really? Could you tell me a little bit about the film's plot?"')
-df.add_user_transition(State.P8D, State.U81,  "/.*/")
-df.add_system_transition(State.U82, State.P8D,  '"Hmm. The director must envision something I can't quite see. Is the acting good?"')
-df.add_user_transition(State.P9D, State.U82,  ".*/")
-df.add_system_transition(State.U83, State.P9D,  '"Plot, acting... I'm a bit anal with my movies, so could you tell me a bit about the cinematography?"')
-df.add_user_transition(State.P10C, State.U83,  "$response={yes,yeah,no,maybe,haha}")
-df.add_system_transition( State.U84,State.P10C, '"Hold on... woah I didn't know it was that time! I have to get going. We'll chat more about this film later!"')
+df.add_system_transition(State.U82, State.P7C,  '"I see. What about films? Have you seen anything that caught your eye recently?"')
+df.add_user_transition(State.P7C, State.U83,  "$response=ONT(ontyes)")
+df.add_system_transition(State.U83, State.P8D,  '"Really? Could you tell me a little bit about the film's plot?"')
+df.add_user_transition(State.P8D, State.U84,  "/.*/")
+df.add_system_transition(State.U84, State.P9D,  '"Hmm. The director must envision something I can't quite see. Is the acting good?"')
+df.add_user_transition(State.P9D, State.U85,  ".*/")
+df.add_system_transition(State.U85, State.P10C,  '"Plot, acting... I'm a bit pedantic with my movies, so could you tell me a bit about the cinematography?"')
+df.add_user_transition(State.P10C, State.U86,  "$response={yes,yeah,no,maybe,haha}")
+df.add_system_transition(State.U86,State.P11D, '"Thanks for going into detail about the film. I don't mean to kill the mood, but have you heard about the controversy surrounding the Netflix algorithm"')
+df.add_user_transition(State.P11D, State.U87, "$response=ONT(ontyes)")
+df.add_user_transition(State.P11D, State.U88, "$response=ONT(ontno)")
+$reaction = ONT(ontreaction)
+df.add_system_transition(State.U87, State.P12C, '[ $reaction "!" I thought I was the only "!" I'm on the government's side when it comes to this debate...what side are you on? Netflix or FCC?]')
 
-df.add_user_transition(State.U80, State.P7D, "$response={no,nope,nah,idc}")
-df.add_system_transition(State.P7D, State.U85, '"Sigh...well I need to run. Catch you later!"')
+df.add_user_transition(State.P12C, State.U88, "$side=ONT(ontdebate)")
+df.add_system_transition(State.U88, State.P13A, '"! $side. Alright well I have to get going now. It was nice talking to you!"')
 
-#HULU(after first two statements, follows exact same series of user/system transitions as in the Netflix ontology)
-df.add_system_transition(State.U72, State.P4Y, '"I have to ask: Why do you use Hulu over Netflix?"')
-df.add_user_transition(State.P4Y, State.U86, ".*/")
-df.add_system_transition(State.U86, State.P4X, '"Ah, well what type of shows do you watch?"')
+df.add_user_transition(State.U82, State.P7D, "$response={no,nope,nah,idc}")
+df.add_system_transition(State.P7D, State.U90, '"Sigh...well I need to run. Catch you later!"')
+
+df.add_system_transition(State.U88, State.P12D, '"The Netflix algorithm has to do with the Netflix Prize competition. The competition asked for its participiants to devise an algorithm that returns better recommendations to its users compared to its current algorithm. Netflix eventually ran into trouble with the FCC due to releasing private datasets into the public domain for the competition."')
+
 
 #AMAZON
 df.add_system_transition(State.U73, State.P4Z, '"So do you pay for video seprately or do you use it through your prime subscription? I'm in the latter camp."')
