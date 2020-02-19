@@ -1,6 +1,105 @@
 from emora_stdm import KnowledgeBase, DialogueFlow
 from enum import Enum
 
+ont_dict = {
+              "ontology": {
+                #"ontfitnessappnames":a 
+                #    [
+                #        "ontstrava",
+                #    ],
+                "ontapptype":
+                    [
+                        "ontfitness",
+                        "ontproductivity",
+                        "ontsocialmedia",
+                        "ontstorage",
+                        "ontstreaming"
+                    ],
+                "ontyes":
+                    [
+                         "ontyeah",
+                         "ontyes",
+                         "ontyea",
+                         "ontmmhmm",
+                         "ontyuh"
+                     ],
+                "ontproductivity":
+                    [
+                      "ontstudytimer",
+                      "onthealth",
+                      "onteducation",
+                      "ontnotes",
+                      "onteducationalapps"
+                    ],
+                "ontnotes":
+                    [
+                      "ontgoodnotes",
+                      "ontapplenotes",
+                      "ontnotepad",
+                      "ontonenote",
+                      "ontother"
+                    ],
+                "onthealth":
+                    [
+                      "ontpedometer",
+                      "ontstudytimer",
+                      "ontcaloriecounter",
+                      "ontsleeptracker",
+                      "moodlog",
+                      "ontother"
+                    ],
+                "ontsocialmedia":
+                    [
+                      "ontsnapchat",
+                      "ontinstagram",
+                      "ontfacebook",
+                      "onttwitter"
+                    ],
+                    "ontinstagram":
+                     [
+                        2000
+                     ],
+                    "ontsnapchat":
+                     [
+                      10
+                     ],
+               "ontstreaming":
+                    [
+                      "ontspotify"
+                      "ontnetflix"
+                      "onthulu"
+                      "ontamazon"
+                    ],
+                        "ontmusicgenres":
+                            [
+                                "hip hop"
+                                "rock"
+                                "edm"
+                            ],
+                         "ontentertainmentgenres":
+                            [
+                                "action"
+                                "comedy"
+                                "drama"
+                                "horror"
+                            ],
+    
+               "ontfitness":
+                    [
+                        "sleeptracker",
+                        "caloriecounter",
+                        "pedometer",
+                        "moodlog"
+                    ]
+               "ontstorage":
+                    [
+                        "icloud",
+                        "googledrive",
+                        "dropbox",
+                        "emorybox"
+                    ]
+              }
+           }
 
 class State(Enum):
     START = 0
@@ -144,7 +243,10 @@ class State(Enum):
 
 #=============================================================================
 #THIS SECTION IS THE BEGINNING AND FITNESS BRANCH
-df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
+
+knowledge = KnowledgeBase()
+knowledge.load_json(ont_dict)
+df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge)
 
 df.add_system_transition(State.START, State.P1, '"Do you have a phone?"')
 df.add_user_transition(State.P1, State.U1, "$response={no}")
@@ -284,112 +386,10 @@ df.add_user_transition(State.P5T, State.U88, ".*/")
 df.add_system_transition(State.U88, State.P4X, '"Nice to know! Well, what type of shows do you watch?"')
 
 #Storage Apps
-df.add_user_transition(State.P2B, State.U41, "$response=#ONT(ontstorage)")
-df.add_user_transition(State.P2A, State.P3K, "$response={yes}")
-df.add_user_transition(State.P5C, State.U10, r"[$response=/(caloriecounter)|(pedometer)|(sleeptracker)/]")
-df.add_user_transition(State.P6C, State.U11, "$response={yes}")
-df.add_user_transition(State.P6C, State.U12, "$response={no}")
-#below needs to use dictionary
-df.add_user_transition(State.P7M, State.U8, "$response={strava}")
+df.add_user_transition(State.P2B, State.U88, "$apptype=#ONT(ontapptype)")
+df.add_system_transition(State.U88, State.P3K, r'[!"What $apptype do you use"?"]')
+df.add_user_transition(State.P3K, State.U89, "$storageapp=#ONT(ontstorage)")
+df.add_system_transition(State.U89, State.P4S, '[!"I think  $storageapp is a great app"." Do you care about privacy of your information"?"]')
 
-ont_dict = {
-              "ontology": {
-                #"ontfitnessappnames":a 
-                #    [
-                #        "ontstrava",
-                #    ],
-                "ontapptype":
-                    [
-                        "ontfitness",
-                        "ontproductivity",
-                        "ontsocialmedia",
-                        "ontstorage",
-                        "ontstreaming"
-                    ],
-                "ontyes":
-                    [
-                         "ontyeah",
-                         "ontyes",
-                         "ontyea",
-                         "ontmmhmm",
-                         "ontyuh"
-                     ],
-                "ontproductivity":
-                    [
-                      "ontstudytimer",
-                      "onthealth",
-                      "onteducation",
-                      "ontnotes",
-                      "onteducationalapps"
-                    ],
-                "ontnotes":
-                    [
-                      "ontgoodnotes",
-                      "ontapplenotes",
-                      "ontnotepad",
-                      "ontonenote",
-                      "ontother"
-                    ],
-                "onthealth":
-                    [
-                      "ontpedometer",
-                      "ontstudytimer",
-                      "ontcaloriecounter",
-                      "ontsleeptracker",
-                      "moodlog",
-                      "ontother"
-                    ],
-                "ontsocialmedia":
-                    [
-                      "ontsnapchat",
-                      "ontinstagram",
-                      "ontfacebook",
-                      "onttwitter"
-                    ],
-                    "ontinstagram":
-                     [
-                        2000
-                     ],
-                    "ontsnapchat":
-                     [
-                      10
-                     ],
-               "ontstreaming":
-                    [
-                      "ontspotify"
-                      "ontnetflix"
-                      "onthulu"
-                      "ontamazon"
-                    ],
-                        "ontmusicgenres":
-                            [
-                                "hip hop"
-                                "rock"
-                                "edm"
-                            ],
-                         "ontentertainmentgenres":
-                            [
-                                "action"
-                                "comedy"
-                                "drama"
-                                "horror"
-                            ],
-    
-               "ontfitness":
-                    [
-                        "ontsleeptracker",
-                        "ontcaloriecounter",
-                        "ontpedometer",
-                        "ontmoodlog"
-                    ]
-               "ontstorage":
-                    [
-                        "onticloud",
-                        "ontgoogledrive",
-                        "ontdropbox",
-                        "ontemorybox"
-                    ]
-              }
-           }
 
 df.run(debugging=False)
