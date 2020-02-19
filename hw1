@@ -51,27 +51,31 @@ ont_dict = {
                 "ontfacebook",
                 "onttwitter"
             ],
-        "ontstreaming":
-            [
-                "spotify"
-                "netflix"
-                "hulu"
-                "amazon"
-            ],
-        "ontmusicgenres":
+       "ontmusic":
             [
                 "hip hop"
                 "rock"
                 "edm"
             ],
-        "ontentertainmentgenres":
+        "ontentertainment":
             [
                 "action"
                 "comedy"
                 "drama"
                 "horror"
             ],
-
+        "onteccomerce":
+            [
+                "eccomerce"
+            ],
+        "ontvideo":
+            [
+                "video"
+            ],
+        "ontprime":
+            [
+                "prime"
+            ],
         "ontfitness":
             [
                 "sleeptracker",
@@ -88,7 +92,6 @@ ont_dict = {
             ]
     }
 }
-
 class State(Enum):
     START = 0
     P1 = 1
