@@ -409,10 +409,12 @@ class State(Enum):
     U90 = 184
     U91 = 185
     U92 = 186
+
     ERR = 135
     ERR2 = 136
     ERR3 = 137
     ERR5 = 138
+    ERR6 = 140
 
     END = 139
 
@@ -481,6 +483,10 @@ df.add_user_transition(State.P5N, State.U22, r"[$response=/(.*)(no)|(nah)|(nope)
 
 df.add_system_transition(State.U14, State.P7A, '"Cool, which social media app is your favorite?"')
 df.add_system_transition(State.U17, State.P4U, '"Do you have more than 2000 followers?"')
+#above needs an error
+df.add_system_transition(State.ERR6, State.P7A, '"What other social media apps do you use?"')
+df.set_error_successor(State.P4U, State.ERR6)
+
 df.add_system_transition(State.U19, State.P5O, '"That\'s cool, I have 346! Would you like to follow each other?"')
 df.add_system_transition(State.U20, State.P5N, '"Wow, that\'s a lot of followers! Would you like to follow each other?"')
 df.add_system_transition(State.U21, State.P6J, '"Great! My username is @emoryuniversity. I\'ll go check out your feed, talk to you later!"')
