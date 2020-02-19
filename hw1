@@ -434,8 +434,6 @@ df.add_user_transition(State.P2C, State.U2, r"[$response=/(.*)(yes)|(Yes)|(YES)|
 df.add_user_transition(State.P2C, State.U4, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
 df.add_user_transition(State.P2A, State.U6, r"[$response=/(.*)(fitness)|(Fitness)|(health)|(Health)|(working out)|(Working out)|(HEALTH)|(FITNESS)(.*)/]")
 df.add_user_transition(State.P2A, State.U9, r"[$response=/(.*)(no)|(nah)|(nope)|(No)|(NO)|(Nah)|(NAH)|(Nope)|(NOPE)(.*)/]")
-#I don't know how to use dictionary for below line so the line below is just a placeholder
-#df.add_user_transition(State.P4E, State.U8, "$animal=#ONT(ontfitnessappnames)")
 df.add_user_transition(State.P4E, State.U8, "$response=/.*/")
 df.add_user_transition(State.P2A, State.U13, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
 df.add_user_transition(State.P5C, State.U10, r"[$response=/(.*)(caloriecounter)|(calorie-counter)|(caloriecounting)|(calorie-counting)|(calorie)|(pedometer)|(sleeptracker)|(sleep-tracker)|(sleeptracking)|(sleep-tracking)(.*)/]")
