@@ -5,48 +5,48 @@ ont_dict = {
     "ontology": {
         "ontapptype":
             [
-                "ontfitness",
-                "ontproductivity",
-                "ontsocialmedia",
-                "ontstorage",
-                "ontstreaming"
+                "fitness",
+                "productivity",
+                "socialmedia",
+                "storage",
+                "streaming"
             ],
         "ontyes":
             [
-                "ontyeah",
-                "ontyes",
-                "ontyea",
-                "ontmmhmm",
-                "ontyuh"
+                "yeah",
+                "yes",
+                "yea",
+                "mmhmm",
+                "yuh"
             ],
         "ontproductivity":
             [
-                "ontstudytimer",
-                "onthealth",
-                "onteducation",
-                "ontnotes",
-                "onteducationalapps"
+                "studytimer",
+                "health",
+                "education",
+                "notes",
+                "educationalapps"
             ],
         "ontnotes":
             [
-                "ontgoodnotes",
-                "ontapplenotes",
-                "ontnotepad",
-                "ontonenote",
-                "ontother"
+                "goodnotes",
+                "applenotes",
+                "notepad",
+                "onenote",
+                "other"
             ],
         "onthealth":
             [
-                "ontpedometer",
-                "ontstudytimer",
-                "ontcaloriecounter",
-                "ontsleeptracker",
+                "pedometer",
+                "studytimer",
+                "caloriecounter",
+                "sleeptracker",
                 "moodlog",
                 "ontother"
             ],
         "ontsocialmedia":
             [
-                "ontsnapchat",
+                "snapchat",
                 "ontinstagram",
                 "ontfacebook",
                 "onttwitter"
