@@ -1,6 +1,93 @@
 from emora_stdm import KnowledgeBase, DialogueFlow
 from enum import Enum
 
+ont_dict = {
+    "ontology": {
+        "ontapptype":
+            [
+                "ontfitness",
+                "ontproductivity",
+                "ontsocialmedia",
+                "ontstorage",
+                "ontstreaming"
+            ],
+        "ontyes":
+            [
+                "ontyeah",
+                "ontyes",
+                "ontyea",
+                "ontmmhmm",
+                "ontyuh"
+            ],
+        "ontproductivity":
+            [
+                "ontstudytimer",
+                "onthealth",
+                "onteducation",
+                "ontnotes",
+                "onteducationalapps"
+            ],
+        "ontnotes":
+            [
+                "ontgoodnotes",
+                "ontapplenotes",
+                "ontnotepad",
+                "ontonenote",
+                "ontother"
+            ],
+        "onthealth":
+            [
+                "ontpedometer",
+                "ontstudytimer",
+                "ontcaloriecounter",
+                "ontsleeptracker",
+                "moodlog",
+                "ontother"
+            ],
+        "ontsocialmedia":
+            [
+                "ontsnapchat",
+                "ontinstagram",
+                "ontfacebook",
+                "onttwitter"
+            ],
+        "ontstreaming":
+            [
+                "spotify"
+                "netflix"
+                "hulu"
+                "amazon"
+            ],
+        "ontmusicgenres":
+            [
+                "hip hop"
+                "rock"
+                "edm"
+            ],
+        "ontentertainmentgenres":
+            [
+                "action"
+                "comedy"
+                "drama"
+                "horror"
+            ],
+
+        "ontfitness":
+            [
+                "sleeptracker",
+                "caloriecounter",
+                "pedometer",
+                "moodlog"
+            ],
+        "ontstorage":
+            [
+                "icloud",
+                "googledrive",
+                "dropbox",
+                "emorybox"
+            ]
+    }
+}
 
 class State(Enum):
     START = 0
@@ -42,6 +129,9 @@ class State(Enum):
     P4T = 36
     P4U = 37
     P4V = 38
+    P4W = 190
+    P4X = 191
+    P4Z = 197
     P5A = 39
     P5B = 40
     P5C = 41
@@ -58,6 +148,9 @@ class State(Enum):
     P5O = 52
     P5P = 53
     P5Q = 54
+    P5R = 189
+    P5S = 192
+    P5T = 198
     P6A = 55
     P6B = 56
     P6C = 57
@@ -70,6 +163,7 @@ class State(Enum):
     P6J = 64
     P6K = 65
     P6L = 66
+    P6M = 193
     P7A = 67
     P7B = 68
     P7C = 69
@@ -91,13 +185,19 @@ class State(Enum):
     P9A = 85
     P9B = 86
     P9C = 87
+    P9D = 188
     P10A = 88
     P10B = 89
+    P10C = 187
     P11A = 90
     P11B = 91
     P11C = 92
+    P11D = 193
     P12A = 93
     P12B = 94
+    P12C = 194
+    P12D = 196
+    P13A = 195
     U1 = 95
     U2 = 96
     U3 = 97
@@ -190,6 +290,9 @@ class State(Enum):
     U90 = 184
     U91 = 185
     U92 = 186
+    U93 = 199
+    U94 = 200
+    U95 = 201
 
     ERR = 135
     ERR2 = 136
@@ -198,103 +301,6 @@ class State(Enum):
     ERR6 = 140
 
     END = 139
-
-
-ont_dict = {
-    "ontology": {
-        "ontapptype":
-            [
-                "ontfitness",
-                "ontproductivity",
-                "ontsocialmedia",
-                "ontstorage",
-                "ontstreaming"
-            ],
-        "ontyes":
-            [
-                "ontyeah",
-                "ontyes",
-                "ontyea",
-                "ontmmhmm",
-                "ontyuh"
-            ],
-        "ontproductivity":
-            [
-                "ontstudytimer",
-                "onthealth",
-                "onteducation",
-                "ontnotes",
-                "onteducationalapps"
-            ],
-        "ontnotes":
-            [
-                "ontgoodnotes",
-                "ontapplenotes",
-                "ontnotepad",
-                "ontonenote",
-                "ontother"
-            ],
-        "onthealth":
-            [
-                "ontpedometer",
-                "ontstudytimer",
-                "ontcaloriecounter",
-                "ontsleeptracker",
-                "moodlog",
-                "ontother"
-            ],
-        "ontsocialmedia":
-            [
-                "ontsnapchat",
-                "ontinstagram",
-                "ontfacebook",
-                "onttwitter"
-            ],
-        "ontinstagram":
-            [
-                2000
-            ],
-        "ontsnapchat":
-            [
-                10
-            ],
-        "ontstreaming":
-            [
-                "spotify"
-                "netflix"
-                "hulu"
-                "amazon"
-            ],
-        "ontmusicgenres":
-            [
-                "hip hop"
-                "rock"
-                "edm"
-            ],
-        "ontentertainmentgenres":
-            [
-                "action"
-                "comedy"
-                "drama"
-                "horror"
-            ],
-
-        "ontfitness":
-            [
-                "sleeptracker",
-                "caloriecounter",
-                "pedometer",
-                "moodlog"
-            ],
-        "ontstorage":
-            [
-                "icloud",
-                "googledrive",
-                "dropbox",
-                "emorybox"
-            ]
-    }
-}
 
 
 knowledge = KnowledgeBase()
@@ -513,14 +519,13 @@ df.add_system_transition(State.U92, State.P4S, '[!"I think  $storageapp is a gre
 df.add_user_transition(State.P4S, State.U93, r"[$response=/(.*)(yes)|(Yes)|(YES)|(yea)|(YEA)|(Yea)|(yeah)|(Yeah)|(YEAH)(.*)/]")
 df.add_system_transition(State.U93, State.END, '"That\'s great, but be careful out there it\'s dangerous!"')
 df.add_user_transition(State.P4S, State.U94, no)
-df.add_system_transition(State.U94, State.P2A, '"You should invest in a hard drive to store your information, or you can write everything down and store it in a vault. What other types of apps do you use?"')
+df.add_system_transition(State.U94, State.END, '"You should invest in a hard drive to store your information, or you can write everything down and store it in a vault."')
 df.add_user_transition(State.P4S, State.U95, maybe)
-df.add_system_transition(State.U95, State.P2A, '"You could invest in a hard drive to store your information, or you can write everything down and store it in a vault. What other types of apps do you use?"')
+df.add_system_transition(State.U95, State.END, '"You could invest in a hard drive to store your information, or you can write everything down and store it in a vault."')
 df.add_user_transition(State.U91, State.END, "/.*/")
 df.add_user_transition(State.U92, State.END, "/.*/")
 df.add_user_transition(State.U93, State.END, "/.*/")
 df.add_user_transition(State.U94, State.END, "/.*/")
-df.add_system_transition(State.END, State.END, "END REACHED")
 df.add_system_transition(State.ERR, State.ERR, r"[!i have failed]")
 df.set_error_successor(State.U91, error_successor=State.ERR)
 df.set_error_successor(State.U92, error_successor=State.ERR)
