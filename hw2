@@ -1,2 +1,98 @@
-from emora_stdm import DialogueFlow
+from emora_stdm import KnowledgeBase, DialogueFlow
 from enum import Enum, auto
+
+
+# TODO: Update the State enum as needed
+class State(Enum):
+    START = 0
+    PROMPT = 1
+    ERR = 2
+    END = 3
+    #These are for the first response
+    First_feeling_positive = auto()
+    First_feeling_negative = auto()
+    First_feeling_neutral = auto()
+    First_feeling_unexpected = auto()
+    First_feeling_good = auto()
+
+    # Positivity Tree
+    First_positive_prompt = auto()
+
+    # Negative Tree
+    First_negative_prompt = auto()
+    First_negative_response = auto()
+
+
+
+
+# TODO: create the ontology as needed
+ontology = {
+    "ontology": {
+            "ontemotion":
+                [
+                "ontnegative",
+                "onpositive",
+                "ontneutral",
+                "ontunexpected"
+            ],
+            "ontnegative":
+                [
+                    "anger",
+                    "disgust",
+                    "sadness",
+                    "fear"
+            ],
+            "ontpositive":
+                [
+                    "happiness",
+                    "happy",
+                    "Happy",
+                    "joy",
+                    "love"
+                ],
+            "ontneutral":
+                [
+                    "good",
+                    "ok",
+                    "fine"
+                ],
+            "ontunexpected":
+                [
+                    "fear",
+                    "surprise"
+                ]
+        }
+}
+
+
+knowledge = KnowledgeBase()
+knowledge.load_json(ontology)
+df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge)
+
+df.add_system_transition(State.START, State.PROMPT, '"Hi, how are you feeling today?"')
+df.set_error_successor(State.PROMPT, State.ERR)
+#The first user response feeling
+df.add_user_transition(State.PROMPT, State.First_feeling_positive, "$positive=#ONT(ontpositive)")
+df.add_user_transition(State.PROMPT, State.First_feeling_negative, "$negative=#ONT(ontnegative)")
+df.add_user_transition(State.PROMPT, State.First_feeling_neutral, "$neutral=#ONT(ontneutral)")
+df.add_user_transition(State.PROMPT, State.First_feeling_unexpected, "$unexpected=#ONT(ontunexpected)")
+df.add_system_transition(State.First_feeling_neutral, State.First_feeling_good, '"that is good!"')
+df.add_system_transition(State.First_feeling_unexpected, State.First_feeling_good, '"that is good!"')
+df.set_error_successor(State.PROMPT, State.ERR)
+df.set_error_successor(State.PROMPT, State.ERR)
+df.set_error_successor(State.PROMPT, State.ERR)
+df.set_error_successor(State.PROMPT, State.ERR)
+
+#Feeling Positive
+df.add_system_transition(State.First_feeling_positive, State.First_positive_prompt,  '"That\'s great, good luck on the rest of life!"')
+df.add_user_transition(State.First_positive_prompt, State.END, "/.*/")
+#Feeling Negative
+df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt, '[!"What\'s been making you feel" $negative"?"]')
+#df.add_user_transition(State.First_negative_prompt, State.First_negative_response )
+df.add_user_transition(State.First_negative_prompt, State.END, "/.*/")
+
+# Ending
+df.add_system_transition(State.END, State.END, "Goodbye!")
+
+if __name__ == '__main__':
+    df.run(debugging=False)
