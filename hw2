@@ -92,7 +92,7 @@ df.add_system_transition(State.First_feeling_negative, State.First_negative_prom
 df.add_user_transition(State.First_negative_prompt, State.END, "/.*/")
 
 # Ending
-df.add_system_transition(State.END, State.END, "Goodbye!")
+df.add_system_transition(State.END, State.END, "Goodbye! Thanks for talking to me today!")
 
 if __name__ == '__main__':
     df.run(debugging=False)
