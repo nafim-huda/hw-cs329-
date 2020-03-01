@@ -94,5 +94,116 @@ df.add_user_transition(State.First_negative_prompt, State.END, "/.*/")
 # Ending
 df.add_system_transition(State.END, State.END, '"Goodbye! Thanks for talking to me today!"')
 
+from emora_stdm import KnowledgeBase, DialogueFlow
+from enum import Enum
+
+ontology = {
+    "ontology": {
+        "ontyesorno":
+            [
+                "yes",
+                "no"
+            ],
+        "ontperception":
+            [
+                "control",
+                "inability"
+            ]
+        }
+    }
+    
+ #ANGER
+
+class State(Enum):
+    START = auto()
+    ANGER = auto()
+    QUESTION1 = auto()
+    QUESTION2 = auto()
+    PERSON = auto()
+    ACTIVITY = auto()
+    INEVITABLE = auto()
+    AVOIDABLE = auto()
+    IDENTIFYPERSON = auto()
+    IDENTIFYACTIVITY = auto()
+    INEVDESCRIP = auto()
+    AVOIDDESCRIP = auto()
+    TRIED = auto()
+    NOTTRIED = auto()
+    FRIEND = auto()
+    FAMILY = auto()
+    INEVITABLERESP = auto()
+    AVOIDABLERESP = auto()
+    CHECKIN = auto()
+    CHECKIN1 = auto()
+    CHECKIN2 = auto()
+    CHECKINRESP = auto()
+    CHECKINRESP1 = auto()
+    CHECKINRESP2 = auto()
+
+
+knowledge = KnowledgeBase()
+knowledge.load_json(ontology)
+df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
+
+df.add_system_transition(State.ANGER, State.QUESTION1, '"Is there a particular person/ activity that comes to mind that may cause you anger? "')
+df.add_system_transition(State.ANGER, State.QUESTION2, '"Do you think getting angry was or was not inevitable? If it was not inevitable, how do you think it could have been avoided or not avoided?"')
+
+#4 POSSIBLE BRANCHES DEPENDING ON USER RESPONSE
+
+df.add_user_transition(State.QUESTION1, State.PERSON, '[$person=#NER(person)]')
+df.add_user_transition(State.QUESTION1, State.ACTIVITY, '[$activity=#POS(noun,verb)]')
+df.add_user_transition(State.QUESTION2, State.INEVITABLE, r"[/(.*)((inevitable) | (was inevitable))(.*)/]")
+df.add_user_transition(State.QUESTION2, State.AVOIDABLE, r"[/(.*)((not inevitable) | (avoidable))(.*)/]")
+
+#D5 TRANSITIONS
+df.add_system_transition(State.PERSON, State.IDENTIFYPERSON, '[!"Thank you for telling me about your hard time dealing with that " $person ". \n Have you tried or not tried resolving this issue directly with the " $person "? \n Please feel free to tell me exactly how you went about fixing this relationship if you have already tried."]')
+df.add_system_transition(State.ACTIVITY, State.IDENTIFYACTIVITY, '[!"Thank you for telling me about your difficult time engaging with that " $activity ". \n Have you tried talking to your friends or family about this activity? \n Let me know explicitly whether you spoke to either your friends or family."]')
+df.add_system_transition(State.INEVITABLE, State.INEVDESCRIP, '"Would you say that your anger partly stems from the lack of control over your sitaution?"')
+df.add_system_transition(State.AVOIDABLE, State.AVOIDDESCRIP, '"Did you feel inability or control over trying to avoid the situation"')
+
+#U5 TRANSITIONS
+df.add_user_transition(State.IDENTIFYPERSON, State.TRIED, r"[/(.*)((tried))(.*)/]")
+df.add_user_transition(State.IDENTIFYPERSON, State.NOTTRIED, r"[/(.*)((not tried))(.*)/]")
+df.add_user_transition(State.IDENTIFYACTIVITY, State.FRIEND, r"[/(.*)((friend) | (friends) | (best friend))(.*)/]")
+df.add_user_transition(State.IDENTIFYACTIVITY, State.FAMILY, r"[/(.*)((mom) | (mother) | (dad) | (father) | (brother) | (sister) | (cousin) | (uncle) | (aunt) | (family))(.*)/]")
+df.add_user_transition(State.INEVDESCRIP, State.INEVITABLERESP, "$yesorno=#ONT(ontyesorno)")
+df.add_user_transition(State.INEVDESCRIP, State.AVOIDABLERESP, "$peception=#ONT(ontauthority)")
+
+#P6 TRANSITIONS
+df.add_system_transition(State.TRIED, State.CHECKIN, '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.NOTTRIED, State.CHECKIN, '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.FRIEND, State.CHECKIN, '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.FAMILY, State.CHECKIN, '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.INEVITABLERESP, State.CHECKIN1, '"$yesorno. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.AVOIDABLERESP, State.CHECKIN2, '"$perception. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+
+#U6 TRANSITIONS(SENTIMENT ANALYZER WILL BE USED FOR THIS SECTION EVENTUALLY)
+df.add_user_transition(State.CHECKIN, State.CHECKINRESP, '[$checkin=POS(adjective)]')
+df.add_user_transition(State.CHECKIN1, State.CHECKINRESP1, '[$checkin2=POS(adjective)]')
+df.add_user_transition(State.CHECKIN2, State.CHECKINRESP2, '[$checkin3=POS(adjective)]')
+
+#ERROR SYSTEM TRANSITIONS
+df.add_system_transition(State.ERRANG0, State.ERRANG0, r"[!I don't know that person.]")
+df.add_system_transition(State.ERRANG1, State.ERRANG1, r"[!I've never heard of that activity.]")
+df.add_system_transition(State.ERRANG2, State.ERRANG2, r"[!I've not heard of that type of friend.]")
+df.add_system_transition(State.ERRANG3, State.ERRANG3, r"[!I've not heard of that type of family member.]")
+#USE THE BELOW ERROR STATE FOR THE INEVITABLE/AVOIDABLE BRANCHES
+df.add_system_transition(State.ERRANG4, State.ERRANG4, r"[!I don't understand.]")
+df.add_system_transition(State.ERRANG5, State.ERRANG5, r"[!I have not heard of that feeling.]")
+
+#ERROR SUCCESSOR STATES
+df.set_error_successor(State.PERSON, State.ERRANG0)
+df.set_error_successor(State.ACTIVITY, State.ERRANG1)
+df.set_error_successor(State.FRIEND, State.ERRANG2)
+df.set_error_successor(State.FAMILY, State.ERRANG3)
+df.set_error_successor(State.INEVITABLERESP, State.ERRANG4)
+df.set_error_successor(State.AVOIDABLERESP, State.ERRANG4)
+df.set_error_successor(State.CHECKINRESP, State.ERRANG5)
+df.set_error_successor(State.CHECKINRESP1, State.ERRANG5)
+df.set_error_successor(State.CHECKINRESP2, State.ERRANG5)
+
+
+#P7 TRANSITIONS(CONTINUED DURING/AFTER SPRING BREAK)
+
 if __name__ == '__main__':
     df.run(debugging=False)
