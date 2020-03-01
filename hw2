@@ -115,7 +115,7 @@ ontology = {
  #ANGER
 
 class State(Enum):
-    START = auto()
+    ANGERSTART = auto()
     ANGER = auto()
     QUESTION1 = auto()
     QUESTION2 = auto()
@@ -143,7 +143,7 @@ class State(Enum):
 
 knowledge = KnowledgeBase()
 knowledge.load_json(ontology)
-df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM)
+df = DialogueFlow(State.ANGERSTART, initial_speaker=DialogueFlow.Speaker.SYSTEM)
 
 df.add_system_transition(State.ANGER, State.QUESTION1, '"Is there a particular person/ activity that comes to mind that may cause you anger? "')
 df.add_system_transition(State.ANGER, State.QUESTION2, '"Do you think getting angry was or was not inevitable? If it was not inevitable, how do you think it could have been avoided or not avoided?"')
