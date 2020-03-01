@@ -98,6 +98,30 @@ ontology = {
                     "control",
                     "inability"
                 ]
+            "ontaffirm":
+                [
+                    "yes",
+                    "Yes",
+                    "YES",
+                    "yea",
+                    "YEA",
+                    "Yea",
+                    "yeah",
+                    "Yeah",
+                    "YEAH"
+                ],
+            "ontnegate":
+                [
+                    "no",
+                    "nah",
+                    "nope",
+                    "No",
+                    "NO",
+                    "Nah",
+                    "NAH",
+                    "Nope",
+                    "NOPE"
+                ]
         }
     }
 
