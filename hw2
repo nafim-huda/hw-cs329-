@@ -21,6 +21,33 @@ class State(Enum):
     # Negative Tree
     First_negative_prompt = auto()
     First_negative_response = auto()
+    
+    #ANGER
+    ANGER = auto()
+    QUESTION1 = auto()
+    QUESTION2 = auto()
+    PERSON = auto()
+    ACTIVITY = auto()
+    INEVITABLE = auto()
+    AVOIDABLE = auto()
+    IDENTIFYPERSON = auto()
+    IDENTIFYACTIVITY = auto()
+    INEVDESCRIP = auto()
+    AVOIDDESCRIP = auto()
+    TRIED = auto()
+    NOTTRIED = auto()
+    FRIEND = auto()
+    FAMILY = auto()
+    INEVITABLERESP = auto()
+    AVOIDABLERESP = auto()
+    CHECKIN = auto()
+    CHECKIN1 = auto()
+    CHECKIN2 = auto()
+    CHECKINRESP = auto()
+    CHECKINRESP1 = auto()
+    CHECKINRESP2 = auto()
+
+
 
 
 
@@ -60,9 +87,19 @@ ontology = {
                 [
                     "fear",
                     "surprise"
+                ],
+            "ontyesorno":
+                [
+                    "yes",
+                    "no"
+                ],
+            "ontperception":
+                [
+                    "control",
+                    "inability"
                 ]
         }
-}
+    }
 
 
 knowledge = KnowledgeBase()
@@ -94,56 +131,8 @@ df.add_user_transition(State.First_negative_prompt, State.END, "/.*/")
 # Ending
 df.add_system_transition(State.END, State.END, '"Goodbye! Thanks for talking to me today!"')
 
-from emora_stdm import KnowledgeBase, DialogueFlow
-from enum import Enum
 
-ontology = {
-    "ontology": {
-        "ontyesorno":
-            [
-                "yes",
-                "no"
-            ],
-        "ontperception":
-            [
-                "control",
-                "inability"
-            ]
-        }
-    }
-    
- #ANGER
-
-class State(Enum):
-    ANGERSTART = auto()
-    ANGER = auto()
-    QUESTION1 = auto()
-    QUESTION2 = auto()
-    PERSON = auto()
-    ACTIVITY = auto()
-    INEVITABLE = auto()
-    AVOIDABLE = auto()
-    IDENTIFYPERSON = auto()
-    IDENTIFYACTIVITY = auto()
-    INEVDESCRIP = auto()
-    AVOIDDESCRIP = auto()
-    TRIED = auto()
-    NOTTRIED = auto()
-    FRIEND = auto()
-    FAMILY = auto()
-    INEVITABLERESP = auto()
-    AVOIDABLERESP = auto()
-    CHECKIN = auto()
-    CHECKIN1 = auto()
-    CHECKIN2 = auto()
-    CHECKINRESP = auto()
-    CHECKINRESP1 = auto()
-    CHECKINRESP2 = auto()
-
-
-knowledge = KnowledgeBase()
-knowledge.load_json(ontology)
-df = DialogueFlow(State.ANGERSTART, initial_speaker=DialogueFlow.Speaker.SYSTEM)
+#ANGER
 
 df.add_system_transition(State.ANGER, State.QUESTION1, '"Is there a particular person/ activity that comes to mind that may cause you anger? "')
 df.add_system_transition(State.ANGER, State.QUESTION2, '"Do you think getting angry was or was not inevitable? If it was not inevitable, how do you think it could have been avoided or not avoided?"')
