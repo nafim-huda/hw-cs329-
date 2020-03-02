@@ -25,7 +25,8 @@ class State(Enum):
     
   #ANGER
   
-    ANGER = auto()
+    ANGER1 = auto()
+    ANGER2 = auto()
     QUESTION1 = auto()
     QUESTION2 = auto()
     PERSON = auto()
@@ -40,8 +41,10 @@ class State(Enum):
     NOTTRIED = auto()
     FRIEND = auto()
     FAMILY = auto()
-    INEVITABLERESP = auto()
-    AVOIDABLERESP = auto()
+    INEVITABLERESPYES = auto()
+    INEVITABLERESPNO = auto()
+    AVOIDABLERESPCONTROL = auto()
+    AVOIDABLERESPINABILITY = auto()
     CHECKIN = auto()
     CHECKIN1 = auto()
     CHECKIN2 = auto()
