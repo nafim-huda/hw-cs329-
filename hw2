@@ -230,8 +230,8 @@ df.add_system_transition(State.First_feeling_positive, State.First_positive_prom
 df.add_user_transition(State.First_positive_prompt, State.END, "/.*/")
 #Feeling Negative
 df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt, '[!"What\'s been making you feel" $negative"?"]')
-#df.add_user_transition(State.First_negative_prompt, State.First_negative_response )
-df.add_user_transition(State.First_negative_prompt, State.END, "/.*/")
+#df.add_user_transition(State.First_negative_prompt, State.First_negative_response, '"/.*/"')
+df.add_user_transition(State.First_negative_prompt, State.END, '"/.*/"')
 
 # Ending
 df.add_system_transition(State.END, State.END, '"Goodbye! Thanks for talking to me today!"')
