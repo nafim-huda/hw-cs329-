@@ -386,8 +386,8 @@ df.add_system_transition(State.U4C2B2A1, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
 df.add_system_transition(State.U4C2B1A1A1A2, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
-df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A,
-                         '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?'"")
+#df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A,
+#                        '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?'"")
 df.add_user_transition(State.P4C2B2A1A, State.U4C2B2A1A1, '"/.*/"')
 df.add_system_transition(State.U4C2B2A1A1, State.P4C2B2A1A1A,
                          '"Does your college have a club for this? What is it called?"')
@@ -415,7 +415,7 @@ df.add_system_transition(State.U4C4D1A2A2, State.P4C2B1A2A2A,
                          '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
 df.add_system_transition(State.U4C2B2A3, State.P4C2B2A3A, '"Which activities do you participate in?"')
 df.add_system_transition(State.U4C2B1A1A1A1, State.P4C2B2A3A, '"Which activities do you participate in?"')
-df.add_system_transition(State.U4C4E1A2A1, State.P4C2B2A3A, '"Which activities do you participate in?"')
+#df.add_system_transition(State.U4C4E1A2A1, State.P4C2B2A3A, '"Which activities do you participate in?"')
 df.add_user_transition(State.P4C2B2A3A, State.P4C, '"/.*/"')
 df.add_system_transition(State.P4C, State.P4C4D, '"Why do you participate in $reponse?"')
 df.add_user_transition(State.P4C4D, State.U4C4D2, '"(resume)(looks good)(not sure)"')
@@ -456,6 +456,7 @@ df.add_user_transition(State.P4C4E1A, State.U4C4E1A1, '"yes"')
 df.add_user_transition(State.P4C4E1A, State.U4C4E1A2, '"no"')
 df.add_system_transition(State.U4C4E1A2, State.P4C4E1A2A,
                          '"Well, do you participate in an extracurricular that you enjoy?"')
+############################
 df.add_user_transition(State.P4C4E1A2A, State.U4C4E1A2A1, '"yes"')
 df.add_user_transition(State.P4C4E1A2A, State.U4C4E1A2A2, '"no"')
 df.add_user_transition(State.P4C4E1A2A, State.U4C2B2A2, '"yes, " [$verb1=#POS(verb)]')
