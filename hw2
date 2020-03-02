@@ -396,7 +396,8 @@ df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A, '"That\'s not good! 
 df.add_system_transition(State.U4C4E1A1, State.P4C4E1A1A, '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
 df.add_user_transition(State.P4C4E1A1A, State.U4C1, '"(school)(midterm)(college)(exam)(class)(test)(course)(grades))(balanc)"')
 df.add_user_transition(State.P4C4E1A1A, State.U4C4E1A1B, '"(too much)(tired)(fatigue)(too)(sleep)(hours)"')
-df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A, '"That\'s very interesting. Do you do any activities to take your m
+df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A, '"That\'s very interesting. Do you do any activities to take your mind off this stress?"')
+
 
 if __name__ == '__main__':
     df.run(debugging=False)
