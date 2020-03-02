@@ -8,13 +8,12 @@ class State(Enum):
     PROMPT = 1
     ERR = 2
     END = 3
-    #These are for the first response
+    # These are for the first response
     First_feeling_positive = auto()
     First_feeling_negative = auto()
     First_feeling_neutral = auto()
     First_feeling_unexpected = auto()
     First_feeling_good = auto()
-    
 
     # Positivity Tree
     First_positive_prompt = auto()
@@ -22,9 +21,9 @@ class State(Enum):
     # Negative Tree
     First_negative_prompt = auto()
     First_negative_response = auto()
-    
-  #ANGER
-  
+
+    # ANGER
+
     ANGER1 = auto()
     ANGER2 = auto()
     QUESTION1 = auto()
@@ -62,7 +61,9 @@ class State(Enum):
     ERRANG4 = auto()
     ERRANG5 = auto()
 
-#DEPRESSION
+    # DEPRESSION
+    P4CD: auto()
+    P4CE: auto()
     P4C: auto()
     P4C1: auto()
     U4C1: auto()
@@ -139,76 +140,73 @@ class State(Enum):
     P4C4D1A1A1A1A: auto()
 
 
-
-
 # TODO: create the ontology as needed
 ontology = {
     "ontology": {
-            "ontemotion":
-                [
+        "ontemotion":
+            [
                 "ontnegative",
                 "onpositive",
                 "ontneutral",
                 "ontunexpected"
             ],
-            "ontnegative":
-                [
-                    "anger",
-                    "disgust",
-                    "sadness",
-                    "fear"
+        "ontnegative":
+            [
+                "anger",
+                "disgust",
+                "sadness",
+                "fear"
             ],
-            "ontpositive":
-                [
-                    "happiness",
-                    "happy",
-                    "Happy",
-                    "joy",
-                    "love"
-                ],
-            "ontneutral":
-                [
-                    "good",
-                    "ok",
-                    "fine"
-                ],
-            "ontunexpected":
-                [
-                    "fear",
-                    "surprise"
-                ],
-            "ontperception":
-                [
-                    "control",
-                    "inability"
-                ]
-            "ontaffirm":
-                [
-                    "yes",
-                    "Yes",
-                    "YES",
-                    "yea",
-                    "YEA",
-                    "Yea",
-                    "yeah",
-                    "Yeah",
-                    "YEAH"
-                ],
-            "ontnegate":
-                [
-                    "no",
-                    "nah",
-                    "nope",
-                    "No",
-                    "NO",
-                    "Nah",
-                    "NAH",
-                    "Nope",
-                    "NOPE"
-                ]
-        }
+        "ontpositive":
+            [
+                "happiness",
+                "happy",
+                "Happy",
+                "joy",
+                "love"
+            ],
+        "ontneutral":
+            [
+                "good",
+                "ok",
+                "fine"
+            ],
+        "ontunexpected":
+            [
+                "fear",
+                "surprise"
+            ],
+        "ontperception":
+            [
+                "control",
+                "inability"
+            ],
+        "ontaffirm":
+            [
+                "yes",
+                "Yes",
+                "YES",
+                "yea",
+                "YEA",
+                "Yea",
+                "yeah",
+                "Yeah",
+                "YEAH"
+            ],
+        "ontnegate":
+            [
+                "no",
+                "nah",
+                "nope",
+                "No",
+                "NO",
+                "Nah",
+                "NAH",
+                "Nope",
+                "NOPE"
+            ]
     }
-
+}
 
 knowledge = KnowledgeBase()
 knowledge.load_json(ontology)
@@ -216,7 +214,7 @@ df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=k
 
 df.add_system_transition(State.START, State.PROMPT, '"Hi, how are you feeling today?"')
 df.set_error_successor(State.PROMPT, State.ERR)
-#The first user response feeling
+# The first user response feeling
 df.add_user_transition(State.PROMPT, State.First_feeling_positive, "$positive=#ONT(ontpositive)")
 df.add_user_transition(State.PROMPT, State.First_feeling_negative, "$negative=#ONT(ontnegative)")
 df.add_user_transition(State.PROMPT, State.First_feeling_neutral, "$neutral=#ONT(ontneutral)")
@@ -228,74 +226,89 @@ df.set_error_successor(State.PROMPT, State.ERR)
 df.set_error_successor(State.PROMPT, State.ERR)
 df.set_error_successor(State.PROMPT, State.ERR)
 
-#Feeling Positive
-df.add_system_transition(State.First_feeling_positive, State.First_positive_prompt,  '"That\'s great, good luck on the rest of life!"')
+# Feeling Positive
+df.add_system_transition(State.First_feeling_positive, State.First_positive_prompt,
+                         '"That\'s great, good luck on the rest of life!"')
 df.add_user_transition(State.First_positive_prompt, State.END, "/.*/")
-#Feeling Negative
-df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt, '[!"What\'s been making you feel" $negative"?"]')
-#df.add_user_transition(State.First_negative_prompt, State.First_negative_response, '"/.*/"')
+# Feeling Negative
+df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt,
+                         '[!"What\'s been making you feel" $negative"?"]')
+# df.add_user_transition(State.First_negative_prompt, State.First_negative_response, '"/.*/"')
 df.add_user_transition(State.First_negative_prompt, State.END, '"/.*/"')
 
 # Ending
 df.add_system_transition(State.END, State.END, '"Goodbye! Thanks for talking to me today!"')
 
+# ANGER
 
-#ANGER
+df.add_system_transition(State.ANGER1, State.QUESTION1,
+                         '"Is there a particular person/ activity that comes to mind that may cause you anger? "')
+df.add_system_transition(State.ANGER2, State.QUESTION2,
+                         '"Do you think getting angry was or was not inevitable? If it was not inevitable, how do you think it could have been avoided or not avoided?"')
 
-df.add_system_transition(State.ANGER1, State.QUESTION1, '"Is there a particular person/ activity that comes to mind that may cause you anger? "')
-df.add_system_transition(State.ANGER2, State.QUESTION2, '"Do you think getting angry was or was not inevitable? If it was not inevitable, how do you think it could have been avoided or not avoided?"')
-
-#4 POSSIBLE BRANCHES DEPENDING ON USER RESPONSE
+# 4 POSSIBLE BRANCHES DEPENDING ON USER RESPONSE
 
 df.add_user_transition(State.QUESTION1, State.PERSON, '[$person=#NER(person)]')
 df.add_user_transition(State.QUESTION1, State.ACTIVITY, '[$activity=#POS(noun,verb)]')
 df.add_user_transition(State.QUESTION2, State.INEVITABLE, r"[/(.*)((inevitable) | (was inevitable))(.*)/]")
 df.add_user_transition(State.QUESTION2, State.AVOIDABLE, r"[/(.*)((not inevitable) | (avoidable))(.*)/]")
 
-#D5 TRANSITIONS
-df.add_system_transition(State.PERSON, State.IDENTIFYPERSON, '[!"Thank you for telling me about your hard time dealing with that " $person ". \n Have you tried or not tried resolving this issue directly with the " $person "? \n Please feel free to tell me exactly how you went about fixing this relationship if you have already tried."]')
-df.add_system_transition(State.ACTIVITY, State.IDENTIFYACTIVITY, '[!"Thank you for telling me about your difficult time engaging with that " $activity ". \n Have you tried talking to your friends or family about this activity? \n Let me know explicitly whether you spoke to either your friends or family."]')
-df.add_system_transition(State.INEVITABLE, State.INEVDESCRIP, '"Would you say that your anger partly stems from the lack of control over your sitaution?"')
-df.add_system_transition(State.AVOIDABLE, State.AVOIDDESCRIP, '"Did you feel inability or control over trying to avoid the situation"')
+# D5 TRANSITIONS
+df.add_system_transition(State.PERSON, State.IDENTIFYPERSON,
+                         '[!"Thank you for telling me about your hard time dealing with that " $person ". \n Have you tried or not tried resolving this issue directly with the " $person "? \n Please feel free to tell me exactly how you went about fixing this relationship if you have already tried."]')
+df.add_system_transition(State.ACTIVITY, State.IDENTIFYACTIVITY,
+                         '[!"Thank you for telling me about your difficult time engaging with that " $activity ". \n Have you tried talking to your friends or family about this activity? \n Let me know explicitly whether you spoke to either your friends or family."]')
+df.add_system_transition(State.INEVITABLE, State.INEVDESCRIP,
+                         '"Would you say that your anger partly stems from the lack of control over your sitaution?"')
+df.add_system_transition(State.AVOIDABLE, State.AVOIDDESCRIP,
+                         '"Did you feel inability or control over trying to avoid the situation"')
 
-#U5 TRANSITIONS
+# U5 TRANSITIONS
 df.add_user_transition(State.IDENTIFYPERSON, State.TRIED, r"[/(.*)((tried))(.*)/]")
 df.add_user_transition(State.IDENTIFYPERSON, State.NOTTRIED, r"[/(.*)((not tried))(.*)/]")
 df.add_user_transition(State.IDENTIFYACTIVITY, State.FRIEND, r"[/(.*)((friend) | (friends) | (best friend))(.*)/]")
-df.add_user_transition(State.IDENTIFYACTIVITY, State.FAMILY, r"[/(.*)((mom) | (mother) | (dad) | (father) | (brother) | (sister) | (cousin) | (uncle) | (aunt) | (family))(.*)/]")
+df.add_user_transition(State.IDENTIFYACTIVITY, State.FAMILY,
+                       r"[/(.*)((mom) | (mother) | (dad) | (father) | (brother) | (sister) | (cousin) | (uncle) | (aunt) | (family))(.*)/]")
 df.add_user_transition(State.INEVDESCRIP, State.INEVITABLERESPYES, "$yes=#ONT(ontaffirm)")
 df.add_user_transition(State.INEVDESCRIP, State.INEVITABLERESPNO, "$no=#ONT(ontnegate)")
 df.add_user_transition(State.AVOIDDESCRIP, State.AVOIDABLERESPCONTROL, "$control=#ONT(ontcontrol)")
 df.add_user_transition(State.AVOIDDESCRIP, State.AVOIDABLERESPINABILITY, "$inability=#ONT(ontinability)")
 
-#P6 TRANSITIONS
-df.add_system_transition(State.TRIED, State.CHECKIN, '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
-df.add_system_transition(State.NOTTRIED, State.CHECKIN, '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
-df.add_system_transition(State.FRIEND, State.CHECKIN, '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
-df.add_system_transition(State.FAMILY, State.CHECKIN, '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
-df.add_system_transition(State.INEVITABLERESPYES, State.CHECKIN1, '"$yes. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
-df.add_system_transition(State.INEVITABLERESPNO, State.CHECKIN2, '"$no. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
-df.add_system_transition(State.AVOIDABLERESPCONTROL, State.CHECKIN3, '"$control. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
-df.add_system_transition(State.AVOIDABLERESPINABILITY, State.CHECKIN4, '"$inability. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+# P6 TRANSITIONS
+df.add_system_transition(State.TRIED, State.CHECKIN,
+                         '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.NOTTRIED, State.CHECKIN,
+                         '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.FRIEND, State.CHECKIN,
+                         '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.FAMILY, State.CHECKIN,
+                         '"I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.INEVITABLERESPYES, State.CHECKIN1,
+                         '"$yes. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.INEVITABLERESPNO, State.CHECKIN2,
+                         '"$no. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.AVOIDABLERESPCONTROL, State.CHECKIN3,
+                         '"$control. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
+df.add_system_transition(State.AVOIDABLERESPINABILITY, State.CHECKIN4,
+                         '"$inability. I see. Well, I\'d say now is a great time for a quick break. In one word, could you tell me how you are feeling at this moment? "')
 
-#U6 TRANSITIONS(SENTIMENT ANALYZER WILL BE USED FOR THIS SECTION EVENTUALLY)
+# U6 TRANSITIONS(SENTIMENT ANALYZER WILL BE USED FOR THIS SECTION EVENTUALLY)
 df.add_user_transition(State.CHECKIN, State.CHECKINRESP, '[$checkin=POS(adjective)]')
 df.add_user_transition(State.CHECKIN1, State.CHECKINRESP1, '[$checkin1=POS(adjective)]')
 df.add_user_transition(State.CHECKIN2, State.CHECKINRESP2, '[$checkin2=POS(adjective)]')
 df.add_user_transition(State.CHECKIN3, State.CHECKINRESP3, '[$checkin3=POS(adjective)]')
 df.add_user_transition(State.CHECKIN4, State.CHECKINRESP4, '[$checkin4=POS(adjective)]')
 
-
-#ERROR SYSTEM TRANSITIONS
+# ERROR SYSTEM TRANSITIONS
 df.add_system_transition(State.ERRANG, State.ERRANG, r"[!I don't know that person.]")
 df.add_system_transition(State.ERRANG1, State.ERRANG1, r"[!I've never heard of that activity.]")
 df.add_system_transition(State.ERRANG2, State.ERRANG2, r"[!I've not heard of that type of friend.]")
 df.add_system_transition(State.ERRANG3, State.ERRANG3, r"[!I've not heard of that type of family member.]")
-#USE THE BELOW ERROR STATE FOR THE INEVITABLE/AVOIDABLE BRANCHES
+# USE THE BELOW ERROR STATE FOR THE INEVITABLE/AVOIDABLE BRANCHES
 df.add_system_transition(State.ERRANG4, State.ERRANG4, r"[!I don't understand.]")
 df.add_system_transition(State.ERRANG5, State.ERRANG5, r"[!I have not heard of that feeling.]")
 
-#ERROR SUCCESSOR STATES
+# ERROR SUCCESSOR STATES
 df.set_error_successor(State.PERSON, State.ERRANG)
 df.set_error_successor(State.ACTIVITY, State.ERRANG1)
 df.set_error_successor(State.FRIEND, State.ERRANG2)
@@ -311,60 +324,82 @@ df.set_error_successor(State.CHECKINRESP2, State.ERRANG5)
 df.set_error_successor(State.CHECKINRESP3, State.ERRANG5)
 df.set_error_successor(State.CHECKINRESP4, State.ERRANG5)
 
-#P7 TRANSITIONS(CONTINUED DURING/AFTER SPRING BREAK)
+# P7 TRANSITIONS(CONTINUED DURING/AFTER SPRING BREAK)
 
-#angela's stuff
+# angela's stuff
 ####################################################################################
-df.add_user_transition(State.First_negative_response, State.U4C1, '"(school)(midterm)(college)(exam)(class)(test)(course)(grades)"')
-df.add_user_transition(State.First_negative_response, State.U4C2, '"(family)(parent)(sister)(brother)(kid)(sibling)(cousin)(dad)(mom)(father)(mother)"')
-df.add_user_transition(State.First_negative_response, State.U4C3, '"(no reason)(just)(not sure)"')
-df.add_user_transition(State.First_negative_response, State.U4C4, '"(club)(team)(sport)(extracurricular)(activity)"')
-df.add_user_transition(State.First_negative_response, State.U4C5, '"(work)(job)(money)(income)(pay)"')
+df.add_user_transition(State.First_negative_response, State.P4CD, '"(sad)(down)(unhappy)(depressed)(blue)"')
+df.add_system_transition(State.P4CD, State.P4CE, '"What has been causing this sadness?"')
+df.add_user_transition(State.P4CE, State.U4C1,
+                       '"(school)(midterm)(college)(exam)(class)(test)(course)(grades)"')
+df.add_user_transition(State.P4CE, State.U4C2,
+                       '"(family)(parent)(sister)(brother)(kid)(sibling)(cousin)(dad)(mom)(father)(mother)"')
+df.add_user_transition(State.P4CE, State.U4C3, '"(no reason)(just)(not sure)"')
+df.add_user_transition(State.P4CE, State.U4C4, '"(club)(team)(sport)(extracurricular)(activity)"')
+df.add_user_transition(State.P4CE, State.U4C5, '"(work)(job)(money)(income)(pay)"')
+
 df.add_system_transition(State.U4C1, State.P4C1A, '"What do you do to de-stress from school?"')
 df.add_user_transition(State.P4C1A, State.U4C4, '"(club)(team)(sport)(extracurricular)(activity)"')
-df.add_system_transition(State.U4C2, State.P4C2B, '"Do you think your family places pressure on you? Or maybe you do it to yourself?"')
-df.add_system_transition(State.U4C1, State.P4C3C, '"Has anything changed in your life recently? If so, what field of your life has changed?"')
-df.add_system_transition(State.U4C2, State.P4C3C, '"Has anything changed in your life recently? If so, what field of your life has changed?"')
-df.add_system_transition(State.U4C4, State.P4C3C, '"Has anything changed in your life recently? If so, what field of your life has changed?"')
-df.add_system_transition(State.U4C5, State.P4C3C, '"Has anything changed in your life recently? If so, what field of your life has changed?"')
+df.add_system_transition(State.U4C2, State.P4C2B,
+                         '"Do you think your family places pressure on you? Or maybe you do it to yourself?"')
+df.add_system_transition(State.U4C1, State.P4C3C,
+                         '"Has anything changed in your life recently? If so, what field of your life has changed?"')
+df.add_system_transition(State.U4C2, State.P4C3C,
+                         '"Has anything changed in your life recently? If so, what field of your life has changed?"')
+df.add_system_transition(State.U4C4, State.P4C3C,
+                         '"Has anything changed in your life recently? If so, what field of your life has changed?"')
+df.add_system_transition(State.U4C5, State.P4C3C,
+                         '"Has anything changed in your life recently? If so, what field of your life has changed?"')
 df.add_user_transition(State.P4C2B, State.U4C2B1, '"yes"')
 df.add_user_transition(State.P4C2B, State.U4C2B2, '"myself"')
 df.add_user_transition(State.P4C2B, State.U4C2B3, '"no')
 df.add_user_transition(State.P4C2B, State.U4C2B4, '"maybe/not sure"')
 df.add_system_transition(State.U4C2B1, State.P4C2B1A, '"Have you talked to them about how this is unnecessary?"')
-df.add_system_transition(State.U4C2B2, State.P4C2B2A, '"So you place pressure on yourself, I assume. Do you do any activities to destress?"')
-df.add_system_transition(State.U4C2B3, State.P4C2B2A, '"So you place pressure on yourself, I assume. Do you do any activities to detress?"')
+df.add_system_transition(State.U4C2B2, State.P4C2B2A,
+                         '"So you place pressure on yourself, I assume. Do you do any activities to destress?"')
+df.add_system_transition(State.U4C2B3, State.P4C2B2A,
+                         '"So you place pressure on yourself, I assume. Do you do any activities to detress?"')
 df.add_user_transition(State.P4C2B2A, State.U4C2B2A1, '"no"')
 df.add_user_transition(State.P4C2B2A, State.U4C2B2A2, '"no, " [$verb1=#POS(verb)]')
 df.add_user_transition(State.P4C2B2A, State.U4C2B2A3, '"yes"')
 df.add_user_transition(State.P4C2B1A, State.U4C2B1A1, '"yes"')
 df.add_user_transition(State.P4C2B1A, State.U4C2B1A2, '"no"')
-df.add_system_transition(State.U4C2B1A2, State.P4C2B1A2A, '"I feel like you should talk to them about how they place unnecessary pressure on you. Can you try that?"')
+df.add_system_transition(State.U4C2B1A2, State.P4C2B1A2A,
+                         '"I feel like you should talk to them about how they place unnecessary pressure on you. Can you try that?"')
 df.add_user_transition(State.P4C2B1A2A, State.U4C2B1A2A1, '"yes"')
 df.add_user_transition(State.P4C2B1A2A, State.U4C2B1A2A2, '"no"')
-df.add_system_transition(State.U4C2B1A2A1, State.P4C2B1A2A1A, '"Great! Why don\'t you let me know how it goes next session?"')
+df.add_system_transition(State.U4C2B1A2A1, State.P4C2B1A2A1A,
+                         '"Great! Why don\'t you let me know how it goes next session?"')
 df.add_user_transition(State.P4C2B1A2A1A, State.U4C2B1A2A1A1, '"yes"')
 df.add_user_transition(State.P4C2B1A2A1A, State.U4C2B1A2A1A2, '"no"')
-df.add_system_transition(State.U4C2B1A2A1A2, State.END,'"Goodbye! Thanks for talking to me today!"')
+df.add_system_transition(State.U4C2B1A2A1A2, State.END, '"Goodbye! Thanks for talking to me today!"')
 df.add_system_transition(State.U4C2B1A2A1A1, State.END, '"Goodbye! Thanks for talking to me today!"')
 df.add_system_transition(State.U4C2B1A1, State.P4C2B1A1A, '"What did they say?"')
 df.add_user_transition(State.P4C2B1A1A, State.U4C2B1A1A1, "/.*/")
-df.add_system_transition(State.U4C2B1A1A1, State.P4C2B1A1A1A, '"That\'s very interesting. Do you do any activities to take your mind off this stress? "')
+df.add_system_transition(State.U4C2B1A1A1, State.P4C2B1A1A1A,
+                         '"That\'s very interesting. Do you do any activities to take your mind off this stress? "')
 df.add_user_transition(State.P4C2B1A1A1A, State.U4C2B1A1A1A1, '"yes"')
 df.add_user_transition(State.P4C2B1A1A1A, State.U4C2B1A1A1A2, '"no"')
-df.add_system_transition(State.U4C2B2A1, State.P4C2B2A1A, '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
-df.add_system_transition(State.U4C2B1A1A1A2, State.P4C2B2A1A, '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
-df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A, '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?'"")
+df.add_system_transition(State.U4C2B2A1, State.P4C2B2A1A,
+                         '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
+df.add_system_transition(State.U4C2B1A1A1A2, State.P4C2B2A1A,
+                         '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
+df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A,
+                         '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?'"")
 df.add_user_transition(State.P4C2B2A1A, State.U4C2B2A1A1, '"/.*/"')
-df.add_system_transition(State.U4C2B2A1A1, State.P4C2B2A1A1A, '"Does your college have a club for this? What is it called?"')
+df.add_system_transition(State.U4C2B2A1A1, State.P4C2B2A1A1A,
+                         '"Does your college have a club for this? What is it called?"')
 df.add_user_transition(State.P4C2B2A1A1A, State.U4C2B2A1A1A2, '"no"')
 df.add_user_transition(State.P4C2B2A1A1A, State.U4C2B2A1A1A1, '"/.*/"')
-df.add_system_transition(State.U4C2B2A1A1A2, State.P4C2B2A1A1A2A, '"That\'s unfortunate. Why don\'t you seek out off-campus resources for this activity and let me know how it goes next time?"')
+df.add_system_transition(State.U4C2B2A1A1A2, State.P4C2B2A1A1A2A,
+                         '"That\'s unfortunate. Why don\'t you seek out off-campus resources for this activity and let me know how it goes next time?"')
 df.add_user_transition(State.P4C2B2A1A1A2A, State.U4C2B2A1A1A2A2, '"yes"')
 df.add_system_transition(State.U4C2B2A1A1A2A2, State.END, '"Goodbye! Thanks for talking to me today!"')
 df.add_user_transition(State.P4C2B2A1A1A2A, State.U4C2B2A1A1A2A1, '"no"')
-df.add_system_transition(State.U4C2B2A1A1A2A1, State.P4C2B1A2A2A, '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
-df.add_system_transition(State.U4C2B2A1A1A1, State.P4C2B2A1A1A1A, '"Great! Why don\'t you join it and let me know how it goes?"')
+df.add_system_transition(State.U4C2B2A1A1A2A1, State.P4C2B1A2A2A,
+                         '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
+df.add_system_transition(State.U4C2B2A1A1A1, State.P4C2B2A1A1A1A,
+                         '"Great! Why don\'t you join it and let me know how it goes?"')
 df.add_user_transition(State.P4C2B2A1A1A1A, State.U4C2B2A1A1A1A2, '"no"')
 df.add_system_transition(State.U4C2B2A1A1A1A2, State.P4C2B1A2A2A,
                          '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
@@ -382,42 +417,57 @@ df.add_system_transition(State.U4C4E1A2A1, State.P4C2B2A3A, '"Which activities d
 df.add_user_transition(State.P4C2B2A3A, State.P4C, '"/.*/"')
 df.add_system_transition(State.P4C, State.P4C4D, '"Why do you participate in $reponse?"')
 df.add_user_transition(State.P4C4D, State.U4C4D2, '"(resume)(looks good)(not sure)"')
-df.add_user_transition(State.P4C4D, State.U4C4D1, '"(fun)(enjoyment)(destress)(entertainment)(relax)(people)(social)(friend)"')
-df.add_system_transition(State.U4C2B4, State.P4C2B4A, '"I suggest you first try to figure out where this pressure is coming from, then. Do you do any activities to destress?"')
+df.add_user_transition(State.P4C4D, State.U4C4D1,
+                       '"(fun)(enjoyment)(destress)(entertainment)(relax)(people)(social)(friend)"')
+df.add_system_transition(State.U4C2B4, State.P4C2B4A,
+                         '"I suggest you first try to figure out where this pressure is coming from, then. Do you do any activities to destress?"')
 df.add_user_transition(State.P4C2B4A, State.P4C1, '"/.*/"')
 df.add_system_transition(State.P4C1, State.P4C4D, '"Why do you participate in $reponse?"')
 df.add_system_transition(State.U4C4, State.P4C4D, '"Why do you participate in $reponse?"')
-df.add_system_transition(State.U4C4D1, State.P4C4D1A, '"I\'m glad you enjoy it! Does this add any stress to your life? Why?"')
-df.add_system_transition(State.U4C2B2A2, State.P4C4D1A, '"I\'m glad you enjoy it! Does this add any stress to your life? Why?"')
+df.add_system_transition(State.U4C4D1, State.P4C4D1A,
+                         '"I\'m glad you enjoy it! Does this add any stress to your life? Why?"')
+df.add_system_transition(State.U4C2B2A2, State.P4C4D1A,
+                         '"I\'m glad you enjoy it! Does this add any stress to your life? Why?"')
 df.add_user_transition(State.P4C4D1A, State.U4C4D1A1, '"yes"')
-df.add_system_transition(State.U4C4D1A1, State.P4C4D1A1A, '"You must really care about it if it stresses you out and you still participate. Can you tell me more about why you care about this activity?"')
+df.add_system_transition(State.U4C4D1A1, State.P4C4D1A1A,
+                         '"You must really care about it if it stresses you out and you still participate. Can you tell me more about why you care about this activity?"')
 df.add_user_transition(State.P4C4D1A1A, State.U4C4D1A1A1, '"/.*/"')
-df.add_system_transition(State.U4C4D1A1A1, State.P4C4D1A1A1A, '"It seems to add another dimension into your life, which is good. I suggest you continue participating and try to focus on the positives. Why don\'t you let me know how this goes next session?"')
+df.add_system_transition(State.U4C4D1A1A1, State.P4C4D1A1A1A,
+                         '"It seems to add another dimension into your life, which is good. I suggest you continue participating and try to focus on the positives. Why don\'t you let me know how this goes next session?"')
 df.add_user_transition(State.P4C4D1A1A1A, State.U4C4D1A1A1A1, '"/.*/"')
 df.add_system_transition(State.U4C4D1A1A1A1, State.END, '"Goodbye! Thanks for talking to me today!"')
 df.add_user_transition(State.P4C4D1A, State.U4C4D1A2, '"not sure/no"')
-df.add_system_transition(State.U4C4D1A2, State.P4C4D1A2A, '"I suggest you first try to categorize what activities add or detract stress from your life. Can you do that for me before our next session?"')
+df.add_system_transition(State.U4C4D1A2, State.P4C4D1A2A,
+                         '"I suggest you first try to categorize what activities add or detract stress from your life. Can you do that for me before our next session?"')
 df.add_user_transition(State.P4C4D1A2A, State.U4C4D1A2A2, '"no"')
 df.add_user_transition(State.P4C4D1A2A, State.U4C4D1A2A1, '"yes"')
-df.add_system_transition(State.P4C4D1A2A, State.END,'"Goodbye! Thanks for talking to me today!"')
+df.add_system_transition(State.P4C4D1A2A, State.END, '"Goodbye! Thanks for talking to me today!"')
 df.add_system_transition(State.U4C5, State.P4C4E, '"Where do you work?"')
 df.add_user_transition(State.P4C4E, State.U4C4E1, '"/.*/"')
-df.add_system_transition(State.U4C4D2, State.P4C4D2A, '"That\'s not a great reason to put time into something. Do you enjoy it at all?"')
+df.add_system_transition(State.U4C4D2, State.P4C4D2A,
+                         '"That\'s not a great reason to put time into something. Do you enjoy it at all?"')
 df.add_user_transition(State.P4C4D2A, State.U4C4D2A1, '"/.*/"')
-df.add_system_transition(State.U4C4D2A1, State.P4C4E1A1A, '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
+df.add_system_transition(State.U4C4D2A1, State.P4C4E1A1A,
+                         '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
 df.add_system_transition(State.U4C4E1, State.P4C4E1A, '"Do you enjoy your job at all?"')
 df.add_user_transition(State.P4C4E1A, State.U4C4E1A1, '"yes"')
 df.add_user_transition(State.P4C4E1A, State.U4C4E1A2, '"no"')
-df.add_system_transition(State.U4C4E1A2, State.P4C4E1A2A, '"Well, do you participate in an extracurricular that you enjoy?"')
+df.add_system_transition(State.U4C4E1A2, State.P4C4E1A2A,
+                         '"Well, do you participate in an extracurricular that you enjoy?"')
 df.add_user_transition(State.P4C4E1A2A, State.U4C4E1A2A1, '"yes"')
 df.add_user_transition(State.P4C4E1A2A, State.U4C4E1A2A2, '"no"')
 df.add_user_transition(State.P4C4E1A2A, State.U4C2B2A2, '"yes, " [$verb1=#POS(verb)]')
 df.add_system_transition(State.U4C4E1A2A1, State.P4C2B2A3A, '"Which activities do you participate in?"')
-df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A, '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
-df.add_system_transition(State.U4C4E1A1, State.P4C4E1A1A, '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
-df.add_user_transition(State.P4C4E1A1A, State.U4C1, '"(school)(midterm)(college)(exam)(class)(test)(course)(grades))(balanc)"')
+df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A,
+                         '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
+df.add_system_transition(State.U4C4E1A1, State.P4C4E1A1A,
+                         '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
+df.add_user_transition(State.P4C4E1A1A, State.U4C1,
+                       '"(school)(midterm)(college)(exam)(class)(test)(course)(grades))(balanc)"')
 df.add_user_transition(State.P4C4E1A1A, State.U4C4E1A1B, '"(too much)(tired)(fatigue)(too)(sleep)(hours)"')
-df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A, '"That\'s very interesting. Do you do any activities to take your m
+df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A,
+                         '"That\'s very interesting. Do you do any activities to take your mind off this stress?"')
 
 if __name__ == '__main__':
+
     df.run(debugging=False)
