@@ -590,7 +590,7 @@ df.add_system_transition(State.U4C3, State.P4C3C,
 df.add_system_transition(State.P4CERR, State.P4C3C, '"I\'m sorry, could you restate that?"')
 df.set_error_successor(State.P4C3C, State.P4CERR)
 df.add_user_transition(State.P4C2B, State.U4C2B1, "$yes=#ONT(ontaffirm)")
-df.add_user_transition(State.P4C2B, State.U4C2B2, '"myself"')
+df.add_user_transition(State.P4C2B, State.U4C2B2, r"[$response=/(.*)(myself)(.*)/]")
 df.add_user_transition(State.P4C2B, State.U4C2B3, "$no=#ONT(ontnegate)")
 df.add_user_transition(State.P4C2B, State.U4C2B4, "$response=#ONT(ontunsure)")
 df.add_system_transition(State.U4C2B1, State.P4C2B1A, '"Have you talked to them about how this is unnecessary?"')
