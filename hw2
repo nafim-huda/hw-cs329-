@@ -424,9 +424,11 @@ ontology = {
                 "mmhmm",
                 "mmhm",
                 "mhmm",
-                "oke",
                 "okay",
-                "ok"
+                "ok",
+                "OK",
+                "Ok",
+                "Okay"
             ],
         "ontnegate":
             [
