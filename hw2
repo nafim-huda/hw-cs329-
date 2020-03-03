@@ -236,7 +236,16 @@ ontology = {
                 "mother",
                 "Parent",
                 "Family",
-                "PARENTS"
+                "PARENTS",
+                "cousin",
+                "uncle",
+                "nephew",
+                "aunt",
+                "grandparents",
+                "grandma",
+                "grandpa",
+                "grandmother",
+                "grandfather"
             ],
         "ontsad":
             [
