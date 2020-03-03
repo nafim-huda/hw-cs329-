@@ -480,10 +480,10 @@ df.add_system_transition(State.START, State.PROMPT, '"Hi, how are you feeling to
 df.set_error_successor(State.PROMPT, State.ERR)
 
 # The first user response feeling
-df.add_user_transition(State.PROMPT, State.First_feeling_positive, "$positive=#ONT(ontpositive)")
-df.add_user_transition(State.PROMPT, State.First_feeling_negative, "$negative=#ONT(ontnegative)")
-df.add_user_transition(State.PROMPT, State.First_feeling_neutral, "$neutral=#ONT(ontneutral)")
-df.add_user_transition(State.PROMPT, State.First_feeling_unexpected, "$unexpected=#ONT(ontunexpected)")
+#df.add_user_transition(State.PROMPT, State.First_feeling_positive, "$positive=#ONT(ontpositive)")
+#df.add_user_transition(State.PROMPT, State.First_feeling_negative, "$negative=#ONT(ontnegative)")
+#df.add_user_transition(State.PROMPT, State.First_feeling_neutral, "$neutral=#ONT(ontneutral)")
+#df.add_user_transition(State.PROMPT, State.First_feeling_unexpected, "$unexpected=#ONT(ontunexpected)")
 df.add_system_transition(State.First_feeling_neutral, State.First_feeling_good, '"That is good! Has anything been bothering you lately?"')
 df.add_system_transition(State.First_feeling_unexpected, State.First_feeling_good, '"That is good! Has anything been bothering you lately?"')
 df.add_user_transition(State.First_feeling_good, State.First_feeling_positive, "$no=#ONT(ontnegate)")
