@@ -265,13 +265,20 @@ ontology = {
         "ontfunclub":
             [
                 "fun",
-                "enjoyment",
+                "enjoy",
                 "destress",
                 "entertain",
                 "relax",
                 "people",
                 "social",
-                "friend"
+                "friend",
+                "Fun",
+                "great",
+                "Destress",
+                "Friend",
+                "Relax",
+                "Entertain",
+                "Enjoy"
             ],
         "onttired":
             [
@@ -280,7 +287,13 @@ ontology = {
                 "fatigue",
                 "sleep",
                 "too",
-                "exhaust"
+                "exhaust",
+                "Hours",
+                "Tired",
+                "Fatigue",
+                "Sleep",
+                "Too",
+                "Exhaust"
             ],
         "ontschool":
             [
@@ -293,7 +306,18 @@ ontology = {
                 "class",
                 "test",
                 "course",
-                "balanc"
+                "balanc",
+                "Grades",
+                "Midterm",
+                "Final",
+                "College",
+                "Exam",
+                "Test",
+                "study",
+                "Study",
+                "course",
+                "Course",
+                "Balanc"
             ],
         "ontemotion":
             [
@@ -322,31 +346,65 @@ ontology = {
                 "happy",
                 "Happy",
                 "joy",
+                "Joy",
                 "love",
+                "Love",
                 "great",
-                "euphoric",
+                "Great",
+                "euphor",
+                "Euphor",
                 "super",
+                "Super",
                 "best",
-                "amazing",
-                "golden",
-                "lucky"
+                "Best",
+                "amaz",
+                "Amaz",
+                "gold",
+                "Gold",
+                "luck",
+                "Luck"
             ],
         "ontneutral":
             [
                 "good",
                 "ok",
                 "fine",
-                "okay"
+                "okay",
+                "neutral",
+                "Good",
+                "Ok",
+                "OK",
+                "Okay",
+                "OKAY",
+                "Neutral"
             ],
         "ontunexpected":
             [
                 "fear",
-                "surprise"
+                "Fear",
+                "surprise",
+                "Surprise",
+                "startle",
+                "Startle",
+                "Jump",
+                "jump"
             ],
         "ontperception":
             [
                 "control",
-                "inability"
+                "Control",
+                "inability",
+                "Inability",
+                "unable",
+                "Unable",
+                "can't",
+                "cant",
+                "Can't",
+                "Cant",
+                "powerless",
+                "Powerless",
+                "lack"
+                "Lack"
             ],
         "ontaffirm":
             [
@@ -386,7 +444,6 @@ ontology = {
             ]
     }
 }
-
 knowledge = KnowledgeBase()
 knowledge.load_json(ontology)
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge)
