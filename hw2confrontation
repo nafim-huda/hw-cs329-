@@ -1,0 +1,291 @@
+from emora_stdm import KnowledgeBase, DialogueFlow
+from enum import Enum, auto
+
+
+# TODO: Update the State enum as needed
+class State(Enum):
+    START = auto()
+    PROMPT = auto()
+    ERR = auto()
+    END = auto()
+    ENDwGREET = auto()
+
+    # argument branch ###################################################################
+    # A: We had an argument/fight
+    confrontation_answer = auto()
+
+    # - How did it start?
+    confrontation_cause_prompt = auto()
+
+    # - A: Other person / self / don't know (don't know leads to improvement branch)
+    confrontation_cause_answer = auto()
+    confrontation_cause_self = auto()
+    confrontation_cause_other = auto()
+    confrontation_cause_dontknow = auto()
+    confrontation_cause_error = auto()
+
+    # -- Do you think it was intentional?
+    confrontation_intentional_yn = auto()
+
+    # --- Why do you think they said that?
+    confrontation_intentional_motive_prompt = auto()
+
+    # --- A: Positive / negative sentiment
+    confrontation_intentional_motive_answer = auto()
+
+    # ---- Is it justified to argue because (reason) ?
+    confrontation_intentional_motive_yn = auto()
+
+    # ---- TO DO: Handle positive vs negative answers
+
+    # -- Is this something that usually happens?
+    confrontation_usual_prompt = auto()
+
+    # -- A: Yes / No (Yes leads to advice branch)
+    confrontation_usual_yn = auto()
+
+    # --- When was the last time this has happened?
+    confrontation_usual_when = auto()
+
+    # --- A: time
+    confrontation_usual_when_answer = auto()
+
+    # ---- Have you met with (pronoun) since (time) where you haven't had a (confrontation)?
+    confrontation_usual_when_yn = auto()
+
+
+
+
+    # caught self & other branch ###################################################################
+    # A: I (catch verb)
+    confrontation_self_answer = auto()
+
+    # - How do you think that made them feel?
+    confrontation_self_feel_prompt = auto()
+
+    # - A: good / bad
+    confrontation_self_feel_answer = auto()
+
+    # -- What do you think could have gone better?
+    confrontation_self_improvement_prompt = auto()
+
+    # -- A: verbs (could have) / I don't know or nothing
+    confrontation_self_improvement_answer = auto()
+
+    # --- That's sounds great! / Interesting. / I think that would work! Anything else?
+    confrontation_self_improvement_yn = auto()
+
+    # --- A: Yes / No (yes returns to confrontation_self_improvement_yn, no transitions to advice)
+    confrontation_self_improvement_yn_answer = auto()
+
+    # A: He/She/They (catch verb)
+    confrontation_other_answer = auto()
+
+    # - Why do you think they (caught verb) (transitions to intentionality in argument branch)
+    confrontation_other_why_prompt = auto()
+
+    # no catch branch ###################################################################
+    # A: (no catch)
+    confrontation_noCatch_answer = auto()
+
+    # - Was it something that you did?
+    confrontation_noCatch_self_prompt = auto()
+
+    # - A: Yes / No (yes leads to self branch)
+    confrontation_noCatch_self_answer = auto()
+
+    # -- Was it something that someone else did?
+    confrontation_noCatch_other_prompt = auto()
+
+    # -- A: Yes / No (yes leads to other branch branch)
+    confrontation_noCatch_other_answer = auto()
+
+    # advice branch ###################################################################
+    # Could I offer you some advice?
+    confrontation_advice_yn = auto()
+
+    # A: Yes / No (no ends the conversation)
+    confrontation_advice_yn_answer = auto()
+
+    # - Would a calmer attitude have helped the situation?
+    confrontation_advice_calmer_yn = auto()
+
+    # - A: Yes / No / Maybe (no transitions to other treatment)
+    confrontation_advice_calmer_answer = auto()
+
+    # -- Here are some techniques to calm yourself down
+    # TO DO: offer advice to calm down
+
+    # usual branch ###################################################################
+    # Why do you spend time with this person?
+    confrontation_exposure_prompt = auto()
+
+    # because ...
+    confrontation_exposure_answer = auto()
+
+    #Will you keep spending time with them?
+    confrontation_exposure_why = auto()
+
+    # Yes / No
+    confrontation_exposure_yn = auto()
+
+    # Is it maybe a good idea to spend some time away from them and cool off?
+    confrontation_exposure_end = auto()
+
+    # treatment branch ###################################################################
+    #Still researching treatments, placeholder for advice
+    confrontation_treatment_placeholder = auto()
+
+
+
+# TODO: create the ontology as needed
+ontology = {
+    "ontology": {
+        "ontconfrontation":
+            [
+                "argument",
+                "fight",
+                "dispute"
+            ],
+        "ontaffirm":
+            [
+                "yes",
+                "Yes",
+                "YES",
+                "yea",
+                "YEA",
+                "Yea",
+                "yeah",
+                "Yeah",
+                "YEAH"
+            ],
+        "ontnegate":
+            [
+                "no",
+                "nah",
+                "nope",
+                "No",
+                "NO",
+                "not",
+                "Not",
+                "Nah",
+                "NAH",
+                "Nope",
+                "NOPE",
+                "don\'t",
+                "dont",
+                "Don\'t",
+                "Dont"
+            ]
+
+    }
+}
+
+knowledge = KnowledgeBase()
+knowledge.load_json(ontology)
+df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge)
+
+df.add_system_transition(State.START, State.PROMPT, '"Hi, how are you feeling today?"')
+df.set_error_successor(State.PROMPT, State.ERR)
+
+
+# The first user response feeling
+df.add_user_transition(State.PROMPT, State.confrontation_answer, '[$confrontation=#ONT(ontconfrontation)]')
+df.add_system_transition(State.confrontation_answer, State.confrontation_cause_prompt, '[!"How did the"$confrontation"start?"]')
+# -> argument branch
+
+df.add_user_transition(State.PROMPT, State.confrontation_cause_self, '[{I,i}]')
+df.add_system_transition(State.confrontation_cause_self, State.confrontation_usual_prompt,'"Is this something that has happened before?"')
+# -> usual
+
+df.add_user_transition(State.PROMPT, State.confrontation_other_answer, '[$person=#POS(propn)]')
+df.add_system_transition(State.confrontation_other_answer, State.confrontation_other_why_prompt, '"Why did "$person" act that way?"')
+# -> argument motive
+
+df.set_error_successor(State.PROMPT, State.confrontation_cause_error)
+df.add_system_transition(State.confrontation_cause_error, State.confrontation_noCatch_self_prompt, '"Do you feel like it had something to do with what you did?"')
+df.add_user_transition(State.confrontation_noCatch_self_prompt,State.confrontation_cause_self,"#ONT(ontaffirm)")
+df.add_user_transition(State.confrontation_noCatch_self_prompt,State.confrontation_intentional_yn, "#ONT(ontnegate)")
+
+# argument branch
+df.add_user_transition(State.confrontation_cause_prompt, State.confrontation_advice_yn, "#ONT(ontnegate)")
+# -> advice
+
+df.add_user_transition(State.confrontation_cause_prompt, State.confrontation_cause_self, '[{I,i}]')
+# -> usual
+
+df.add_user_transition(State.confrontation_cause_prompt, State.confrontation_cause_other, '[[$person=#POS(pron) $action=#POS(verb)]]')
+df.add_system_transition(State.confrontation_cause_other, State.confrontation_intentional_yn, '"Do you think it was intentional?"')
+# -> argument motive
+
+
+### argument motive
+df.add_user_transition(State.confrontation_intentional_yn,State.confrontation_exposure_prompt,"#ONT(ontaffirm)")
+# -> exposure
+df.add_user_transition(State.confrontation_intentional_yn,State.confrontation_advice_yn,"#ONT(ontnegate)") # Handle advice branch
+# -> advice
+
+df.add_system_transition(State.confrontation_intentional_yn,State.confrontation_intentional_motive_prompt,'"Why do you think they said that?"')
+df.add_user_transition(State.confrontation_intentional_motive_prompt,State.confrontation_intentional_motive_answer, '[{because,Because} $reason=/.*/]')
+df.set_error_successor(State.confrontation_intentional_motive_prompt,State.confrontation_cause_self)
+# -> usual
+
+df.add_system_transition(State.confrontation_intentional_motive_answer,State.confrontation_intentional_motive_yn, '"Is it justified to argue because"$reason"?"')
+df.add_user_transition(State.confrontation_intentional_motive_yn,State.confrontation_cause_self, "#ONT(ontaffirm)")
+# -> usual
+df.add_user_transition(State.confrontation_intentional_motive_yn, State.confrontation_advice_yn,"#ONT(ontnegate)")
+# -> advice
+
+### usual
+df.add_user_transition(State.confrontation_usual_prompt,State.confrontation_usual_yn,"#ONT(ontaffirm)")
+df.add_system_transition(State.confrontation_usual_yn,State.confrontation_usual_when,'"When was the last time this has happened?"')
+df.add_user_transition(State.confrontation_usual_when,State.confrontation_usual_when_answer,'"$time=#NER(date)"')
+df.set_error_successor(State.confrontation_usual_when,State.confrontation_exposure_prompt)
+# -> exposure (because no time catch)
+df.add_system_transition(State.confrontation_usual_when_answer,State.confrontation_usual_when_yn,'"Have you met with"$person"since"$time" where you haven\'t had a "$$confrontation"?"')
+df.set_error_successor(State.confrontation_usual_when_answer,State.confrontation_advice_yn)
+# -> advice if error
+
+df.add_user_transition(State.confrontation_usual_when_yn,State.confrontation_advice_yn,"#ONT(ontaffirm)")
+# -> advice
+df.add_user_transition(State.confrontation_usual_when_yn,State.confrontation_exposure_end,"#ONT(ontnegate)")
+# -> exposure
+
+df.add_user_transition(State.confrontation_usual_prompt,State.confrontation_exposure_prompt,"#ONT(ontnegate)")
+# -> exposure
+
+##### advice
+df.add_system_transition(State.confrontation_advice_yn,State.confrontation_advice_yn_answer,'"Could I offer you some advice?"')
+df.add_user_transition(State.confrontation_advice_yn_answer,State.confrontation_advice_calmer_yn,"#ONT(ontaffirm)")
+df.set_error_successor(State.confrontation_advice_yn_answer,State.ENDwGREET)
+# -> END
+df.add_system_transition(State.confrontation_advice_calmer_yn,State.confrontation_advice_calmer_answer,'"Okay, do you think a calmer attitude would have mitigated the"$confrontation"?"')
+df.add_user_transition(State.confrontation_advice_calmer_answer,State.confrontation_treatment_placeholder,"#ONT(ontaffirm)")
+df.set_error_successor(State.confrontation_treatment_placeholder,State.ENDwGREET)
+
+df.add_system_transition(State.confrontation_treatment_placeholder,State.END,'"We\'re still researching the best advice to give, please come back soon"')
+# TO DO: add treatments
+
+##### exposure
+df.add_system_transition(State.confrontation_exposure_prompt,State.confrontation_exposure_answer, '"Why do you spend time with "$pronoun"?"')
+df.add_user_transition(State.confrontation_exposure_answer,State.confrontation_exposure_why,'[{because,Because} $reason=/.*/]')
+df.set_error_successor(State.confrontation_exposure_answer,State.confrontation_exposure_why)
+
+df.add_system_transition(State.confrontation_exposure_why,State.confrontation_exposure_yn, '"Do you think you\'ll talk with them again soon?"')
+
+df.add_user_transition(State.confrontation_exposure_yn,State.confrontation_advice_yn, "#ONT(ontaffirm)")
+# -> advice
+df.set_error_successor(State.confrontation_exposure_yn, State.confrontation_exposure_end)
+df.add_system_transition(State.confrontation_exposure_end,State.END,'"I think it\'s best to spend some time cooling off after a"$confrontation"."')
+# -> END
+
+#ENDwGREET
+df.add_system_transition(State.ENDwGREET,State.END,'"Alright, have a nice day!"')
+#END
+df.set_error_successor(State.END,error_successor=State.END)
+
+# TODO: create your own dialogue manager
+
+
+if __name__ == '__main__':
+    df.run(debugging=False)
