@@ -165,7 +165,10 @@ ontology = {
                 "not",
                 "idk",
                 "don't",
-                "know"
+                "know",
+                "Unsure",
+                "Dunno",
+                "IDK"
             ],
         "ontwork":
             [
@@ -173,24 +176,42 @@ ontology = {
                 "job",
                 "money",
                 "pay",
-                "income"
+                "income",
+                "Work",
+                "Job",
+                "Money",
+                "Pay",
+                "Income"
             ],
         "ontclubs":
             [
                 "club",
+                "Club",
                 "sport",
+                "Sport",
                 "team",
+                "Team",
                 "group",
+                "Group",
                 "extracurricular",
-                "activity"
+                "Extracurricular",
+                "activity",
+                "Activity"
             ],
         "ontdunno":
             [
+                "know",
                 "no",
+                "idk",
+                "dunno",
                 "reason",
                 "just",
                 "not",
-                "sure"
+                "sure",
+                "Dunno",
+                "IDK",
+                "Idk",
+                "Dunno"
             ],
         "ontfamily":
             [
@@ -205,7 +226,10 @@ ontology = {
                 "dad",
                 "mom",
                 "father",
-                "mother"
+                "mother",
+                "Parent",
+                "Family",
+                "PARENTS"
             ],
         "ontsad":
             [
@@ -213,7 +237,16 @@ ontology = {
                 "down",
                 "unhappy",
                 "depress",
-                "blue"
+                "blue",
+                "dumps",
+                "gross",
+                "Sad",
+                "Down",
+                "Unhappy",
+                "Depress",
+                "Blue",
+                "Dumps",
+                "Gross"
             ],
         "ontbadclub":
             [
@@ -223,6 +256,11 @@ ontology = {
                 "not",
                 "dunno",
                 "don't",
+                "Dunno",
+                "IDK",
+                "idk",
+                "Resume",
+                "Idk"
             ],
         "ontfunclub":
             [
@@ -501,14 +539,11 @@ df.add_system_transition(State.P4CERR, State.P4C2B1A, '"I\'m sorry, could you re
 df.set_error_successor(State.P4C2B1A, State.P4CERR)
 df.add_system_transition(State.U4C2B2, State.P4C2B2A,
                          '"So you place pressure on yourself, I assume. Do you do any activities to destress?"')
-#df.add_system_transition(State.P4CERR, State.P4C2B2A, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C2B2A, State.P4CERR)
 df.add_system_transition(State.U4C2B3, State.P4C2B2A,
                          '"So you place pressure on yourself, I assume. Do you do any activities to detress?"')
 df.add_system_transition(State.P4CERR, State.P4C2B2A, '"I\'m sorry, could you restate that?"')
 df.set_error_successor(State.P4C2B2A, State.P4CERR)
 df.add_user_transition(State.P4C2B2A, State.U4C2B2A1, "$no=#ONT(ontnegate)")
-#df.add_user_transition(State.P4C2B2A, State.U4C2B2A2, "$no=#ONT(ontnegate) '+' [$verb1=#POS(verb)]")
 df.add_user_transition(State.P4C2B2A, State.U4C2B2A3, "$yes=#ONT(ontaffirm)")
 df.add_user_transition(State.P4C2B1A, State.U4C2B1A1, "$yes=#ONT(ontaffirm)")
 df.add_user_transition(State.P4C2B1A, State.U4C2B1A2, "$no=#ONT(ontnegate)")
@@ -538,8 +573,6 @@ df.add_user_transition(State.P4C2B1A1A1A, State.U4C2B1A1A1A1, "$yes=#ONT(ontaffi
 df.add_user_transition(State.P4C2B1A1A1A, State.U4C2B1A1A1A2, "$no=#ONT(ontnegate)")
 df.add_system_transition(State.U4C2B2A1, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
-#df.add_system_transition(State.P4CERR, State.P4C2B2A1A, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C2B2A1A, State.P4CERR)
 df.add_system_transition(State.U4C2B1A1A1A2, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
 df.add_system_transition(State.P4CERR, State.P4C2B2A1A, '"I\'m sorry, could you restate that?"')
@@ -547,8 +580,10 @@ df.set_error_successor(State.P4C2B2A1A, State.P4CERR)
 df.add_user_transition(State.P4C2B2A1A, State.U4C2B2A1A1, "/.*/")
 df.add_system_transition(State.U4C2B2A1A1, State.P4C2B2A1A1A,
                          '"Does your college have a club for this? What is it called?"')
+df.add_system_transition(State.P4CERR, State.P4C2B2A1A1A, '"I\'m sorry, could you restate that?"')
+df.set_error_successor(State.P4C2B2A1A1A, State.P4CERR)
 df.add_user_transition(State.P4C2B2A1A1A, State.U4C2B2A1A1A2, "$no=#ONT(ontnegate)")
-df.add_user_transition(State.P4C2B2A1A1A, State.U4C2B2A1A1A1, "/.*/")
+df.add_user_transition(State.P4C2B2A1A1A, State.U4C2B2A1A1A1, "$response=#ONT(ontclubs)")
 df.add_system_transition(State.U4C2B2A1A1A2, State.P4C2B2A1A1A2A,
                          '"That\'s unfortunate. Why don\'t you seek out off-campus resources for this activity and let me know how it goes next time?"')
 df.add_system_transition(State.P4CERR, State.P4C2B2A1A1A2A, '"I\'m sorry, could you restate that?"')
@@ -560,11 +595,8 @@ df.add_system_transition(State.U4C2B2A1A1A2A1, State.P4C2B1A2A2A,
                          '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
 df.add_system_transition(State.P4CERR, State.P4C2B1A2A2A, '"I\'m sorry, could you restate that?"')
 df.set_error_successor(State.P4C2B1A2A2A, State.P4CERR)
-###############################################################
 df.add_system_transition(State.U4C2B2A1A1A1, State.P4C2B2A1A1A1A,
                          '"Great! Why don\'t you join it and let me know how it goes?"')
-#df.add_system_transition(State.P4CERR, State.P4C2B2A1A1A1A, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C2B2A1A1A1A, State.P4CERR)
 df.add_user_transition(State.P4C2B2A1A1A1A, State.U4C2B2A1A1A1A2, "$no=#ONT(ontnegate)")
 df.add_system_transition(State.U4C2B2A1A1A1A2, State.P4C2B1A2A2A,
                          '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
@@ -577,15 +609,11 @@ df.add_system_transition(State.U4C2B1A2A2, State.P4C2B1A2A2A,
 df.add_system_transition(State.U4C4D1A2A2, State.P4C2B1A2A2A,
                          '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
 df.add_system_transition(State.U4C2B2A3, State.P4C2B2A3A, '"Which activities do you participate in?"')
-#df.add_system_transition(State.P4CERR, State.P4C2B2A3A, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C2B2A3A, State.P4CERR)
 df.add_system_transition(State.U4C2B1A1A1A1, State.P4C2B2A3A, '"Which activities do you participate in?"')
 df.add_system_transition(State.P4CERR, State.P4C2B2A3A, '"I\'m sorry, could you restate that?"')
 df.set_error_successor(State.P4C2B2A3A, State.P4CERR)
 df.add_user_transition(State.P4C2B2A3A, State.P4C, "$response = /.*/")
 df.add_system_transition(State.P4C, State.P4C4D, '"Why do you participate in" $response "?"')
-#df.add_system_transition(State.P4CERR, State.P4C4D, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C4D, State.P4CERR)
 df.add_user_transition(State.P4C4D, State.U4C4D2, "$response=#ONT(ontbadclub)")
 df.add_user_transition(State.P4C4D, State.U4C4D1, "$response=#ONT(ontfunclub)")
 df.add_system_transition(State.U4C2B4, State.P4C2B4A,
@@ -635,12 +663,9 @@ df.add_system_transition(State.P4CERR, State.P4C4E1A2A, '"I\'m sorry, could you 
 df.set_error_successor(State.P4C4E1A2A, State.P4CERR)
 df.add_user_transition(State.P4C4E1A2A, State.U4C4E1A2A1, "$yes=#ONT(ontaffirm)")
 df.add_user_transition(State.P4C4E1A2A, State.U4C4E1A2A2, "$no=#ONT(ontnegate)")
-#df.add_user_transition(State.P4C4E1A2A, State.U4C2B2A2, "$yes=#ONT(ontaffirm) '+' [$verb1=#POS(verb)]")
 df.add_system_transition(State.U4C4E1A2A1, State.P4C2B2A3A, '"Which activities do you participate in?"')
 df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
-#df.add_system_transition(State.P4CERR, State.P4C2B2A1A, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C2B2A1A, State.P4CERR)
 df.add_system_transition(State.U4C4E1A1, State.P4C4E1A1A,
                          '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
 df.add_system_transition(State.P4CERR, State.P4C4E1A1A, '"I\'m sorry, could you restate that?"')
@@ -649,8 +674,6 @@ df.add_user_transition(State.P4C4E1A1A, State.U4C1,"$response=#ONT(ontschool)")
 df.add_user_transition(State.P4C4E1A1A, State.U4C4E1A1B, "$response=#ONT(onttired)")
 df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A,
                          '"That\'s very interesting. Do you do any activities to take your mind off this stress?"')
-#df.add_system_transition(State.P4CERR, State.P4C2B1A1A1A, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C2B1A1A1A, State.P4CERR)
 
 if __name__ == '__main__':
     df.run(debugging=False)
