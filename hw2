@@ -1,6 +1,7 @@
 from emora_stdm import KnowledgeBase, DialogueFlow
 from enum import Enum, auto
 
+
 # TODO: Update the State enum as needed
 class State(Enum):
     START = 0
@@ -275,13 +276,21 @@ ontology = {
                 "happy",
                 "Happy",
                 "joy",
-                "love"
+                "love",
+                "great",
+                "euphoric",
+                "super",
+                "best",
+                "amazing",
+                "golden",
+                "lucky"
             ],
         "ontneutral":
             [
                 "good",
                 "ok",
-                "fine"
+                "fine",
+                "okay"
             ],
         "ontunexpected":
             [
@@ -303,7 +312,12 @@ ontology = {
                 "Yea",
                 "yeah",
                 "Yeah",
-                "YEAH"
+                "YEAH",
+                "Yep",
+                "YEP",
+                "yep",
+                "mhm",
+                "mmhmm"
             ],
         "ontnegate":
             [
@@ -315,7 +329,9 @@ ontology = {
                 "Nah",
                 "NAH",
                 "Nope",
-                "NOPE"
+                "NOPE",
+                "na",
+                "Na"
             ]
     }
 }
@@ -331,8 +347,10 @@ df.add_user_transition(State.PROMPT, State.First_feeling_positive, "$positive=#O
 df.add_user_transition(State.PROMPT, State.First_feeling_negative, "$negative=#ONT(ontnegative)")
 df.add_user_transition(State.PROMPT, State.First_feeling_neutral, "$neutral=#ONT(ontneutral)")
 df.add_user_transition(State.PROMPT, State.First_feeling_unexpected, "$unexpected=#ONT(ontunexpected)")
-df.add_system_transition(State.First_feeling_neutral, State.First_feeling_good, '"that is good!"')
-df.add_system_transition(State.First_feeling_unexpected, State.First_feeling_good, '"that is good!"')
+df.add_system_transition(State.First_feeling_neutral, State.First_feeling_good, '"That is good! Has anything been bothering you lately?"')
+df.add_system_transition(State.First_feeling_unexpected, State.First_feeling_good, '"That is good! Has anything been bothering you lately?"')
+df.add_user_transition(State.First_feeling_good, State.First_feeling_positive, "$no=#ONT(ontnegate)")
+df.add_user_transition(State.First_feeling_good, State.First_negative_response, "$response=#ONT(ontsad)")
 df.set_error_successor(State.PROMPT, State.ERR)
 df.set_error_successor(State.PROMPT, State.ERR)
 df.set_error_successor(State.PROMPT, State.ERR)
@@ -577,4 +595,3 @@ df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A,
 
 if __name__ == '__main__':
     df.run(debugging=False)
-    
