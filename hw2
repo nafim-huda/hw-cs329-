@@ -268,7 +268,14 @@ ontology = {
                 "anger",
                 "disgust",
                 "sadness",
-                "fear"
+                "fear",
+                "onttired",
+                "ontschool",
+                "ontsad",
+                "ontfamily",
+                "ontdunno",
+                "ontwork",
+                "ontunsure"
             ],
         "ontpositive":
             [
@@ -317,7 +324,9 @@ ontology = {
                 "YEP",
                 "yep",
                 "mhm",
-                "mmhmm"
+                "mmhmm",
+                "mmhm",
+                "mhmm"
             ],
         "ontnegate":
             [
@@ -459,13 +468,11 @@ df.set_error_successor(State.CHECKINRESP4, State.ERRANG5)
 # angela's stuff
 ####################################################################################
 
-df.add_user_transition(State.First_negative_prompt, State.First_negative_response, "$response=#ONT(ontsad)")
-df.add_system_transition(State.First_negative_response, State.P4CE, '"What has been causing this sadness?"')
-df.add_user_transition(State.P4CE, State.U4C1, "$response=#ONT(ontschool)")
-df.add_user_transition(State.P4CE, State.U4C2, "$response=#ONT(ontfamily)")
-df.add_user_transition(State.P4CE, State.U4C3, "$response=#ONT(ontdunno)")
-df.add_user_transition(State.P4CE, State.U4C4, "$response=#ONT(ontclubs)")
-df.add_user_transition(State.P4CE, State.U4C5, "$response=#ONT(ontwork)")
+df.add_user_transition(State.First_negative_prompt, State.U4C1, "$response=#ONT(ontschool)")
+df.add_user_transition(State.First_negative_prompt, State.U4C2, "$response=#ONT(ontfamily)")
+df.add_user_transition(State.First_negative_prompt, State.U4C3, "$response=#ONT(ontdunno)")
+df.add_user_transition(State.First_negative_prompt, State.U4C4, "$response=#ONT(ontclubs)")
+df.add_user_transition(State.First_negative_prompt, State.U4C5, "$response=#ONT(ontwork)")
 
 df.add_system_transition(State.U4C1, State.P4C1A, '"What do you do to de-stress from school?"')
 df.add_user_transition(State.P4C1A, State.U4C4, "$response=#ONT(ontclubs)")
