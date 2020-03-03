@@ -262,7 +262,9 @@ ontology = {
                 "Depress",
                 "Blue",
                 "Dumps",
-                "Gross"
+                "Gross",
+                "bad",
+                "Bad"
             ],
         "ontbadclub":
             [
@@ -348,6 +350,9 @@ ontology = {
                 "disgust",
                 "sadness",
                 "fear",
+                "bad",
+                "Bad",
+                "scar",
                 "onttired",
                 "ontschool",
                 "ontsad",
