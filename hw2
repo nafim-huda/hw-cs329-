@@ -1,7 +1,6 @@
 from emora_stdm import KnowledgeBase, DialogueFlow
 from enum import Enum, auto
 
-
 # TODO: Update the State enum as needed
 class State(Enum):
     START = 0
@@ -143,6 +142,119 @@ class State(Enum):
 # TODO: create the ontology as needed
 ontology = {
     "ontology": {
+        "ontP4C":
+            [
+                "ontschool",
+                "onttired",
+                "ontfunclub",
+                "ontbadclub",
+                "ontsad",
+                "ontfamily",
+                "ontdunno",
+                "ontclubs",
+                "ontwork",
+                "ontunsure"
+            ],
+        "ontunsure":
+            [
+                "unsure",
+                "dunno",
+                "uncertain",
+                "not",
+                "idk",
+                "don't",
+                "know"
+            ],
+        "ontwork":
+            [
+                "work",
+                "job",
+                "money",
+                "pay",
+                "income"
+            ],
+        "ontclubs":
+            [
+                "club",
+                "sport",
+                "team",
+                "group",
+                "extracurricular",
+                "activity"
+            ],
+        "ontdunno":
+            [
+                "no",
+                "reason",
+                "just",
+                "not",
+                "sure"
+            ],
+        "ontfamily":
+            [
+                "family",
+                "parent",
+                "sister",
+                "brother",
+                "kid",
+                "child",
+                "sibling",
+                "cousin",
+                "dad",
+                "mom",
+                "father",
+                "mother"
+            ],
+        "ontsad":
+            [
+                "sad",
+                "down",
+                "unhappy",
+                "depress",
+                "blue"
+            ],
+        "ontbadclub":
+            [
+                "resume",
+                "looks",
+                "appears",
+                "not",
+                "dunno",
+                "don't",
+            ],
+        "ontfunclub":
+            [
+                "fun",
+                "enjoyment",
+                "destress",
+                "entertain",
+                "relax",
+                "people",
+                "social",
+                "friend"
+            ],
+        "onttired":
+            [
+                "hours",
+                "tired",
+                "fatigue",
+                "sleep",
+                "too",
+                "exhaust"
+            ],
+        "ontschool":
+            [
+                "grades",
+                "midterm",
+                "final",
+                "college",
+                "exam",
+                "school",
+                "class",
+                "test",
+                "course",
+                "balanc"
+            ],
         "ontemotion":
             [
                 "ontnegative",
@@ -329,18 +441,16 @@ df.set_error_successor(State.CHECKINRESP4, State.ERRANG5)
 # angela's stuff
 ####################################################################################
 
-df.add_user_transition(State.First_negative_prompt, State.First_negative_response, r"[$response=/(sad)|(down)|(unhappy)|(depressed)|(blue)/]")
+df.add_user_transition(State.First_negative_prompt, State.First_negative_response, "$response=#ONT(ontsad)")
 df.add_system_transition(State.First_negative_response, State.P4CE, '"What has been causing this sadness?"')
-df.add_user_transition(State.P4CE, State.U4C1,
-                       r"[$response=/(school)(midterm)(college)(exam)(class)(test)(course)(grades)/]")
-df.add_user_transition(State.P4CE, State.U4C2,
-                       '"(family)(parent)(sister)(brother)(kid)(sibling)(cousin)(dad)(mom)(father)(mother)"')
-df.add_user_transition(State.P4CE, State.U4C3, '"(no reason)(just)(not sure)"')
-df.add_user_transition(State.P4CE, State.U4C4, '"(club)(team)(sport)(extracurricular)(activity)"')
-df.add_user_transition(State.P4CE, State.U4C5, '"(work)(job)(money)(income)(pay)"')
+df.add_user_transition(State.P4CE, State.U4C1, "$response=#ONT(ontschool)")
+df.add_user_transition(State.P4CE, State.U4C2, "$response=#ONT(ontfamily)")
+df.add_user_transition(State.P4CE, State.U4C3, "$response=#ONT(ontdunno)")
+df.add_user_transition(State.P4CE, State.U4C4, "$response=#ONT(ontclubs)")
+df.add_user_transition(State.P4CE, State.U4C5, "$response=#ONT(ontwork)")
 
 df.add_system_transition(State.U4C1, State.P4C1A, '"What do you do to de-stress from school?"')
-df.add_user_transition(State.P4C1A, State.U4C4, '"(club)(team)(sport)(extracurricular)(activity)"')
+df.add_user_transition(State.P4C1A, State.U4C4, "$response=#ONT(ontclubs)")
 df.add_system_transition(State.U4C2, State.P4C2B,
                          '"Do you think your family places pressure on you? Or maybe you do it to yourself?"')
 df.add_system_transition(State.U4C1, State.P4C3C,
@@ -354,7 +464,7 @@ df.add_system_transition(State.U4C5, State.P4C3C,
 df.add_user_transition(State.P4C2B, State.U4C2B1, "$yes=#ONT(ontaffirm)")
 df.add_user_transition(State.P4C2B, State.U4C2B2, '"myself"')
 df.add_user_transition(State.P4C2B, State.U4C2B3, "$no=#ONT(ontnegate)")
-df.add_user_transition(State.P4C2B, State.U4C2B4, '"maybe/not sure"')
+df.add_user_transition(State.P4C2B, State.U4C2B4, "$response=#ONT(ontunsure)")
 df.add_system_transition(State.U4C2B1, State.P4C2B1A, '"Have you talked to them about how this is unnecessary?"')
 df.add_system_transition(State.U4C2B2, State.P4C2B2A,
                          '"So you place pressure on yourself, I assume. Do you do any activities to destress?"')
@@ -412,11 +522,10 @@ df.add_system_transition(State.U4C4D1A2A2, State.P4C2B1A2A2A,
                          '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
 df.add_system_transition(State.U4C2B2A3, State.P4C2B2A3A, '"Which activities do you participate in?"')
 df.add_system_transition(State.U4C2B1A1A1A1, State.P4C2B2A3A, '"Which activities do you participate in?"')
-df.add_user_transition(State.P4C2B2A3A, State.P4C, "/.*/")
-df.add_system_transition(State.P4C, State.P4C4D, '"Why do you participate in $reponse?"')
-df.add_user_transition(State.P4C4D, State.U4C4D2, '"(resume)(looks good)(not sure)"')
-df.add_user_transition(State.P4C4D, State.U4C4D1,
-                       '"(fun)(enjoyment)(destress)(entertainment)(relax)(people)(social)(friend)"')
+df.add_user_transition(State.P4C2B2A3A, State.P4C, "$response = /.*/")
+df.add_system_transition(State.P4C, State.P4C4D, '"Why do you participate in" $response "?"')
+df.add_user_transition(State.P4C4D, State.U4C4D2, "$response=#ONT(ontbadclub)")
+df.add_user_transition(State.P4C4D, State.U4C4D1, "$response=#ONT(ontfunclub)")
 df.add_system_transition(State.U4C2B4, State.P4C2B4A,
                          '"I suggest you first try to figure out where this pressure is coming from, then. Do you do any activities to destress?"')
 df.add_user_transition(State.P4C2B4A, State.P4C1, "/.*/")
@@ -461,11 +570,11 @@ df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
 df.add_system_transition(State.U4C4E1A1, State.P4C4E1A1A,
                          '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
-df.add_user_transition(State.P4C4E1A1A, State.U4C1,
-                       '"(school)(midterm)(college)(exam)(class)(test)(course)(grades))(balanc)"')
-df.add_user_transition(State.P4C4E1A1A, State.U4C4E1A1B, '"(too much)(tired)(fatigue)(too)(sleep)(hours)"')
+df.add_user_transition(State.P4C4E1A1A, State.U4C1,"$response=#ONT(ontschool)")
+df.add_user_transition(State.P4C4E1A1A, State.U4C4E1A1B, "$response=#ONT(onttired)")
 df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A,
                          '"That\'s very interesting. Do you do any activities to take your mind off this stress?"')
 
 if __name__ == '__main__':
     df.run(debugging=False)
+    
