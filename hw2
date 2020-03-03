@@ -8,6 +8,7 @@ class State(Enum):
     PROMPT = 1
     ERR = 2
     END = 3
+    PROMPT2 = 4
     # These are for the first response
     First_feeling_positive = auto()
     First_feeling_negative = auto()
@@ -21,8 +22,14 @@ class State(Enum):
     # Negative Tree
     First_negative_prompt = auto()
     First_negative_response = auto()
+    U2A = auto()
+    U2B = auto()
 
-    # ANGER
+    # 3rd
+    P3 = auto()
+    P3B = auto()
+    U3A = auto()
+    U3 = auto()
 
     ANGER1 = auto()
     ANGER2 = auto()
@@ -443,7 +450,12 @@ ontology = {
                 "NOPE",
                 "na",
                 "Na"
-            ]
+            ],
+            "ontbecause":
+                [
+                    "because",
+                    "since"
+                ]
     }
 }
 knowledge = KnowledgeBase()
@@ -467,18 +479,49 @@ df.set_error_successor(State.PROMPT, State.ERR)
 df.set_error_successor(State.PROMPT, State.ERR)
 df.set_error_successor(State.PROMPT, State.ERR)
 
+#Update
+#The first user response feeling
+df.add_user_transition(State.PROMPT, State.First_feeling_positive, '[$positive=#ONT(ontpositive)]')
+df.add_user_transition(State.PROMPT, State.First_feeling_negative, '[$negative=#ONT(ontnegative)]')
+df.add_user_transition(State.PROMPT, State.First_feeling_neutral, '[$neutral=#ONT(ontneutral)]')
+df.add_user_transition(State.PROMPT, State.First_feeling_unexpected, '[$unexpected=#ONT(ontunexpected)]')
+df.add_user_transition(State.First_feeling_neutral, State.END, "/.*/")
+df.add_user_transition(State.First_feeling_unexpected, State.END, "/.*/")
+df.add_user_transition(State.First_feeling_good, State.END, "/.*/")
+
 # Feeling Positive
-df.add_system_transition(State.First_feeling_positive, State.First_positive_prompt,
-                         '"That\'s great, good luck on the rest of life!"')
+df.add_system_transition(State.First_feeling_positive, State.First_positive_prompt,  '"That\'s great, good luck on the rest of life!"')
 df.add_user_transition(State.First_positive_prompt, State.END, "/.*/")
+
 # Feeling Negative
-df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt,
-                         '[!"What\'s been making you feel" $negative"?"]')
-#df.add_user_transition(State.First_negative_prompt, State.First_negative_response, '"/.*/"')
+df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt, '[!"What\'s been making you feel"$negative"?"]')
+df.add_user_transition(State.First_negative_prompt, State.U2B, '[$conju=#ONT(ontbecause)]')
+df.set_error_successor(State.U2B, State.ERR)
 #df.add_user_transition(State.First_negative_prompt, State.END, '"/.*/"')
 
+#U2B
+df.add_system_transition(State.U2B, State.P3, '"Can you tell me more about how you\'re feeling?"')
+
+#U2A
+df.add_user_transition(State.First_negative_prompt, State.U2A, "/.*/")
+df.add_system_transition(State.U2A, State.P3, '"Why is that?"')
+
 # Ending
+df.add_user_transition(State.First_negative_prompt, State.END, "/.*/")
 df.add_system_transition(State.END, State.END, '"Goodbye! Thanks for talking to me today!"')
+
+# Intro Errors
+df.add_user_transition(State.PROMPT, State.ERR, "/.*/")
+df.add_system_transition(State.ERR, State.PROMPT2, '"I didn\'t catch that, could you tell me more about how you are feeling?"')
+df.add_user_transition(State.PROMPT2, State.First_feeling_positive, '[$positive=#ONT(ontpositive)]')
+df.add_user_transition(State.PROMPT2, State.First_feeling_negative, '[$negative=#ONT(ontnegative)]')
+df.add_user_transition(State.PROMPT2, State.First_feeling_neutral, '[$neutral=#ONT(ontneutral)]')
+df.add_user_transition(State.PROMPT2, State.First_feeling_unexpected, '[$unexpected=#ONT(ontunexpected)]')
+df.set_error_successor(State.PROMPT2, State.ERR)
+df.set_error_successor(State.First_positive_prompt, State.ERR)
+df.set_error_successor(State.First_negative_prompt, State.ERR)
+df.set_error_successor(State.First_negative_prompt, State.ERR)
+df.set_error_successor(State.P3, State.ERR)
 
 # ANGER
 
