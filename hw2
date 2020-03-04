@@ -9,11 +9,12 @@ class State(Enum):
     ERR = 2
     END = 3
     PROMPT2 = 4
-    # These are for the first response
+    Ending = auto()
+    #These are for the first response
     First_feeling_positive = auto()
     First_feeling_negative = auto()
-    First_feeling_neutral = auto()
-    First_feeling_unexpected = auto()
+    Catch_feeling_positive = auto()
+    Catch_feeling_negative = auto()
     First_feeling_good = auto()
 
     # Positivity Tree
@@ -29,7 +30,7 @@ class State(Enum):
     P3 = auto()
     P3B = auto()
     U3A = auto()
-    U3 = auto()
+    ERR2 = auto()
 
     ANGER1 = auto()
     ANGER2 = auto()
