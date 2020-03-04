@@ -525,8 +525,8 @@ df.add_system_transition(State.U2B, State.P3, '"Can you tell me more about how y
 df.set_error_successor(State.U2B, State.ERR2)
 
 #U2A
-df.add_system_transition(State.U2A, State.P3, '"Why is that?"')
-df.set_error_successor(State.U2A, State.ERR2)
+df.add_system_transition(State.First_negative_prompt, State.P3, '"Why is that?"')
+df.set_error_successor(State.First_negative_prompt, State.ERR2)
 
 
 #P3
