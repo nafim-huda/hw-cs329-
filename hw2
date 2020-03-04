@@ -405,7 +405,9 @@ ontology = {
                 "gold",
                 "Gold",
                 "luck",
-                "Luck"
+                "Luck",
+                "good",
+                "Good"
             ],
         "ontneutral":
             [
