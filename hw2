@@ -534,11 +534,11 @@ df.set_error_successor(State.P3, State.ERR2)
 
 # Intro Errors
 df.add_system_transition(State.ERR2, State.PROMPT2, '"I didn\'t catch that, could you tell me more about how you are feeling?"')
-df.add_user_transition(State.PROMPT2, State.Catch_feeling_positive, '[$positive=#ONT(ontpositive)]')
-df.add_user_transition(State.PROMPT2, State.Catch_feeling_negative, '[$negative=#ONT(ontnegative)]')
+df.add_user_transition(State.PROMPT2, State.First_feeling_positive, '[$positive=#ONT(ontpositive)]')
+df.add_user_transition(State.PROMPT2, State.First_feeling_negative, '[$negative=#ONT(ontnegative)]')
 df.set_error_successor(State.PROMPT2, State.ERR)
-df.set_error_successor(State.Catch_feeling_positive, State.ERR)
-df.set_error_successor(State.Catch_feeling_negative, State.ERR)
+df.set_error_successor(State.First_feeling_positive, State.ERR)
+df.set_error_successor(State.First_feeling_negative, State.ERR)
 
 
 # Ending
