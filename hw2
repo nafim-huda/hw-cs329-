@@ -168,6 +168,9 @@ class State(Enum):
     P4CERR20 = auto()
     P4CERR21 = auto()
 
+    P4D = auto()
+    U4D1 = auto()
+
 
 
 # TODO: create the ontology as needed
@@ -184,7 +187,16 @@ ontology = {
                 "ontdunno",
                 "ontclubs",
                 "ontwork",
-                "ontunsure"
+                "ontunsure",
+                "onthotline"
+            ],
+        "onthotline":
+            [
+                "die",
+                "kill",
+                "murder",
+                "commit",
+                "suicide"
             ],
         "ontunsure":
             [
@@ -543,7 +555,7 @@ df.set_error_successor(State.First_feeling_negative, State.ERR)
 
 # Ending
 df.add_system_transition(State.ERR, State.END, '"I don\'t understand, Goodbye!"')
-df.add_system_transition(State.END, State.END, '"Goodbye!"')
+df.add_system_transition(State.END, State.END, '"Goodbye! Thank you for talking to me today!"')
 df.set_error_successor(State.END, State.END)
 
 # ANGER
@@ -800,7 +812,11 @@ df.add_user_transition(State.P4C4E1A1A, State.U4C4E1A1B, "[$response=#ONT(onttir
 df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A,
                          '"That\'s very interesting. Do you do any activities to take your mind off this stress?"')
 
-
+#--------------------------------------------------------------------
+#hotlinecatch
+df.add_user_transition(State.First_negative_prompt, State.P4D, "[$response=#ONT(onthotline)]")
+df.add_system_transition(State.P4D, State.U4D1, '"Oh no! I am very afraid that this may be a violent or life-threatening situation. Here are some hotlines: Suicide: 8002738255, Domestic violence: 8007997233, Sexual assault: 8006564673."')
+df.add_user_transition(State.U4D1, State.END, "/.*/")
 
 
 if __name__ == '__main__':
