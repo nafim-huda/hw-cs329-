@@ -170,7 +170,39 @@ class State(Enum):
 
     P4D = auto()
     U4D1 = auto()
+    P4D1 = auto()
 
+    #eating
+    P4E = auto()
+    U4E1 = auto()
+    U4E2 = auto()
+    P4E1A = auto()
+    P4E2A = auto()
+    U4E1A2 = auto()
+    U4E1A1 = auto()
+    U4E2A1 = auto()
+    U4E2A2 = auto()
+    P4E1A2A = auto()
+    P4E1A2B = auto()
+    P4E2A1A = auto()
+    P4E2A2A = auto()
+    U4E1A2B1 = auto()
+    U4E2A1A1 = auto()
+    U4E2A1A2 = auto()
+    U4E2A2A1 = auto()
+    U4E2A2A2 = auto()
+    U4E2A2A1A1 = auto()
+    P4E2A2A1A = auto()
+    P4E2A2A2A = auto()
+    U4EA = auto()
+    P4EERR = auto()
+    P4E1AERR = auto()
+    P4E1A2AERR = auto()
+    P4E1A2BERR = auto()
+    P4E2AERR = auto()
+    P4E2A1AERR = auto()
+    P4E2A2AERR = auto()
+    P4E2A2A2AERR = auto()
 
 
 # TODO: create the ontology as needed
@@ -188,7 +220,46 @@ ontology = {
                 "ontclubs",
                 "ontwork",
                 "ontunsure",
-                "onthotline"
+                "onthotline",
+                "onteating",
+                "onteatingtoolittle",
+                "onteatingtoomuch"
+            ],
+        "onteating":
+            [
+                "eat",
+                "eating"
+                "food",
+                "nutrition",
+                "vitamins",
+                "calorie",
+                "calories"
+                "hungry",
+                "binge"
+                "binge-eating"
+                "eating"
+            ],
+        "onteatingtoolittle":
+            [
+                "little",
+                "enough",
+                "hungry",
+                "malnourished",
+                "nourished"
+            ],
+        "onteatingtoomuch":
+            [
+               "lot",
+               "indulge",
+               "binge",
+               "binging",
+               "binge-eating",
+               "too",
+               "much",
+               "bad",
+               "overeat",
+               "overeating",
+               "over-eating"
             ],
         "onthotline":
             [
@@ -286,14 +357,17 @@ ontology = {
                 "sad",
                 "down",
                 "unhappy",
-                "depress",
+                "depressed",
+                "depressing",
+                "lost",
+                "purposeless"
                 "blue",
                 "dumps",
                 "gross",
                 "Sad",
                 "Down",
                 "Unhappy",
-                "Depress",
+                "Depressed",
                 "Blue",
                 "Dumps",
                 "Gross",
@@ -319,6 +393,10 @@ ontology = {
                 "fun",
                 "enjoy",
                 "destress",
+                "relaxing",
+                "entertaining",
+                "socializing",
+                "friends",
                 "entertain",
                 "relax",
                 "people",
@@ -337,6 +415,9 @@ ontology = {
                 "hours",
                 "tired",
                 "fatigue",
+                "fatigued",
+                "sleeping",
+                "exhausted",
                 "sleep",
                 "too",
                 "exhaust",
@@ -358,7 +439,8 @@ ontology = {
                 "class",
                 "test",
                 "course",
-                "balanc",
+                "balance",
+                "balancing"
                 "Grades",
                 "Midterm",
                 "Final",
@@ -368,8 +450,8 @@ ontology = {
                 "study",
                 "Study",
                 "course",
-                "Course",
-                "Balanc"
+                "studying",
+                "Course"
             ],
         "ontemotion":
             [
@@ -386,7 +468,9 @@ ontology = {
                 "fear",
                 "bad",
                 "Bad",
-                "scar",
+                "scared",
+                "scare",
+                "scary",
                 "onttired",
                 "ontschool",
                 "ontsad",
@@ -406,14 +490,15 @@ ontology = {
                 "Love",
                 "great",
                 "Great",
-                "euphor",
-                "Euphor",
+                "euphoria",
+                "Euphoria",
                 "super",
                 "Super",
                 "best",
                 "Best",
-                "amaz",
-                "Amaz",
+                "amazing",
+                "amaze",
+                "amazed",
                 "gold",
                 "Gold",
                 "luck",
@@ -442,7 +527,8 @@ ontology = {
                 "surprise",
                 "Surprise",
                 "startle",
-                "Startle",
+                "jumped",
+                "startled",
                 "Jump",
                 "jump"
             ],
@@ -499,7 +585,8 @@ ontology = {
                 "Nope",
                 "NOPE",
                 "na",
-                "Na"
+                "Na",
+                "nah"
             ],
          "ontbecause":
             [
@@ -816,7 +903,52 @@ df.add_system_transition(State.U4C4E1A1B, State.P4C2B1A1A1A,
 #hotlinecatch
 df.add_user_transition(State.First_negative_prompt, State.P4D, "[$response=#ONT(onthotline)]")
 df.add_system_transition(State.P4D, State.U4D1, '"Oh no! I am very afraid that this may be a violent or life-threatening situation. Here are some hotlines: Suicide: 8002738255, Domestic violence: 8007997233, Sexual assault: 8006564673."')
-df.add_user_transition(State.U4D1, State.END, "/.*/")
+df.add_user_transition(State.U4D1, State.P4D1, "/.*/")
+df.add_system_transition(State.P4D1, State.END, '"Goodbye! Thanks for talking to me today!"')
+
+######################################################################
+#eating
+df.add_user_transition(State.First_negative_prompt, State.U4EA, "[$response=#ONT(onteating)]")
+df.add_system_transition(State.U4EA, State.P4E, '"Oh no! Eating regularly and healthily is a very important part of growing. Can you tell me more about your problem?"')
+df.add_system_transition(State.P4EERR, State.P4E, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4E, State.U4E1, "[$response=#ONT(onteatingtoomuch)]")
+df.add_user_transition(State.P4E, State.U4E2, "[$response=#ONT(onteatingtoolittle)]")
+df.add_system_transition(State.U4E1, State.P4E1A, '"Haha, weight gain is common in college students. Do you think it actually harms you, though?"')
+df.add_system_transition(State.P4E1AERR, State.P4E1A, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4E1A, State.U4E1A2, "[$yes=#ONT(ontaffirm)]")
+df.add_user_transition(State.P4E1A, State.U4E1A1, "[$no=#ONT(ontnegate)]")
+df.add_system_transition(State.U4E1A2, State.P4E1A2A, '"You may eat excessively because you are stressed. Has anything been stressing you out recently?"')
+df.add_system_transition(State.P4E1A2AERR, State.P4E1A2A, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4E1A2A, State.U4C1, "[$response=#ONT(ontschool)]")
+df.add_user_transition(State.P4E1A2A, State.U4C2, "[$response=#ONT(ontfamily)]")
+df.add_user_transition(State.P4E1A2A, State.U4C3, "[$response=#ONT(ontdunno)]")
+df.add_user_transition(State.P4E1A2A, State.U4C4, "[$response=#ONT(ontclubs)]")
+df.add_user_transition(State.P4E1A2A, State.U4C5, "[$response=#ONT(ontwork)]")
+df.add_system_transition(State.U4E1A1, State.P4E1A2B, '"Haha, I think you\'re doing just fine. Your body is just growing, as it should be. "')
+df.add_system_transition(State.P4E1A2BERR, State.P4E1A2B, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4E1A2B, State.U4E1A2B1, "/.*/")
+df.add_system_transition(State.U4E1A2B1, State.END, '"Goodbye! Thanks for talking to me today!"')
+df.add_system_transition(State.U4E2, State.P4E2A, '"Oh no, that\'s a problem! You need to eat. Are you on a meal plan?"')
+df.add_system_transition(State.P4E2AERR, State.P4E2A, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4E2A, State.U4E2A1, "[$yes=#ONT(ontaffirm)]")
+df.add_user_transition(State.P4E2A, State.U4E2A2, "[$no=#ONT(ontnegate)]")
+df.add_system_transition(State.U4E2A1, State.P4E2A1A, '" I think you need to make more of an effort to go to dining halls. They have very healthy options. Can you try that?"')
+df.add_system_transition(State.P4E2A1AERR, State.P4E2A1A, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4E2A1A, State.U4E2A1A1, "[$yes=#ONT(ontaffirm)]")
+df.add_user_transition(State.P4E2A1A, State.U4E2A1A2, "[$no=#ONT(ontnegate)]")
+df.add_system_transition(State.U4E2A1A1, State.END, '"Goodbye! Thanks for talking to me today!"')
+df.add_system_transition(State.U4E2A1A2, State.P4C2B1A2A2A, '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
+df.add_system_transition(State.U4E2A2, State.P4E2A2A, '"Then you need to start grocery shopping for yourself. Is money a problem?"')
+df.add_system_transition(State.P4E2A2AERR, State.P4E2A2A, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4E2A2A, State.U4E2A2A2, "[$yes=#ONT(ontaffirm)]")
+df.add_user_transition(State.P4E2A2A, State.U4E2A2A1, "[$no=#ONT(ontnegate)]")
+df.add_system_transition(State.U4E2A2A2, State.P4E2A2A2A, '"You should talk to your career center about finding a job. You need to eat. Do you think you can look for a job?"')
+df.add_system_transition(State.P4E2A2A2AERR, State.P4E2A2A2A, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4E2A2A2A, State.U4E2A1A1, "[$yes=#ONT(ontaffirm)]")
+df.add_user_transition(State.P4E2A2A2A, State.U4E2A1A2, "[$no=#ONT(ontnegate)]")
+df.add_system_transition(State.U4E2A2A1, State.P4E2A2A1A, '"Good, then you should go grocery shopping more often."')
+df.add_user_transition(State.P4E2A2A1A, State.U4E2A2A1A1, "/.*/")
+df.add_system_transition(State.U4E2A2A1A1, State.END, '"Goodbye! Thanks for talking to me today!"')
 
 
 if __name__ == '__main__':
