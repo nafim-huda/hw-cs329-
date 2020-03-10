@@ -748,10 +748,10 @@ df.add_system_transition(State.P4CERR2, State.P4C1A, '"I\'m sorry, could you res
 df.set_error_successor(State.P4C1A, State.P4CERR2)
 
 ### This is some code that creates a single loop, then moves into one of your later branches. If you think it helps, please feel free to use
+### If you do end up using the code, the state P4C1Asecond needs to be defined
 # df.add_system_transition(State.P4CERR2, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
 # df.set_error_successor(State.P4C1A, State.P4CERR2)
 
-### If you do end up using the code, the state P4C1Asecond needs to be defined
 # df.add_system_transition(State.P4C1Asecond, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
 # df.add_user_transition(State.P4C1Asecond, State.U4C4, "[$response=#ONT(ontclubs)]")
 # df.set_error_successor(State.P4C1Asecond, State.U4C4E1A2)
