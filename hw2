@@ -79,6 +79,7 @@ class State(Enum):
     U4C4 = auto()
     U4C5 = auto()
     P4C1A = auto()
+    P4C1Asecond = auto()
     P4C2B = auto()
     P4C3C = auto()
     P4C4D = auto()
@@ -203,6 +204,7 @@ class State(Enum):
     P4E2A1AERR = auto()
     P4E2A2AERR = auto()
     P4E2A2A2AERR = auto()
+    
 
 
 # TODO: create the ontology as needed
@@ -743,18 +745,15 @@ df.add_user_transition(State.First_negative_prompt, State.U4C5, "[$response=#ONT
 
 df.add_system_transition(State.U4C1, State.P4C1A, '"What do you do to de-stress from school?"')
 
-### Hi :) This will loop infinitely until a term is matched, which ends up becoming a guessing game.
-df.add_system_transition(State.P4CERR2, State.P4C1A, '"I\'m sorry, could you restate that?"')
+#df.add_system_transition(State.P4CERR2, State.P4C1A, '"I\'m sorry, could you restate that?"')
+#df.set_error_successor(State.P4C1A, State.P4CERR2)
+
+df.add_system_transition(State.P4CERR2, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
 df.set_error_successor(State.P4C1A, State.P4CERR2)
 
-### This is some code that creates a single loop, then moves into one of your later branches. If you think it helps, please feel free to use
-### If you do end up using the code, the state P4C1Asecond needs to be defined
-# df.add_system_transition(State.P4CERR2, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
-# df.set_error_successor(State.P4C1A, State.P4CERR2)
-
-# df.add_system_transition(State.P4C1Asecond, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
-# df.add_user_transition(State.P4C1Asecond, State.U4C4, "[$response=#ONT(ontclubs)]")
-# df.set_error_successor(State.P4C1Asecond, State.U4C4E1A2)
+df.add_system_transition(State.P4C1Asecond, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4C1Asecond, State.U4C4, "[$response=#ONT(ontclubs)]")
+df.set_error_successor(State.P4C1Asecond, State.U4C4E1A2)
 
 df.add_user_transition(State.P4C1A, State.U4C4, "[$response=#ONT(ontclubs)]")
 df.add_system_transition(State.U4C2, State.P4C2B,
