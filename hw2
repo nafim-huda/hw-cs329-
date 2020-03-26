@@ -738,14 +738,14 @@ ontology = {
                 "yelling",
                 "screaming",
                 "confrontation"
-            ]
+            ],
          ### anger ontologies ###
         "ontanger":
             [
                 "ontcontrol",
                 "ontinability",
                 "ontinevitable",
-                "ontavoidable".
+                "ontavoidable",
                 "onttried",
                 "ontfriend"
             ],
