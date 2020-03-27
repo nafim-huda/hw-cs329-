@@ -75,7 +75,7 @@ class State(Enum):
     FRIENDINTERMISSION = auto()
     FAMILYINTERMISSION = auto()
     INEVITABLEINTERMISSION = auto()
-    NOTINEVITABLEINTERMISSIO = auto()
+    NOTINEVITABLEINTERMISSION = auto()
     CONTROLINTERMISSION = auto()
     NOTCONTROLINTERMISSION = auto()
     ERRANG = auto()
@@ -850,7 +850,7 @@ df.add_system_transition(State.ANGER2, State.QUESTION2, '"Do you think getting a
 
 df.add_user_transition(State.QUESTION1, State.PERSON, "[$person=#ONT(ontfamily,ontfriend)]")
 df.add_user_transition(State.QUESTION1, State.ACTIVITY, '[$activity=#POS(verb)]')
-df.add_user_transition(State.QUESTION1, State.ANGER2, "")
+df.set_error_successor(State.QUESTION1, State.ANGER2)
 df.add_user_transition(State.QUESTION2, State.INEVITABLE, "[$inevitable=#ONT(ontinevitable)]")
 df.add_user_transition(State.QUESTION2, State.AVOIDABLE, "[$avoidable=#ONT(ontavoidable)]")
 
