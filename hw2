@@ -664,7 +664,13 @@ ontology = {
                 "luck",
                 "Luck",
                 "good",
-                "Good"
+                "Good",
+                "amazing",
+                "superb",
+                "ecstatic",
+                "wonderful",
+                "euphoric",
+                "delighted"
             ],
         "ontneutral":
             [
