@@ -465,7 +465,9 @@ ontology = {
                 "Job",
                 "Money",
                 "Pay",
-                "Income"
+                "Income",
+                "money",
+                "cash"
             ],
         "ontclubs":
             [
