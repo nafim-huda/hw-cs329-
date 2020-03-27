@@ -374,7 +374,16 @@ ontology = {
                 "onthotline",
                 "onteating",
                 "onteatingtoolittle",
-                "onteatingtoomuch"
+                "onteatingtoomuch",
+                "ontangry"
+                
+            ],
+        "ontangry":
+            [
+                "angry",
+                "mad",
+                "terrifying",
+                "anger"
             ],
         "onteating":
             [
