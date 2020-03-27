@@ -1006,15 +1006,15 @@ df.add_user_transition(State.First_negative_prompt, State.U4C5, "[$response=#ONT
 
 df.add_system_transition(State.U4C1, State.P4C1A, '"What do you do to de-stress from school?"')
 
-# df.add_system_transition(State.P4CERR2, State.P4C1A, '"I\'m sorry, could you restate that?"')
-# df.set_error_successor(State.P4C1A, State.P4CERR2)
-
-df.add_system_transition(State.P4CERR2, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR2, State.P4C1A, '"I\'m sorry, could you restate that?"')
 df.set_error_successor(State.P4C1A, State.P4CERR2)
 
-df.add_system_transition(State.P4C1Asecond, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
-df.add_user_transition(State.P4C1Asecond, State.U4C4, "[$response=#ONT(ontclubs)]")
-df.set_error_successor(State.P4C1Asecond, State.U4C4E1A2)
+#df.add_system_transition(State.P4CERR2, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
+#df.set_error_successor(State.P4C1A, State.P4CERR2)
+
+#df.add_system_transition(State.P4C1Asecond, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
+#df.add_user_transition(State.P4C1Asecond, State.U4C4, "[$response=#ONT(ontclubs)]")
+#df.set_error_successor(State.P4C1Asecond, State.U4C4E1A2)
 
 df.add_user_transition(State.P4C1A, State.U4C4, "[$response=#ONT(ontclubs)]")
 df.add_system_transition(State.U4C2, State.P4C2B,
