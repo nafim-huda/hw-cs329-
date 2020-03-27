@@ -856,7 +856,6 @@ df.add_user_transition(State.P3,State.confrontation_answer,'[$confrontation=#ONT
 
 ####### Move to anger branch ##########################
 df.add_user_transition(State.P3,State.ANGER1,'[$confrontation=#ONT(ontangry)]')
-df.add_user_transition(State.P3,State.ANGER2,'[$confrontation=#ONT(ontangry)]')
 ######################################################################
 
 # P3
