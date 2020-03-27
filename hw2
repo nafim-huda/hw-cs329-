@@ -809,6 +809,11 @@ df.set_error_successor(State.PROMPT, State.ERR)
 # df.set_error_successor(State.First_feeling_positive, State.ERR2)
 # df.set_error_successor(State.First_feeling_negative, State.ERR2)
 
+####### Move to anger branch ##########################
+df.add_user_transition(State.PROMPT,State.ANGER1,'[$confrontation=#ONT(ontangry)]')
+df.add_user_transition(State.PROMPT,State.ANGER2,'[$confrontation=#ONT(ontangry)]')
+######################################################################
+
 
 # Feeling Positive
 df.add_system_transition(State.First_feeling_positive, State.First_positive_prompt,
@@ -825,13 +830,28 @@ df.add_system_transition(State.First_feeling_negative, State.First_negative_prom
 df.add_user_transition(State.First_negative_prompt,State.confrontation_answer,'[$confrontation=#ONT(ontconfrontation)]')
 ######################################################################
 
+####### Move to anger branch ##########################
+df.add_user_transition(State.First_negative_prompt,State.ANGER1,'[$confrontation=#ONT(ontangry)]')
+df.add_user_transition(State.First_negative_prompt,State.ANGER2,'[$confrontation=#ONT(ontangry)]')
+######################################################################
+
 # U2B
 df.add_system_transition(State.U2B, State.P3, '"Can you tell me more about how you\'re feeling?"')
 df.set_error_successor(State.U2B, State.ERR2)
 
+
 # U2A
 df.add_system_transition(State.First_negative_prompt, State.P3, '"Why is that?"')
 df.set_error_successor(State.First_negative_prompt, State.ERR2)
+
+####### Move to confrontation branch ##########################
+df.add_user_transition(State.P3,State.confrontation_answer,'[$confrontation=#ONT(ontconfrontation)]')
+######################################################################
+
+####### Move to anger branch ##########################
+df.add_user_transition(State.P3,State.ANGER1,'[$confrontation=#ONT(ontangry)]')
+df.add_user_transition(State.P3,State.ANGER2,'[$confrontation=#ONT(ontangry)]')
+######################################################################
 
 # P3
 df.set_error_successor(State.P3, State.ERR2)
