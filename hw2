@@ -1294,8 +1294,16 @@ df.add_system_transition(State.confrontation_usual_when_answer, State.confrontat
 df.set_error_successor(State.confrontation_usual_when_answer, State.confrontation_treatment_journaling) ### Journaling
 # -> advice if error
 
-df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_advice_yn, "#ONT(ontaffirm)")
+####### Move to anger branch ##########################
+df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_usual_anger, "#ONT(ontaffirm)")
 # -> advice
+
+df.add_system_transition(State.confrontation_usual_anger,State.confrontation_usual_anger_answer, '"Did you feel angry?"')
+
+df.add_user_transition(State.confrontation_usual_anger_answer,State.QUESTION2, "#ONT(ontaffirm)")
+df.set_error_successor(State.confrontation_usual_anger_answer,State.confrontation_treatment_journaling)
+######################################################################
+
 df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_exposure_end, "#ONT(ontnegate)")
 # -> exposure
 
