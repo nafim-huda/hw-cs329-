@@ -271,6 +271,11 @@ class State(Enum):
     # ---- Have you met with (pronoun) since (time) where you haven't had a (confrontation)?
     confrontation_usual_when_yn = auto()
 
+    # ---- Did you feel angry?
+    confrontation_usual_anger = auto()
+    confrontation_usual_anger_answer = auto()
+
+
     # caught self & other branch ###################################################################
     # A: I (catch verb)
     confrontation_self_answer = auto()
@@ -367,6 +372,15 @@ class State(Enum):
 
     ############# END Confrontation #####################
 
+    #### Modified beginning #######
+    #positive response convo
+    First_positive_answer= auto()
+    First_positive_end= auto()
+    First_positive_reply= auto()
+    First_positive_ending= auto()
+    First_positive_alone= auto()
+    First_positive_end2= auto()
+    First_positive_ending2= auto()
 
 # TODO: create the ontology as needed
 ontology = {
@@ -465,9 +479,7 @@ ontology = {
                 "Job",
                 "Money",
                 "Pay",
-                "Income",
-                "money",
-                "cash"
+                "Income"
             ],
         "ontclubs":
             [
@@ -833,8 +845,30 @@ df.add_user_transition(State.PROMPT, State.ANGER2, '[$confrontation=#ONT(ontangr
 
 # Feeling Positive
 df.add_system_transition(State.First_feeling_positive, State.First_positive_prompt,
-                         '"That\'s great, good luck on the rest of life!"')
-df.add_user_transition(State.First_positive_prompt, State.END, "/.*/")
+                         '"That\'s great, anything interesting?"')
+
+# states:
+# First_positive_answer
+# First_positive_end
+# First_positive_reply
+# First_positive_ending
+# First_positive_alone
+# First_positive_end2
+# First_positive_ending2
+
+### small conversation branch for a positive response
+df.add_user_transition(State.First_positive_prompt,State.First_positive_answer,'[$thing=#POS(verb)]')
+df.set_error_successor(State.First_positive_prompt,State.First_positive_end)
+
+df.add_system_transition(State.First_positive_answer,State.First_positive_reply,'"Were with anyone when you were"$thing"?"')
+df.add_system_transition(State.First_positive_end,State.First_positive_ending,'"Cool, have a good day!"')
+
+df.add_user_transition(State.First_positive_reply,State.First_positive_alone,"#ONT(ontnegate)")
+df.set_error_successor(State.First_positive_reply,State.First_positive_end2)
+df.add_system_transition(State.First_positive_end2,State.First_positive_ending2,'"Right on!"')
+
+df.set_error_successor(State.First_positive_ending,error_successor=State.First_positive_ending)
+df.set_error_successor(State.First_positive_ending2,error_successor=State.First_positive_ending2)
 
 # Feeling Negative
 df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt,
@@ -1006,15 +1040,15 @@ df.add_user_transition(State.First_negative_prompt, State.U4C5, "[$response=#ONT
 
 df.add_system_transition(State.U4C1, State.P4C1A, '"What do you do to de-stress from school?"')
 
-df.add_system_transition(State.P4CERR2, State.P4C1A, '"I\'m sorry, could you restate that?"')
+# df.add_system_transition(State.P4CERR2, State.P4C1A, '"I\'m sorry, could you restate that?"')
+# df.set_error_successor(State.P4C1A, State.P4CERR2)
+
+df.add_system_transition(State.P4CERR2, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
 df.set_error_successor(State.P4C1A, State.P4CERR2)
 
-#df.add_system_transition(State.P4CERR2, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C1A, State.P4CERR2)
-
-#df.add_system_transition(State.P4C1Asecond, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
-#df.add_user_transition(State.P4C1Asecond, State.U4C4, "[$response=#ONT(ontclubs)]")
-#df.set_error_successor(State.P4C1Asecond, State.U4C4E1A2)
+df.add_system_transition(State.P4C1Asecond, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
+df.add_user_transition(State.P4C1Asecond, State.U4C4, "[$response=#ONT(ontclubs)]")
+df.set_error_successor(State.P4C1Asecond, State.U4C4E1A2)
 
 df.add_user_transition(State.P4C1A, State.U4C4, "[$response=#ONT(ontclubs)]")
 df.add_system_transition(State.U4C2, State.P4C2B,
@@ -1249,6 +1283,7 @@ df.add_system_transition(State.confrontation_cause_self, State.confrontation_usu
 # -> usual
 
 df.add_user_transition(State.confrontation_cause_prompt, State.confrontation_cause_other, '[$person=#POS(propn)]')
+
 df.add_system_transition(State.confrontation_cause_other, State.confrontation_intentional_yn,
                          '"Do you think it was intentional?"')
 # -> argument motive
@@ -1294,8 +1329,16 @@ df.add_system_transition(State.confrontation_usual_when_answer, State.confrontat
 df.set_error_successor(State.confrontation_usual_when_answer, State.confrontation_treatment_journaling) ### Journaling
 # -> advice if error
 
-df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_advice_yn, "#ONT(ontaffirm)")
+####### Move to anger branch ##########################
+df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_usual_anger, "#ONT(ontaffirm)")
 # -> advice
+
+df.add_system_transition(State.confrontation_usual_anger,State.confrontation_usual_anger_answer, '"Did you feel angry?"')
+
+df.add_user_transition(State.confrontation_usual_anger_answer,State.QUESTION2, "#ONT(ontaffirm)")
+df.set_error_successor(State.confrontation_usual_anger_answer,State.confrontation_treatment_journaling)
+######################################################################
+
 df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_exposure_end, "#ONT(ontnegate)")
 # -> exposure
 
@@ -1308,10 +1351,6 @@ df.set_error_successor(State.confrontation_advice_yn_answer, State.ENDwGREET)
 df.add_system_transition(State.confrontation_advice_calmer_yn, State.confrontation_advice_calmer_answer,
                          '"Okay, do you think a calmer attitude would have mitigated the"$confrontation"?"')
 df.set_error_successor(State.confrontation_advice_calmer_answer, State.confrontation_treatment_relaxedbreathing)
-
-df.add_system_transition(State.confrontation_treatment_placeholder, State.ENDwGREET,
-                         '"We\'re still researching the best advice to give, please come back soon"')
-# TO DO: add treatments
 
 
 ##### exposure
