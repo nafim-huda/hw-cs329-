@@ -1233,7 +1233,7 @@ df.add_system_transition(State.U4E2A2A1A1, State.END, '"Goodbye! Thanks for talk
 
 ########### Confrontation Branch (Yuewu) ########################
 df.add_system_transition(State.confrontation_answer, State.confrontation_cause_prompt,
-                         '[!"How did the"$confrontation"start?"]')
+                         '[!"How did the"$confrontation"start?" $pronoun="them"]')
 df.set_error_successor(State.confrontation_answer, State.confrontation_cause_self)
 # -> argument branchag
 
