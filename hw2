@@ -184,6 +184,9 @@ class State(Enum):
     P4CERR19 = auto()
     P4CERR20 = auto()
     P4CERR21 = auto()
+    A11 = auto()
+    A111 = auto()
+    A1111 = auto()
 
     P4D = auto()
     U4D1 = auto()
@@ -832,7 +835,11 @@ df.add_system_transition(State.First_feeling_positive, State.First_positive_prom
 df.add_user_transition(State.First_positive_prompt, State.END, "/.*/")
 
 # Feeling Negative
-df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt,
+df.add_system_transition(State.First_feeling_negative, State.A11, '"Do you go to college?"')
+df.add_user_transition(State.A11, State.A111, '[$conju=#ONT(ontaffirm)]')
+df.add_user_transition(State.A11, State.A1111, '[$conju=#ONT(ontnegate)]')
+
+df.add_system_transition(State.A111, State.First_negative_prompt,
                          '[!"What\'s been making you feel"$negative"?"]')
 # df.add_user_transition(State.x, State.U2B, '[$conju=#ONT(ontbecause)]')
 # df.set_error_successor(State.First_negative_prompt, State.ERR2)
