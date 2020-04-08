@@ -482,7 +482,14 @@ ontology = {
                 "extracurricular",
                 "Extracurricular",
                 "activity",
-                "Activity"
+                "Activity",
+                "watch",
+                "relax",
+                "chill",
+                "netflix",
+                "movie",
+                "movies",
+                "hulu"
             ],
         "ontdunno":
             [
@@ -578,11 +585,10 @@ ontology = {
                 "friend",
                 "Fun",
                 "great",
-                "Destress",
-                "Friend",
-                "Relax",
-                "Entertain",
-                "Enjoy"
+                "calming",
+                "calm",
+                "invigorate",
+                "invigorating"
             ],
         "onttired":
             [
@@ -743,8 +749,6 @@ ontology = {
                 "mhmm",
                 "okay",
                 "ok",
-                "OK",
-                "Ok",
                 "Okay",
                 "sure",
                 "alright"
@@ -1006,20 +1010,13 @@ df.add_user_transition(State.First_negative_prompt, State.U4C5, "[$response=#ONT
 
 df.add_system_transition(State.U4C1, State.P4C1A, '"What do you do to de-stress from school?"')
 
-df.add_system_transition(State.P4CERR2, State.P4C1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR2, State.P4C1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C1A, State.P4CERR2)
-
-#df.add_system_transition(State.P4CERR2, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
-#df.set_error_successor(State.P4C1A, State.P4CERR2)
-
-#df.add_system_transition(State.P4C1Asecond, State.P4C1Asecond, '"I\'m sorry, could you restate that?"')
-#df.add_user_transition(State.P4C1Asecond, State.U4C4, "[$response=#ONT(ontclubs)]")
-#df.set_error_successor(State.P4C1Asecond, State.U4C4E1A2)
 
 df.add_user_transition(State.P4C1A, State.U4C4, "[$response=#ONT(ontclubs)]")
 df.add_system_transition(State.U4C2, State.P4C2B,
                          '"Do you think your family places pressure on you? Or maybe you do it to yourself?"')
-df.add_system_transition(State.P4CERR3, State.P4C2B, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR3, State.P4C2B, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B, State.P4CERR3)
 df.add_system_transition(State.U4C3, State.P4C3C,
                          '"Has anything changed in your life recently? If so, what field of your life has changed?"')
@@ -1035,8 +1032,8 @@ df.set_error_successor(State.P4C2B1A, State.P4CERR5)
 df.add_system_transition(State.U4C2B2, State.P4C2B2A,
                          '"So you place pressure on yourself, I assume. Do you do any activities to destress?"')
 df.add_system_transition(State.U4C2B3, State.P4C2B2A,
-                         '"So you place pressure on yourself, I assume. Do you do any activities to detress?"')
-df.add_system_transition(State.P4CERR6, State.P4C2B2A, '"I\'m sorry, could you restate that?"')
+                         '"So you place pressure on yourself, I assume. Do you do any activities to destress?"')
+df.add_system_transition(State.P4CERR6, State.P4C2B2A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B2A, State.P4CERR6)
 df.add_user_transition(State.P4C2B2A, State.U4C2B2A1, "[$no=#ONT(ontnegate)]")
 df.add_user_transition(State.P4C2B2A, State.U4C2B2A3, "[$yes=#ONT(ontaffirm)]")
@@ -1050,19 +1047,19 @@ df.add_user_transition(State.P4C2B1A2A, State.U4C2B1A2A1, "[$yes=#ONT(ontaffirm)
 df.add_user_transition(State.P4C2B1A2A, State.U4C2B1A2A2, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4C2B1A2A1, State.P4C2B1A2A1A,
                          '"Great! Why don\'t you let me know how it goes next session?"')
-df.add_system_transition(State.P4CERR8, State.P4C2B1A2A1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR8, State.P4C2B1A2A1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B1A2A1A, State.P4CERR8)
 df.add_user_transition(State.P4C2B1A2A1A, State.U4C2B1A2A1A1, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4C2B1A2A1A, State.U4C2B1A2A1A2, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4C2B1A2A1A2, State.END, '"Goodbye! Thanks for talking to me today!"')
 df.add_system_transition(State.U4C2B1A2A1A1, State.END, '"Goodbye! Thanks for talking to me today!"')
 df.add_system_transition(State.U4C2B1A1, State.P4C2B1A1A, '"What did they say?"')
-df.add_system_transition(State.P4CERR9, State.P4C2B1A1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR9, State.P4C2B1A1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B1A1A, State.P4CERR9)
 df.add_user_transition(State.P4C2B1A1A, State.U4C2B1A1A1, "/.*/")
 df.add_system_transition(State.U4C2B1A1A1, State.P4C2B1A1A1A,
                          '"That\'s very interesting. Do you do any activities to take your mind off this stress? "')
-df.add_system_transition(State.P4CERR10, State.P4C2B1A1A1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR10, State.P4C2B1A1A1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B1A1A1A, State.P4CERR10)
 df.add_user_transition(State.P4C2B1A1A1A, State.U4C2B1A1A1A1, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4C2B1A1A1A, State.U4C2B1A1A1A2, "[$no=#ONT(ontnegate)]")
@@ -1070,18 +1067,18 @@ df.add_system_transition(State.U4C2B2A1, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
 df.add_system_transition(State.U4C2B1A1A1A2, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
-df.add_system_transition(State.P4CERR11, State.P4C2B2A1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR11, State.P4C2B2A1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B2A1A, State.P4CERR11)
 df.add_user_transition(State.P4C2B2A1A, State.U4C2B2A1A1, "/.*/")
 df.add_system_transition(State.U4C2B2A1A1, State.P4C2B2A1A1A,
                          '"Does your college have a club for this? What is it called?"')
-df.add_system_transition(State.P4CERR12, State.P4C2B2A1A1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR12, State.P4C2B2A1A1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B2A1A1A, State.P4CERR12)
 df.add_user_transition(State.P4C2B2A1A1A, State.U4C2B2A1A1A2, "[$no=#ONT(ontnegate)]")
 df.add_user_transition(State.P4C2B2A1A1A, State.U4C2B2A1A1A1, "[$response=#ONT(ontclubs)]")
 df.add_system_transition(State.U4C2B2A1A1A2, State.P4C2B2A1A1A2A,
                          '"That\'s unfortunate. Why don\'t you seek out off-campus resources for this activity and let me know how it goes next time?"')
-df.add_system_transition(State.P4CERR13, State.P4C2B2A1A1A2A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR13, State.P4C2B2A1A1A2A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B2A1A1A2A, State.P4CERR13)
 df.add_user_transition(State.P4C2B2A1A1A2A, State.U4C2B2A1A1A2A2, "[$yes=#ONT(ontaffirm)]")
 df.add_system_transition(State.U4C2B2A1A1A2A2, State.END, '"Goodbye! Thanks for talking to me today!"')
@@ -1105,11 +1102,11 @@ df.add_system_transition(State.U4C4D1A2A2, State.P4C2B1A2A2A,
                          '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
 df.add_system_transition(State.U4C2B2A3, State.P4C2B2A3A, '"Which activities do you participate in?"')
 df.add_system_transition(State.U4C2B1A1A1A1, State.P4C2B2A3A, '"Which activities do you participate in?"')
-df.add_system_transition(State.P4CERR15, State.P4C2B2A3A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR15, State.P4C2B2A3A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C2B2A3A, State.P4CERR15)
 df.add_user_transition(State.P4C2B2A3A, State.P4C, "/.*/")
 df.add_system_transition(State.P4C, State.P4C4D, '"Why do you participate in this?"')
-df.add_user_transition(State.P4C4D, State.U4C4D2, "[$response=#ONT(ontbadclub])")
+df.add_user_transition(State.P4C4D, State.U4C4D2, "[$response=#ONT(ontbadclub)]")
 df.add_user_transition(State.P4C4D, State.U4C4D1, "[$response=#ONT(ontfunclub)]")
 df.add_system_transition(State.U4C2B4, State.P4C2B4A,
                          '"I suggest you first try to figure out where this pressure is coming from, then. Do you do any activities to destress?"')
@@ -1117,7 +1114,7 @@ df.add_system_transition(State.P4CERR16, State.P4C2B4A, '"I\'m sorry, could you 
 df.set_error_successor(State.P4C2B4A, State.P4CERR16)
 df.add_user_transition(State.P4C2B4A, State.P4C1, "/.*/")
 df.add_system_transition(State.P4C1, State.P4C4D, '"Why do you participate in $reponse?"')
-df.add_system_transition(State.P4CERR17, State.P4C4D, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR17, State.P4C4D, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C4D, State.P4CERR17)
 df.add_system_transition(State.U4C4, State.P4C4D, '"Why do you participate in $reponse?"')
 df.add_system_transition(State.U4C4D1, State.P4C4D1A,
@@ -1148,13 +1145,13 @@ df.add_user_transition(State.P4C4D2A, State.U4C4D2A1, "/.*/")
 df.add_system_transition(State.U4C4D2A1, State.P4C4E1A1A,
                          '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
 df.add_system_transition(State.U4C4E1, State.P4C4E1A, '"Do you enjoy your job at all?"')
-df.add_system_transition(State.P4CERR19, State.P4C4E1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR19, State.P4C4E1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C4E1A, State.P4CERR19)
 df.add_user_transition(State.P4C4E1A, State.U4C4E1A1, "[$yes=#ONT(ontaffirm])")
 df.add_user_transition(State.P4C4E1A, State.U4C4E1A2, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4C4E1A2, State.P4C4E1A2A,
                          '"Well, do you participate in an extracurricular that you enjoy?"')
-df.add_system_transition(State.P4CERR20, State.P4C4E1A2A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR20, State.P4C4E1A2A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C4E1A2A, State.P4CERR20)
 df.add_user_transition(State.P4C4E1A2A, State.U4C4E1A2A1, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4C4E1A2A, State.U4C4E1A2A2, "[$no=#ONT(ontnegate)]")
@@ -1163,7 +1160,7 @@ df.add_system_transition(State.U4C4E1A2A2, State.P4C2B2A1A,
                          '"That\'s not good! You should always participate in something you enjoy. What would you do for fun if you had the time?"')
 df.add_system_transition(State.U4C4E1A1, State.P4C4E1A1A,
                          '"That\'s good, that you have something you enjoy. So what stresses you out about it?"')
-df.add_system_transition(State.P4CERR21, State.P4C4E1A1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4CERR21, State.P4C4E1A1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C4E1A1A, State.P4CERR21)
 df.add_user_transition(State.P4C4E1A1A, State.U4C1, "[$response=#ONT(ontschool)]")
 df.add_user_transition(State.P4C4E1A1A, State.U4C4E1A1B, "[$response=#ONT(onttired)]")
@@ -1183,17 +1180,17 @@ df.add_system_transition(State.P4D1, State.END, '"Goodbye! Thanks for talking to
 df.add_user_transition(State.First_negative_prompt, State.U4EA, "[$response=#ONT(onteating)]")
 df.add_system_transition(State.U4EA, State.P4E,
                          '"Oh no! Eating regularly and healthily is a very important part of growing. Can you tell me more about your problem?"')
-df.add_system_transition(State.P4EERR, State.P4E, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4EERR, State.P4E, '"Could you explain a little further?"')
 df.add_user_transition(State.P4E, State.U4E1, "[$response=#ONT(onteatingtoomuch)]")
 df.add_user_transition(State.P4E, State.U4E2, "[$response=#ONT(onteatingtoolittle)]")
 df.add_system_transition(State.U4E1, State.P4E1A,
                          '"Haha, weight gain is common in college students. Do you think it actually harms you, though?"')
-df.add_system_transition(State.P4E1AERR, State.P4E1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4E1AERR, State.P4E1A, '"Could you explain a little further?"')
 df.add_user_transition(State.P4E1A, State.U4E1A2, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4E1A, State.U4E1A1, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4E1A2, State.P4E1A2A,
                          '"You may eat excessively because you are stressed. Has anything been stressing you out recently?"')
-df.add_system_transition(State.P4E1A2AERR, State.P4E1A2A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4E1A2AERR, State.P4E1A2A, '"Could you explain a little further?"')
 df.add_user_transition(State.P4E1A2A, State.U4C1, "[$response=#ONT(ontschool)]")
 df.add_user_transition(State.P4E1A2A, State.U4C2, "[$response=#ONT(ontfamily)]")
 df.add_user_transition(State.P4E1A2A, State.U4C3, "[$response=#ONT(ontdunno)]")
@@ -1201,17 +1198,17 @@ df.add_user_transition(State.P4E1A2A, State.U4C4, "[$response=#ONT(ontclubs)]")
 df.add_user_transition(State.P4E1A2A, State.U4C5, "[$response=#ONT(ontwork)]")
 df.add_system_transition(State.U4E1A1, State.P4E1A2B,
                          '"Haha, I think you\'re doing just fine. Your body is just growing, as it should be. "')
-df.add_system_transition(State.P4E1A2BERR, State.P4E1A2B, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4E1A2BERR, State.P4E1A2B, '"Could you explain a little further?"')
 df.add_user_transition(State.P4E1A2B, State.U4E1A2B1, "/.*/")
 df.add_system_transition(State.U4E1A2B1, State.END, '"Goodbye! Thanks for talking to me today!"')
 df.add_system_transition(State.U4E2, State.P4E2A,
                          '"Oh no, that\'s a problem! You need to eat. Are you on a meal plan?"')
-df.add_system_transition(State.P4E2AERR, State.P4E2A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4E2AERR, State.P4E2A, '"Could you explain a little further?"')
 df.add_user_transition(State.P4E2A, State.U4E2A1, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4E2A, State.U4E2A2, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4E2A1, State.P4E2A1A,
                          '" I think you need to make more of an effort to go to dining halls. They have very healthy options. Can you try that?"')
-df.add_system_transition(State.P4E2A1AERR, State.P4E2A1A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4E2A1AERR, State.P4E2A1A, '"Could you explain a little further?"')
 df.add_user_transition(State.P4E2A1A, State.U4E2A1A1, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4E2A1A, State.U4E2A1A2, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4E2A1A1, State.END, '"Goodbye! Thanks for talking to me today!"')
@@ -1219,12 +1216,12 @@ df.add_system_transition(State.U4E2A1A2, State.P4C2B1A2A2A,
                          '"I think this inability to take action holds you back. Why don\'t you brace yourself to take action and then we can talk again next time?"')
 df.add_system_transition(State.U4E2A2, State.P4E2A2A,
                          '"Then you need to start grocery shopping for yourself. Is money a problem?"')
-df.add_system_transition(State.P4E2A2AERR, State.P4E2A2A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4E2A2AERR, State.P4E2A2A, '"Could you explain a little further??"')
 df.add_user_transition(State.P4E2A2A, State.U4E2A2A2, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4E2A2A, State.U4E2A2A1, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4E2A2A2, State.P4E2A2A2A,
                          '"You should talk to your career center about finding a job. You need to eat. Do you think you can look for a job?"')
-df.add_system_transition(State.P4E2A2A2AERR, State.P4E2A2A2A, '"I\'m sorry, could you restate that?"')
+df.add_system_transition(State.P4E2A2A2AERR, State.P4E2A2A2A, '"Could you explain a little further?"')
 df.add_user_transition(State.P4E2A2A2A, State.U4E2A1A1, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4E2A2A2A, State.U4E2A1A2, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4E2A2A1, State.P4E2A2A1A, '"Good, then you should go grocery shopping more often."')
