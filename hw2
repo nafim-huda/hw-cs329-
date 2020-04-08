@@ -599,7 +599,111 @@ ontology = {
                 "ontmichigan",
                 "ontbadstate",
                 "ontokaystate",
-                "ontcorona"
+                "ontcorona",
+                "ontstillbusy",
+                "ontgoodactivities",
+                "ontbadactivities",
+                "ontwasteoftime"
+            ],
+        "ontstillbusy":
+            [
+                "still busy",
+                "lots of work",
+                "stressed",
+                "too much work",
+                "busy",
+                "work"
+            ],
+        "ontgoodactivities":
+            [
+                "knitting",
+                "knit",
+                "knitted",
+                "baking",
+                "bakes",
+                "made",
+                "making",
+                "homework",
+                "school",
+                "schoolwork",
+                "family",
+                "mom",
+                "dad",
+                "mother",
+                "father",
+                "sister",
+                "brother",
+                "sibling",
+                "siblings",
+                "creating",
+                "create",
+                "created",
+                "hobby",
+                "exploring",
+                "explore",
+                "explored",
+                "reading",
+                "book",
+                "books",
+                "read",
+                "growing",
+                "grow",
+                "grew",
+                "building",
+                "build",
+                "built",
+                "yoga",
+                "job",
+                "organizing",
+                "cleaning",
+                "organize",
+                "organized",
+                "clean",
+                "cleaned"
+                "staying home",
+                "social distancing",
+                "social distance"
+            ],
+        "ontbadactivities":
+            [
+                "stressing",
+                "worrying",
+                "money",
+                "financial",
+                "finances",
+                "lost my job",
+                "lost job",
+                "unemployed,",
+                "crying",
+                "cry",
+                "cried",
+                "sad",
+                "depressed",
+                "depression",
+                "shock",
+                "shocked",
+                "news",
+                "checking",
+                "refreshing"
+            ],
+        "ontwasteoftime":
+            [
+                "netflix",
+                "movies",
+                "tv",
+                "television",
+                "hulu",
+                "nothing",
+                "blanking out",
+                "instagram",
+                "scrolling",
+                "phone",
+                "bed",
+                "sleeping",
+                "social media",
+                "tik tok",
+                "memes",
+                "youtube"
             ],
         "ontcorona":
             [
@@ -1038,16 +1142,9 @@ ontology = {
         "ontaffirm":
             [
                 "yes",
-                "Yes",
-                "YES",
                 "yea",
-                "YEA",
                 "Yea",
                 "yeah",
-                "Yeah",
-                "YEAH",
-                "Yep",
-                "YEP",
                 "yep",
                 "mhm",
                 "mmhmm",
@@ -1055,9 +1152,14 @@ ontology = {
                 "mhmm",
                 "okay",
                 "ok",
-                "Okay",
                 "sure",
-                "alright"
+                "alright",
+                "i know",
+                "sure",
+                "noted",
+                "agree",
+                "great",
+                "good"
             ],
         "ontnegate":
             [
@@ -1695,6 +1797,16 @@ df.add_user_transition(State.S5, State.U10, "[$checkin=#ONT(ontnegative)]")
 df.add_user_transition(State.S9, State.U9, "[$checkin=#ONT(ontpositive,ontneutral)]")
 df.add_user_transition(State.S9, State.U10, "[$checkin=#ONT(ontnegative)]")
 df.add_system_transition(State.U9, State.S10, '"Well I\'m glad you\'re not suffering! What do you spend your free time doing?"')
+df.add_system_transition(State.U10, State.S11, '"Oh no! I\'m sorry that the current events have affected your mental health. What have you been doing to keep busy?"')
+df.add_user_transition(State.S10, State.U12, "[$checkin=#ONT(ontstillbusy)]")
+df.add_user_transition(State.S10, State.U13, "[$checkin=#ONT(ontgoodactivities)]")
+df.add_user_transition(State.S10, State.U14, "[$checkin=#ONT(ontbadactivities)]")
+df.add_user_transition(State.S10, State.U15, "[$checkin=#ONT(ontwasteoftime)]")
+df.add_user_transition(State.S11, State.U12, "[$checkin=#ONT(ontstillbusy)]")
+df.add_user_transition(State.S11, State.U13, "[$checkin=#ONT(ontgoodactivities)]")
+df.add_user_transition(State.S11, State.U14, "[$checkin=#ONT(ontbadactivities)]")
+df.add_user_transition(State.S11, State.U15, "[$checkin=#ONT(ontwasteoftime)]")
+
 
 if __name__ == '__main__':
     df.run(debugging=False)
