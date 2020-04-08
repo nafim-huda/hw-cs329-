@@ -223,6 +223,7 @@ class State(Enum):
     P4E2A1AERR = auto()
     P4E2A2AERR = auto()
     P4E2A2A2AERR = auto()
+    S1 = auto()
 
     # Yuewu Zhou ######################################################################################################
     # confrontation branch ###################################################################
@@ -390,8 +391,97 @@ ontology = {
                 "onteating",
                 "onteatingtoolittle",
                 "onteatingtoomuch",
-                "ontangry"
-
+                "ontangry",
+                "ontnewyork",
+                "ontnewjersey",
+                "ontcalifornia",
+                "ontmichigan",
+                "ontbadstate",
+                "ontokaystate"
+            ],
+        "ontnewjersey":
+            [
+                "new jersey"
+                "nj"
+            ],
+        "ontcalifornia":
+            [
+                "california",
+                "cali"
+            ],
+        "ontmichigan":
+            [
+                "michigan",
+                "mich"
+            ],
+        "ontbadstate":
+            [
+                "louisiana",
+                "pennsylvania",
+                "florida",
+                "massachusetts",
+                "illinois",
+                "georgia",
+                "texas",
+                "washington",
+                "connecticut",
+                "indiana",
+                "maryland",
+                "colorado",
+                "ohio",
+                "tennessee",
+                "virginia",
+                "north carolina",
+                "nc",
+                "missouri",
+                "arizona",
+                "wisconsin",
+                "south carolina",
+                "sc",
+                "alabama",
+                "nevada",
+                "mississippi",
+                "utah",
+                "oklahoma",
+                "district of columbia",
+                "washington dc",
+                "dc",
+                "kentucky",
+                "rhode island",
+                "idaho",
+                "oregon",
+                "minnesota",
+                "iowa",
+                "arkansas",
+                "kansas"
+            ],
+        "ontokaystate":
+            [
+                "delaware",
+                "new mexico",
+                "nm",
+                "new hampshire",
+                "nh",
+                "puerto rico",
+                "vermont",
+                "maine",
+                "nebraska",
+                "west virginia",
+                "wv",
+                "hawaii",
+                "south dakota",
+                "montana",
+                "guam",
+                "north dakota",
+                "wyoming",
+                "alaska",
+                "virgin islands",
+                "northern mariana islands",
+            ],
+        "ontnewyork":
+            [
+              "new york"
+              "nyc"
             ],
         "ontangry":
             [
@@ -1346,6 +1436,9 @@ df.add_system_transition(State.confrontation_treatment_journaling2,State.confron
 
 # ENDwGREET
 df.add_system_transition(State.ENDwGREET, State.EXIT, '"Alright, have a nice day!"')
+
+#############ANGELA
+df.add_system_transition(State.A1111, State.S1, '"Haha, the world is pretty crazy now isn\'t it? Which state are you from?"')
 
 if __name__ == '__main__':
     df.run(debugging=False)
