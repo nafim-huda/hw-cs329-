@@ -224,6 +224,15 @@ class State(Enum):
     P4E2A2AERR = auto()
     P4E2A2A2AERR = auto()
     S1 = auto()
+    S2 = auto()
+    U1 = auto()
+    U2 = auto()
+    U3 = auto()
+    U4 = auto()
+    U5 = auto()
+    U6 = auto()
+    U7 = auto()
+    U8 = auto()
 
     # Yuewu Zhou ######################################################################################################
     # confrontation branch ###################################################################
@@ -1438,7 +1447,16 @@ df.add_system_transition(State.confrontation_treatment_journaling2,State.confron
 df.add_system_transition(State.ENDwGREET, State.EXIT, '"Alright, have a nice day!"')
 
 #############ANGELA
-df.add_system_transition(State.A1111, State.S1, '"Haha, the world is pretty crazy now isn\'t it? Which state are you from?"')
+df.add_system_transition(State.A1111, State.S2, '"Haha, the world is pretty crazy now isn\'t it? Are you in the US?"')
+df.add_user_transition(State.S2, State.U7, "#ONT(ontaffirm)")
+df.add_user_transition(State.S2, State.U8, "#ONT(ontnegate)")
+df.add_system_transition(State.U7, State.S1, '"Which state are you in right now?"')
+df.add_user_transition(State.S1, State.U1, "#ONT(ontnewjersey)")
+df.add_user_transition(State.S1, State.U2, "#ONT(ontnewyork)")
+df.add_user_transition(State.S1, State.U3, "#ONT(ontcalifornia)")
+df.add_user_transition(State.S1, State.U4, "#ONT(ontmichigan)")
+df.add_user_transition(State.S1, State.U5, "#ONT(ontbadstate)")
+df.add_user_transition(State.S1, State.U6, "#ONT(ontokaystate)")
 
 if __name__ == '__main__':
     df.run(debugging=False)
