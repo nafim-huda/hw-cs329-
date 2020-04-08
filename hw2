@@ -703,7 +703,14 @@ ontology = {
                 "social media",
                 "tik tok",
                 "memes",
-                "youtube"
+                "youtube",
+                "facebook",
+                "scrolling",
+                "napping",
+                "napped",
+                "naps",
+                "slept",
+                "sleep"
             ],
         "ontcorona":
             [
@@ -1806,6 +1813,14 @@ df.add_user_transition(State.S11, State.U12, "[$checkin=#ONT(ontstillbusy)]")
 df.add_user_transition(State.S11, State.U13, "[$checkin=#ONT(ontgoodactivities)]")
 df.add_user_transition(State.S11, State.U14, "[$checkin=#ONT(ontbadactivities)]")
 df.add_user_transition(State.S11, State.U15, "[$checkin=#ONT(ontwasteoftime)]")
+df.add_system_transition(State.U12, State.U13, '"Well, it\'s good that you\'re still busy but make sure you make time for yourself! Do you do any activities to relax?"')
+df.add_user_transition(State.S12, State.U13, "[$checkin=#ONT(ontgoodactivities)]")
+df.add_user_transition(State.S12, State.U14, "[$checkin=#ONT(ontbadactivities)]")
+df.add_user_transition(State.S12, State.U16, "[$checkin=#ONT(ontaffirm)]")
+df.add_system_transition(State.U16, State.S13, '"Well, what do you do to relax?"')
+df.add_user_transition(State.S13, State.U13, "[$checkin=#ONT(ontgoodactivities)]")
+df.add_user_transition(State.S13, State.U14, "[$checkin=#ONT(ontbadactivities)]")
+df.add_user_transition((State.S12, State.U17, "[$checkin=#ONT(ontnegate)]")
 
 
 if __name__ == '__main__':
