@@ -647,7 +647,6 @@ ontology = {
                 "sadness",
                 "fear",
                 "bad",
-                "Bad",
                 "scared",
                 "scare",
                 "scary",
@@ -665,26 +664,18 @@ ontology = {
                 "happy",
                 "Happy",
                 "joy",
-                "Joy",
                 "love",
-                "Love",
                 "great",
-                "Great",
                 "euphoria",
-                "Euphoria",
+                "euphoric",
                 "super",
-                "Super",
                 "best",
-                "Best",
                 "amazing",
                 "amaze",
                 "amazed",
                 "gold",
-                "Gold",
                 "luck",
-                "Luck",
-                "good",
-                "Good"
+                "good"
             ],
         "ontneutral":
             [
@@ -693,12 +684,10 @@ ontology = {
                 "fine",
                 "okay",
                 "neutral",
-                "Good",
-                "Ok",
-                "OK",
-                "Okay",
-                "OKAY",
-                "Neutral"
+                "okay",
+                "nothing"
+                "don\'t care"
+                "dont care"
             ],
         "ontunexpected":
             [
@@ -710,7 +699,9 @@ ontology = {
                 "jumped",
                 "startled",
                 "Jump",
-                "jump"
+                "jump",
+                "scare",
+                "scared"
             ],
         "ontperception":
             [
