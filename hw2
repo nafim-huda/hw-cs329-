@@ -950,7 +950,11 @@ ontology = {
                 "ontfamily",
                 "ontdunno",
                 "ontwork",
-                "ontunsure"
+                "ontunsure",
+                "lonely",
+                "loneliness",
+                "alone",
+                "isolated"
             ],
         "ontpositive":
             [
@@ -979,9 +983,12 @@ ontology = {
                 "okay",
                 "neutral",
                 "okay",
-                "nothing"
-                "don\'t care"
-                "dont care"
+                "nothing",
+                "don\'t care",
+                "dont care",
+                "bored",
+                "boring",
+                "bore"
             ],
         "ontunexpected":
             [
@@ -1655,6 +1662,21 @@ df.add_system_transition(State.U1, State.S5, '"Yikes, NJ is not a good place to 
 df.add_system_transition(State.U2, State.S6, '"Yikes, NYC is very scary right now. How are you doing with social distancing?"')
 df.add_system_transition(State.U3, State.S7, '"Not as bad as New York, but I\'m sure it\'s still bad in California. How are you going with social distancing?"')
 df.add_system_transition(State.U4, State.S8, '"Yeah, I\'m personally surprised Michigan is up there with NY and NJ in coronavirus cases! How are you doing with social distancing?"')
+df.add_system_transition(State.U8, State.S9, '"Well, how are you doing with social distancing?"')
+df.add_user_transition(State.S3, State.U9, "[$checkin=#ONT(ontpositive,ontneutral)]")
+df.add_user_transition(State.S3, State.U10, "[$checkin=#ONT(ontnegative)]")
+df.add_user_transition(State.S4, State.U9, "[$checkin=#ONT(ontpositive,ontneutral)]")
+df.add_user_transition(State.S4, State.U10, "[$checkin=#ONT(ontnegative)]")
+df.add_user_transition(State.S8, State.U9, "[$checkin=#ONT(ontpositive,ontneutral)]")
+df.add_user_transition(State.S8, State.U10, "[$checkin=#ONT(ontnegative)]")
+df.add_user_transition(State.S7, State.U9, "[$checkin=#ONT(ontpositive,ontneutral)]")
+df.add_user_transition(State.S7, State.U10, "[$checkin=#ONT(ontnegative)]")
+df.add_user_transition(State.S6, State.U9, "[$checkin=#ONT(ontpositive,ontneutral)]")
+df.add_user_transition(State.S6, State.U10, "[$checkin=#ONT(ontnegative)]")
+df.add_user_transition(State.S5, State.U9, "[$checkin=#ONT(ontpositive,ontneutral)]")
+df.add_user_transition(State.S5, State.U10, "[$checkin=#ONT(ontnegative)]")
+df.add_user_transition(State.S9, State.U9, "[$checkin=#ONT(ontpositive,ontneutral)]")
+df.add_user_transition(State.S9, State.U10, "[$checkin=#ONT(ontnegative)]")
 
 if __name__ == '__main__':
     df.run(debugging=False)
