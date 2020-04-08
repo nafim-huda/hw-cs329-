@@ -602,7 +602,7 @@ ontology = {
             ],
         "ontnewjersey":
             [
-                "new jersey"
+                "new jersey",
                 "nj"
             ],
         "ontcalifornia":
@@ -1649,9 +1649,12 @@ df.add_user_transition(State.S1, State.U3, "#ONT(ontcalifornia)")
 df.add_user_transition(State.S1, State.U4, "#ONT(ontmichigan)")
 df.add_user_transition(State.S1, State.U5, "#ONT(ontbadstate)")
 df.add_user_transition(State.S1, State.U6, "#ONT(ontokaystate)")
-df.add_system_transition(State.U6, State.S3, '"Oh, I heard that corona not too bad there! How are you doing in quarantine?"')
-df.add_system_transition(State.U5, State.S4, '"ikes, I hear corona is spreading very quickly there. How are you doing with social distancing?"')
-
+df.add_system_transition(State.U6, State.S3, '"Oh, I heard that corona not too bad there! How are you doing with social distancing?"')
+df.add_system_transition(State.U5, State.S4, '"Yikes, I hear corona is spreading very quickly there. How are you doing with social distancing?"')
+df.add_system_transition(State.U1, State.S5, '"Yikes, NJ is not a good place to be right now. How are you doing with social distancing?"')
+df.add_system_transition(State.U2, State.S6, '"Yikes, NYC is very scary right now. How are you doing with social distancing?"')
+df.add_system_transition(State.U3, State.S7, '"Not as bad as New York, but I\'m sure it\'s still bad in California. How are you going with social distancing?"')
+df.add_system_transition(State.U4, State.S8, '"Yeah, I\'m personally surprised Michigan is up there with NY and NJ in coronavirus cases! How are you doing with social distancing?"')
 
 if __name__ == '__main__':
     df.run(debugging=False)
