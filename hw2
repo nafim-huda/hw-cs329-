@@ -1561,12 +1561,12 @@ df.add_system_transition(State.CHECKINRESP7, State.NOTCONTROLINTERMISSION,
                          '"Well, I need to step outside for a quick second. When I get back, I\'d like to start talking through potential solutions for your problem"')
 
 # ERROR SYSTEM TRANSITIONS
-df.add_system_transition(State.ERRANG, State.ERRANG, '"I don't know that person"')
-df.add_system_transition(State.ERRANG1, State.ERRANG1, '"I've never heard of that activity"')
-df.add_system_transition(State.ERRANG2, State.ERRANG2, '"I've not heard of that type of friend"')
-df.add_system_transition(State.ERRANG3, State.ERRANG3, '"I've not heard of that type of family member"')
+df.add_system_transition(State.ERRANG, State.ERRANG, '"I don\'t know that person"')
+df.add_system_transition(State.ERRANG1, State.ERRANG1, '"I\'ve never heard of that activity"')
+df.add_system_transition(State.ERRANG2, State.ERRANG2, '"I\'ve not heard of that type of friend"')
+df.add_system_transition(State.ERRANG3, State.ERRANG3, '"I\'ve not heard of that type of family member"')
 # USE THE BELOW ERROR STATE FOR THE INEVITABLE/AVOIDABLE BRANCHES
-df.add_system_transition(State.ERRANG4, State.ERRANG4, '"I don't understand"')
+df.add_system_transition(State.ERRANG4, State.ERRANG4, '"I don\'t understand"')
 df.add_system_transition(State.ERRANG5, State.ERRANG5, '"I have not heard of that feeling"')
 
 # ERROR SUCCESSOR STATES
