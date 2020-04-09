@@ -663,7 +663,11 @@ ontology = {
                 "staying home",
                 "social distancing",
                 "social distance",
-                "quarantine"
+                "quarantine",
+                "journaling",
+                "scrapbooking",
+                "journal",
+                "scrapbook"
             ],
         "ontbadactivities":
             [
@@ -685,7 +689,10 @@ ontology = {
                 "shocked",
                 "news",
                 "checking",
-                "refreshing"
+                "refreshing",
+                "videogames",
+                "gaming",
+                "games"
             ],
         "ontwasteoftime":
             [
@@ -1902,6 +1909,10 @@ df.add_user_transition(State.S14, State.U13, "[$checkin=#ONT(ontgoodactivities)]
 df.add_user_transition(State.S13, State.U15, "[$checkin=#ONT(ontwasteoftime)]")
 df.add_user_transition(State.S14, State.U14, "[$checkin=#ONT(ontbadactivities)]")
 df.add_user_transition(State.S14, State.U15, "[$checkin=#ONT(ontwasteoftime)]")
-
+df.add_system_transition(State.U13, State.S15, '"That\'s a great way to spend your time! If you keep doing that, I think you\'ll be okay once this all passes. I would also suggest reminding yourself of everything you have to be grateful for."')
+df.add_user_transition(State.S15, State.U19, "/.*/")
+df.add_system_transition(State.U19, State.S16, '"Thanks for talking to me today! Hope we can talk again sometime."')
+df.add_system_transition(State.U15, State.S17, '"That\'s not the best way to spend your time, but I get that things are a little crazy right now. At least you\'re relaxed."')
+df.add_system_transition(State.U14, State.S18, '"Oh no! What has made you do this?"')
 if __name__ == '__main__':
     df.run(debugging=False)
