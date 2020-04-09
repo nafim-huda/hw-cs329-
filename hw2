@@ -662,7 +662,8 @@ ontology = {
                 "cleaned"
                 "staying home",
                 "social distancing",
-                "social distance"
+                "social distance",
+                "quarantine"
             ],
         "ontbadactivities":
             [
@@ -724,7 +725,8 @@ ontology = {
         "ontnewjersey":
             [
                 "new jersey",
-                "nj"
+                "nj",
+                "garden"
             ],
         "ontcalifornia":
             [
@@ -739,16 +741,21 @@ ontology = {
         "ontbadstate":
             [
                 "louisiana",
+                "la",
                 "pennsylvania",
+                "pa",
                 "florida",
                 "massachusetts",
+                "ma",
                 "illinois",
                 "georgia",
+                "ga",
                 "texas",
                 "washington",
                 "connecticut",
                 "indiana",
                 "maryland",
+                "md",
                 "colorado",
                 "ohio",
                 "tennessee",
@@ -770,11 +777,13 @@ ontology = {
                 "dc",
                 "kentucky",
                 "rhode island",
+                "ri",
                 "idaho",
                 "oregon",
                 "minnesota",
                 "iowa",
                 "arkansas",
+                "ar",
                 "kansas"
             ],
         "ontokaystate":
@@ -785,18 +794,22 @@ ontology = {
                 "new hampshire",
                 "nh",
                 "puerto rico",
+                "pr",
                 "vermont",
+                "vm",
                 "maine",
                 "nebraska",
                 "west virginia",
                 "wv",
                 "hawaii",
                 "south dakota",
+                "sd"
                 "montana",
                 "guam",
                 "north dakota",
                 "wyoming",
                 "alaska",
+                "ak",
                 "virgin islands",
                 "northern mariana islands",
             ],
@@ -815,16 +828,17 @@ ontology = {
         "onteating":
             [
                 "eat",
-                "eating"
+                "eating",
+                "feasting",
+                "feast",
                 "food",
                 "nutrition",
                 "vitamins",
                 "calorie",
                 "calories"
                 "hungry",
-                "binge"
+                "binge",
                 "binge-eating"
-                "eating"
             ],
         "onteatingtoolittle":
             [
@@ -832,7 +846,14 @@ ontology = {
                 "enough",
                 "hungry",
                 "malnourished",
-                "nourished"
+                "nourished",
+                "small",
+                "skinny",
+                "wee",
+                "bite-sized",
+                "bitesized",
+                "mini",
+                "tiny"
             ],
         "onteatingtoomuch":
             [
@@ -846,7 +867,9 @@ ontology = {
                 "bad",
                 "overeat",
                 "overeating",
-                "over-eating"
+                "over-eating",
+                "feasting",
+                "feast"
             ],
         "onthotline":
             [
@@ -865,9 +888,10 @@ ontology = {
                 "idk",
                 "don't",
                 "know",
-                "Unsure",
-                "Dunno",
-                "IDK"
+                "don't know",
+                "no idea",
+                "confused",
+                "confuse"
             ],
         "ontwork":
             [
@@ -876,13 +900,11 @@ ontology = {
                 "money",
                 "pay",
                 "income",
-                "Work",
-                "Job",
-                "Money",
-                "Pay",
                 "Income",
                 "money",
-                "cash"
+                "cash",
+                "paycheck",
+                "bills"
             ],
         "ontclubs":
             [
@@ -916,8 +938,9 @@ ontology = {
                 "just",
                 "not",
                 "sure",
-                "Dunno",
-                "IDK",
+                "unsure",
+                "no idea",
+                "don't know"
                 "Idk",
                 "Dunno"
             ],
@@ -946,7 +969,10 @@ ontology = {
                 "grandma",
                 "grandpa",
                 "grandmother",
-                "grandfather"
+                "grandfather",
+                "greatgrandfather",
+                "maternal",
+                "removed"
             ],
         "ontsad":
             [
@@ -960,15 +986,31 @@ ontology = {
                 "blue",
                 "dumps",
                 "gross",
-                "Sad",
-                "Down",
-                "Unhappy",
-                "Depressed",
-                "Blue",
-                "Dumps",
-                "Gross",
                 "bad",
-                "Bad"
+                "sorrow",
+                "sorrowful",
+                "regretful",
+                "downcast",
+                "heavy",
+                "miserable",
+                "gloom",
+                "gloomy",
+                "low-spirited",
+                "broken-hearted",
+                "broken",
+                "low",
+                "wretched",
+                "desolate",
+                "crestfallen",
+                "mournful",
+                "doleful",
+                "mourn",
+                "mourning",
+                "despondent",
+                "out of sorts",
+                "dejected",
+                "awful",
+                "inconsolable"
             ],
         "ontbadclub":
             [
@@ -979,7 +1021,10 @@ ontology = {
                 "dunno",
                 "don't",
                 "Dunno",
-                "IDK",
+                "no idea",
+                "don't know",
+                "not sure",
+                "unsure",
                 "idk",
                 "Resume",
                 "Idk"
@@ -1003,7 +1048,13 @@ ontology = {
                 "calming",
                 "calm",
                 "invigorate",
-                "invigorating"
+                "invigorating",
+                "chill",
+                "laid back",
+                "vibe",
+                "amusing",
+                "amuse",
+                "break"
             ],
         "onttired":
             [
@@ -1016,12 +1067,27 @@ ontology = {
                 "sleep",
                 "too",
                 "exhaust",
-                "Hours",
-                "Tired",
-                "Fatigue",
-                "Sleep",
-                "Too",
-                "Exhaust"
+                "worn",
+                "overtired",
+                "weary",
+                "sleepy",
+                "drowsy",
+                "wearied",
+                "sapped",
+                "dog-tired",
+                "spent",
+                "drained",
+                "debilitated",
+                "prostrate",
+                "enervated",
+                "enervate",
+                "jaded",
+                "dead",
+                "deadbeat",
+                "shattered",
+                "burnt",
+                "knackered",
+                "pooped"
             ],
         "ontschool":
             [
@@ -1046,7 +1112,11 @@ ontology = {
                 "Study",
                 "course",
                 "studying",
-                "Course"
+                "professor",
+                "teacher",
+                "canvas",
+                "assignment",
+                "assignments"
             ],
         "ontemotion":
             [
