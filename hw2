@@ -1732,7 +1732,7 @@ df.add_system_transition(State.U4C4D2A1, State.P4C4E1A1A,
 df.add_system_transition(State.U4C4E1, State.P4C4E1A, '"Do you enjoy your job at all?"')
 df.add_system_transition(State.P4CERR19, State.P4C4E1A, '"Could you explain a little further?"')
 df.set_error_successor(State.P4C4E1A, State.P4CERR19)
-df.add_user_transition(State.P4C4E1A, State.U4C4E1A1, "[$yes=#ONT(ontaffirm])")
+df.add_user_transition(State.P4C4E1A, State.U4C4E1A1, "[$yes=#ONT(ontaffirm)]")
 df.add_user_transition(State.P4C4E1A, State.U4C4E1A2, "[$no=#ONT(ontnegate)]")
 df.add_system_transition(State.U4C4E1A2, State.P4C4E1A2A,
                          '"Well, do you participate in an extracurricular that you enjoy?"')
