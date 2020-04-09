@@ -1210,7 +1210,18 @@ ontology = {
                 "amazed",
                 "gold",
                 "luck",
-                "good"
+                "good",
+                "positive",
+                "radiated",
+                "radiating",
+                "delight",
+                "delighted",
+                "fantastic",
+                "ecstatic",
+                "generous",
+                "loving",
+                "grateful",
+                "loved"
             ],
         "ontneutral":
             [
@@ -1236,19 +1247,31 @@ ontology = {
                 "startle",
                 "jumped",
                 "startled",
-                "Jump",
                 "jump",
                 "scare",
-                "scared"
+                "scared",
+                "fright",
+                "frightened",
+                "terror",
+                "terrorized",
+                "terrorizing",
+                "frightening",
+                "panic",
+                "panicked",
+                "panicking",
+                "alarm",
+                "alarmed",
+                "anxious",
+                "anxiety",
+                "feared",
+                "jumped"
             ],
         "ontperception":
             [
                 "control",
                 "Control",
                 "inability",
-                "Inability",
                 "unable",
-                "Unable",
                 "can't",
                 "cant",
                 "Can't",
@@ -1256,7 +1279,6 @@ ontology = {
                 "powerless",
                 "Powerless",
                 "lack"
-                "Lack"
             ],
         "ontaffirm":
             [
@@ -1278,7 +1300,11 @@ ontology = {
                 "noted",
                 "agree",
                 "great",
-                "good"
+                "good",
+                "understood",
+                "understand",
+                "proceed",
+                "yup"
             ],
         "ontnegate":
             [
@@ -1293,21 +1319,37 @@ ontology = {
                 "NOPE",
                 "na",
                 "Na",
-                "nah"
+                "nah",
+                "not at all",
+                "disagree"
             ],
         "ontbecause":
             [
                 "because",
-                "since"
+                "since",
+                "thus",
+                "hence"
             ],
         ########## confrontation branch ontologies ##############
         "ontconfrontation":
             [
                 "argument",
+                "argued",
+                "argument"
                 "fight",
+                "fought",
                 "dispute",
+                "disagreement",
+                "physical",
                 "yelling",
+                "yelled",
+                "yell",
+                "name-calling",
                 "screaming",
+                "screamed",
+                "scream",
+                "confront",
+                "confronted"
                 "confrontation"
             ],
         ### anger ontologies ###
@@ -1322,7 +1364,10 @@ ontology = {
             ],
         "ontcontrol":
             [
-                "control"
+                "control",
+                "controlling",
+                "controlled",
+                "inflexible"
             ],
         "ontinevitable":
             [
@@ -1330,11 +1375,16 @@ ontology = {
             ],
         "ontavoidable":
             [
-                "avoidable"
+                "avoidable",
+                "avoid",
+                "ran from",
+                "avoided"
             ],
         "onttried":
             [
-                "tried"
+                "tried",
+                "try",
+                "trying"
             ],
         "ontfriend":
             [
