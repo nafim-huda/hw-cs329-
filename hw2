@@ -1097,6 +1097,8 @@ ontology = {
         "onttired":
             [
                 "hours",
+                "shifts",
+                "shift",
                 "tired",
                 "fatigue",
                 "fatigued",
