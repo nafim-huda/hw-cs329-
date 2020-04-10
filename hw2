@@ -903,7 +903,7 @@ ontology = {
             ],
         "ontnewyork":
             [
-              "new york"
+              "new york",
               "nyc"
             ],
         "ontangry":
@@ -1806,6 +1806,7 @@ df.add_user_transition(State.S1, State.U4, "#ONT(ontmichigan)")
 df.add_user_transition(State.S1, State.U5, "#ONT(ontbadstate)")
 df.add_user_transition(State.S1, State.U6, "#ONT(ontokaystate)")
 df.set_error_successor(State.S1,State.U8)
+df.set_error_successor(State.S2,State.U8)
 ##### Error handle
 
 #####
@@ -1891,7 +1892,7 @@ df.set_error_successor(State.S14,State.U19)
 
 #States U15
 df.add_system_transition(State.U13, State.EXIT, '"That\'s a great way to spend your time! If you keep doing that, I think you\'ll be okay once this all passes. I would also suggest reminding yourself of everything you have to be grateful for."')
-df.add_system_transition(State.U14, State.S18, '"Oh no! What has made you do this?"')
+df.add_system_transition(State.U14, State.S18, '[!"Do you think"$checkin"can be part of a healthy life?"]')
 df.set_error_successor(State.S18,State.U15)
 df.add_system_transition(State.U15, State.EXIT, '"That\'s not the best way to spend your time, but I get that things are a little crazy right now. At least you\'re relaxed. "')
 df.add_system_transition(State.U19, State.EXIT, '"Thanks for talking to me today! Hope we can talk again sometime."')
@@ -1900,6 +1901,12 @@ df.add_system_transition(State.U19, State.EXIT, '"Thanks for talking to me today
 ##S17 Therapy Section
 ##States used: U30, U31, S30
 df.add_system_transition(State.U30, State.EXIT, '"Great to hear that and I think it\'s time to conclude our session. Thanks for talking to me today! Hope we can talk again sometime."')
+
+#S18 Therapy section
+df.add_user_transition(State.S18, State.U15, "[$affirm_healthy=#ONT(ontaffirm)]")
+df.add_user_transition(State.S18,State.confrontation_treatment_relaxedbreathing, "[$negate_healthy=#ONT(ontnegate)]")
+df.set_error_successor(State.S18,State.U15)
+
 
 df.set_error_successor(State.EXIT,error_successor=State.EXIT)
 
