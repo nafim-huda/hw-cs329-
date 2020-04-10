@@ -476,6 +476,13 @@ class State(Enum):
     # ---- Have you met with (pronoun) since (time) where you haven't had a (confrontation)?
     confrontation_usual_when_yn = auto()
 
+    confrontation_usual_when1 = auto()
+    confrontation_usual_when2 = auto()
+    confrontation_usual_when3 = auto()
+    confrontation_usual_when_answer1 = auto()
+    confrontation_usual_when_answer2 = auto()
+    confrontation_usual_when_answer3 = auto()
+
     # caught self & other branch ###################################################################
     # A: I (catch verb)
     confrontation_self_answer = auto()
@@ -1399,6 +1406,16 @@ ontology = {
             [
                 "friend",
                 "friends"
+            ],
+        "ontshorttime":
+            [
+                "yesterday",
+                "today",
+                "day",
+                "days",
+                "week",
+                "recent",
+                "recently"
             ]
     }
 }
@@ -1801,7 +1818,7 @@ df.add_system_transition(State.U4E2A2A1A1, State.END, '"Goodbye! Thanks for talk
 
 ########### Confrontation Branch (Yuewu) ########################
 df.add_system_transition(State.confrontation_answer, State.confrontation_cause_prompt,
-                         '[!"How did the"$confrontation"start?" $pronoun="them"]')
+                         '"How did the"$confrontation"start?"')
 df.set_error_successor(State.confrontation_answer, State.confrontation_cause_self)
 # -> argument branchag
 
@@ -1839,32 +1856,51 @@ df.set_error_successor(State.confrontation_intentional_motive_prompt, State.conf
 # -> usual
 
 df.add_system_transition(State.confrontation_intentional_motive_answer, State.confrontation_intentional_motive_yn,
-                         '"Is it justified to argue because"$reason"?"')
+                         '"Do you think it\'s good to argue because"$reason"?"')
 df.add_user_transition(State.confrontation_intentional_motive_yn, State.confrontation_exposure_prompt,
                        "#ONT(ontaffirm)")
 # -> usual
-df.add_user_transition(State.confrontation_intentional_motive_yn, State.confrontation_treatment_journaling, "#ONT(ontnegate)") ### Journaling
+
+df.set_error_successor(State.confrontation_intentional_motive_yn,State.confrontation_treatment_journaling)
 # -> advice
+
 
 ##### usual
 df.add_user_transition(State.confrontation_usual_prompt, State.confrontation_usual_yn, "#ONT(ontaffirm)")
 df.add_system_transition(State.confrontation_usual_yn, State.confrontation_usual_when,
                          '"When was the last time this has happened?"')
 
-df.add_user_transition(State.confrontation_usual_prompt, State.confrontation_advice_yn, "#ONT(ontnegate)")
-# -> exposure
+df.add_user_transition(State.confrontation_usual_when, State.confrontation_usual_when1, "#ONT(ontshorttime)")
+df.add_user_transition(State.confrontation_usual_when, State.confrontation_advice_yn, '[never]')
+df.set_error_successor(State.confrontation_usual_when, State.confrontation_usual_when_answer)
+
+
+df.add_system_transition(State.confrontation_usual_when1,State.confrontation_usual_when_answer1,
+                         '"So, it\s fairly recent, then?"')
+df.add_user_transition(State.confrontation_usual_when_answer1, State.confrontation_usual_when2, "#ONT(ontaffirm)")
+df.set_error_successor(State.confrontation_usual_when_answer1,State.confrontation_usual_when_answer)
+
+df.add_system_transition(State.confrontation_usual_when2,State.confrontation_usual_when_answer2,
+                         '"Ah, gotcha. Any chance of reconciliation?"')
+df.add_user_transition(State.confrontation_usual_when_answer2, State.confrontation_usual_when3, "#ONT(ontaffirm)")
+df.set_error_successor(State.confrontation_usual_when_answer2, State.confrontation_advice_calmer_answer)
+
+df.add_system_transition(State.confrontation_usual_when3,State.confrontation_usual_when_answer3,
+                         '"That\'s great to hear. People have their"$confrontation"s, but it\'s always good to make up afterwards."')
+df.set_error_successor(State.confrontation_usual_when_answer3, State.ENDwGREET)
+
 
 # df.add_user_transition(State.confrontation_usual_when,State.confrontation_usual_when_answer,"$time=#NER(date)")
-df.set_error_successor(State.confrontation_usual_prompt, State.confrontation_usual_when_answer)
 # -> exposure (because no time catch)
 df.add_system_transition(State.confrontation_usual_when_answer, State.confrontation_usual_when_yn,
-                         '"Have you met with them since then where you haven\'t had a "$confrontation"?"')
+                         '"Have you had a"$confrontation"?"often?"')
+df.add_user_transition()
 df.set_error_successor(State.confrontation_usual_when_answer, State.confrontation_treatment_journaling) ### Journaling
 # -> advice if error
 
 df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_advice_yn, "#ONT(ontaffirm)")
 # -> advice
-df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_exposure_end, "#ONT(ontnegate)")
+df.set_error_successor(State.confrontation_usual_when_yn, State.confrontation_exposure_end)
 # -> exposure
 
 ##### advice
@@ -1877,14 +1913,10 @@ df.add_system_transition(State.confrontation_advice_calmer_yn, State.confrontati
                          '"Okay, do you think a calmer attitude would have mitigated the"$confrontation"?"')
 df.set_error_successor(State.confrontation_advice_calmer_answer, State.confrontation_treatment_relaxedbreathing)
 
-df.add_system_transition(State.confrontation_treatment_placeholder, State.ENDwGREET,
-                         '"We\'re still researching the best advice to give, please come back soon"')
-# TO DO: add treatments
-
 
 ##### exposure
 df.add_system_transition(State.confrontation_exposure_prompt, State.confrontation_exposure_answer,
-                         '"Why do you spend time with "$pronoun"?"')
+                         '"Why do you spend time with them?"')
 df.add_user_transition(State.confrontation_exposure_answer, State.confrontation_exposure_why,
                        '[{because,Because} $reason=/.*/]')
 df.set_error_successor(State.confrontation_exposure_answer, State.confrontation_exposure_why)
@@ -1907,14 +1939,18 @@ df.add_system_transition(State.confrontation_treatment_relaxedbreathing,State.co
 df.add_user_transition(State.confrontation_treatment_relaxedbreathing_response,State.confrontation_treatment_relaxedbreathing2,"#ONT(ontaffirm)")
 df.set_error_successor(State.confrontation_treatment_relaxedbreathing_response,State.ENDwGREET)
 df.add_system_transition(State.confrontation_treatment_relaxedbreathing2,State.confrontation_treatment_relaxedbreathing_response2,
-                         '"The resource I recommend is a website called Positive Psychology. The link to mindfulness is positivepsychology.com/mindfulness-exercises-techniques-activities/"')
+                         '"Mindfulness is the practice of taking a different perspective on various things, often in combination with breathing exercises and meditation. '
+                         'Things that mindfulness teaches are: Paying close attention to what is going on around you. Participating without being self-conscious, '
+                         'Taking a non-judgmental stance, Focusing on the moment without distraction from other ideas or events, '
+                         'and Doing what works rather than second-guessing yourself."')
 ### Journaling
 df.add_system_transition(State.confrontation_treatment_journaling,State.confrontation_treatment_relaxedbreathing_response,
                          '"Based on your responses, I would recommend is journaling. Is that something you\'d be interested in? "')
 df.add_user_transition(State.confrontation_treatment_journaling_response,State.confrontation_treatment_journaling2,"#ONT(ontaffirm)")
 df.set_error_successor(State.confrontation_treatment_journaling_response,State.ENDwGREET)
 df.add_system_transition(State.confrontation_treatment_journaling2,State.confrontation_treatment_journaling_response2,
-                         '"The resource I recommend is a website called Positive Psychology. The link to mindfulness is positivepsychology.com/gratitude-journal/"')
+                         '"Journaling is the practice of writing for therapeutic purposes. Often done with specific exercises, '
+                         'journaling is helpful in identifying and processing stressful or difficult events in a persons life."')
 # -> END
 
 # ENDwGREET
