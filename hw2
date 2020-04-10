@@ -1350,10 +1350,7 @@ ontology = {
         "ontconfrontation":
             [
                 "argument",
-                "argued",
-                "argument"
                 "fight",
-                "fought",
                 "dispute",
                 "disagreement",
                 "physical",
@@ -1362,7 +1359,6 @@ ontology = {
                 "yell",
                 "name-calling",
                 "screaming",
-                "screamed",
                 "scream",
                 "confront",
                 "confronted",
@@ -1506,7 +1502,7 @@ df.add_system_transition(State.ANGER2, State.QUESTION2,'"Do you think getting an
 
 df.add_user_transition(State.QUESTION1, State.PERSON, "[$person=#ONT(ontfamily,ontfriend)]")
 df.add_user_transition(State.QUESTION1, State.ACTIVITY,'[$activity=#POS(verb)]')
-df.set_error_successor(State.QUESTION1, State.ANGER2)
+#df.set_error_successor(State.QUESTION1, State.ANGER2)
 df.add_user_transition(State.QUESTION2, State.INEVITABLE,"[$inevitable=#ONT(ontinevitable)]")
 df.add_user_transition(State.QUESTION2, State.AVOIDABLE,"[$avoidable=#ONT(ontavoidable)]")
 df.set_error_successor(State.QUESTION2, State.ERRANG4)
@@ -1521,7 +1517,7 @@ df.add_system_transition(State.AVOIDABLE, State.AVOIDDESCRIP,'"Did you feel more
 df.add_user_transition(State.IDENTIFYPERSON, State.TRIED, "[$tried=#ONT(onttried, ontaffirm)]")
 df.add_user_transition(State.IDENTIFYPERSON, State.NOTTRIED, '[[not,tried]]')
 
-df.set_error_successor(State.IDENTIFYPERSON. State.ANGER2)
+df.set_error_successor(State.IDENTIFYPERSON, State.ANGER2)
 
 df.add_user_transition(State.IDENTIFYACTIVITY, State.FRIEND, "[$friend=#ONT(ontfriend)]")
 df.add_user_transition(State.IDENTIFYACTIVITY, State.FAMILY, "[$family=#ONT(ontfamily)]")
@@ -1894,9 +1890,6 @@ df.set_error_successor(State.confrontation_usual_when_answer3, State.ENDwGREET)
 # -> exposure (because no time catch)
 df.add_system_transition(State.confrontation_usual_when_answer, State.confrontation_usual_when_yn,
                          '"Have you had a"$confrontation"?"often?"')
-df.add_user_transition()
-df.set_error_successor(State.confrontation_usual_when_answer, State.confrontation_treatment_journaling) ### Journaling
-# -> advice if error
 
 df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_advice_yn, "#ONT(ontaffirm)")
 # -> advice
@@ -1954,7 +1947,7 @@ df.add_system_transition(State.confrontation_treatment_journaling2,State.confron
 # -> END
 
 # ENDwGREET
-df.add_system_transition(State.ENDwGREET, State.EXIT, '"Alright, have a nice day!"')
+df.add_system_transition(State.ENDwGREET, State.EXIT, '"Alright, have a good day!"')
 
 #############ANGELA
 df.add_system_transition(State.A1111, State.S2, '"Haha, the world is pretty crazy now isn\'t it? Are you in the US?"')
@@ -2014,9 +2007,6 @@ df.add_user_transition(State.S11, State.U12, "[$checkin=#ONT(ontstillbusy)]")
 df.add_user_transition(State.S11, State.U13, "[$checkin=#ONT(ontgoodactivities)]")
 df.add_user_transition(State.S11, State.U14, "[$checkin=#ONT(ontbadactivities)]")
 df.add_user_transition(State.S11, State.U15, "[$checkin=#ONT(ontwasteoftime)]")
-df.add_system_transition(State.S11, State.U100, '"What else do you do with your extra time?"')
-df.set_error_successor(State.U100, State.S11)
-
 
 #States S12
 df.add_system_transition(State.U12, State.S12, '"Well, it\'s good that you\'re still busy but make sure you make time for yourself! Do you do any activities to relax?"')
