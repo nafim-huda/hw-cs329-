@@ -2014,6 +2014,9 @@ df.add_user_transition(State.S11, State.U12, "[$checkin=#ONT(ontstillbusy)]")
 df.add_user_transition(State.S11, State.U13, "[$checkin=#ONT(ontgoodactivities)]")
 df.add_user_transition(State.S11, State.U14, "[$checkin=#ONT(ontbadactivities)]")
 df.add_user_transition(State.S11, State.U15, "[$checkin=#ONT(ontwasteoftime)]")
+df.add_system_transition(State.S11, State.U100, '"What else do you do with your extra time?"')
+df.set_error_successor(State.U100, State.S11)
+
 
 #States S12
 df.add_system_transition(State.U12, State.S12, '"Well, it\'s good that you\'re still busy but make sure you make time for yourself! Do you do any activities to relax?"')
