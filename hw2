@@ -2045,6 +2045,11 @@ df.add_user_transition(State.S17, State.U31, "[$productivenegate=$ONT(ontnegate)
 df.add_system_transition(State.U30, State.S30, '"Great to hear that and I think it\'s time to conclude our session. Thanks for talking to me today! Hope we can talk again sometime."')
 df.set_error_successor(State.U31, State.P4C2B1A2A2A)
 
+#s18
+df.add_user_transition(State.S18, State.P4C2B1A2A2A, "[$affirm_healthy=#ONT(ontaffirm)]")
+df.add_user_transition(State.S18,State.confrontation_advice_calmer_yn, "[$negate_healthy=#ONT(ontnegate)]")
+df.set_error_successor(State.S18,State.confrontation_usual_prompt)
+
 
 
 if __name__ == '__main__':
