@@ -594,6 +594,11 @@ class State(Enum):
     club_enjoy = auto()
     club_enjoy_y= auto()
     club_enjoy_n= auto()
+    club_in_club = auto()
+    club_in_club_answer = auto()
+    club_tell_more_answer = auto()
+    club_tell_more = auto()
+
 
     # family branch
 
@@ -619,6 +624,10 @@ class State(Enum):
     work_enjoy_n = auto()
     work_stress_y = auto()
     work_stress_not = auto()
+
+    #ending
+    goodbye_statement = auto()
+    end = auto()
 
 # TODO: create the ontology as needed
 ontology = {
@@ -1130,7 +1139,8 @@ ontology = {
                 "vibe",
                 "amusing",
                 "amuse",
-                "break"
+                "break",
+                "like"
             ],
         "onttired":
             [
@@ -1462,7 +1472,7 @@ df.add_system_transition(State.First_feeling_positive, State.First_positive_prom
                          '"That\'s great, anything interesting?"')
 
 ### small conversation branch for a positive response
-df.add_user_transition(State.First_positive_prompt,State.First_positive_answer,'[$thing=#POS(verb)]')
+df.add_user_transition(State.First_positive_prompt,State.First_positive_answer,'$thing=[#POS(verb)]')
 df.set_error_successor(State.First_positive_prompt,State.First_positive_end)
 
 df.add_system_transition(State.First_positive_answer,State.First_positive_reply,'"Were with anyone when you were"$thing"?"')
@@ -1544,15 +1554,36 @@ df.set_error_successor(State.AVOIDDESCRIP,State.confrontation_treatment_journali
 # angela's stuff
 ####################################################################################
 
+#club_in_club
+#club_in_club_answer
+
+
+
 #Club activities
 df.add_system_transition(State.school_prompt, State.club_prompt,
                          '"Oh man, I feel that. I\'ve been there too. Are you in any clubs by chance?"')
 df.add_user_transition(State.club_prompt, State.club_answer, "[$club=#ONT(ontclubs)]")
+df.add_user_transition(State.club_prompt, State.club_in_club,"[#ONT(ontaffirm)]")
 df.set_error_successor(State.club_prompt, State.club_enjoy_n)
+
+df.add_system_transition(State.club_in_club, State.club_in_club_answer,
+                         '"That\'s great, which club are you in?"')
+df.add_user_transition(State.club_in_club_answer, State.club_answer, "[$club=#ONT(ontclubs)]")
+df.set_error_successor(State.club_in_club_answer, State.club_tell_more)
+
+df.add_system_transition(State.club_tell_more,State.club_tell_more_answer,'"Can you tell me how you feel about your "$club=club"?"')
+df.add_user_transition(State.club_tell_more_answer, State.U15, "[$club=#ONT(ontbadclub)]")
+df.add_user_transition(State.club_tell_more_answer, State.U13, "[$club=#ONT(ontfunclub)]")
+df.set_error_successor(State.club_tell_more_answer,State.club_answer)
+
+
+
+#{#POS(noun),#POS(verb)}
 
 df.add_system_transition(State.club_answer,State.club_enjoy,'"Are you enjoying the "$club" that you\'re in?"')
 df.add_user_transition(State.club_enjoy,State.club_enjoy_y,"#ONT(ontaffirm)")
 df.set_error_successor(State.club_enjoy,State.club_enjoy_n)
+
 
 df.add_system_transition(State.club_enjoy_y,State.EXIT,'"That\'s nice!"')
 
@@ -1701,7 +1732,6 @@ df.add_system_transition(State.confrontation_intentional_motive_answer, State.co
 df.add_user_transition(State.confrontation_intentional_motive_yn, State.confrontation_exposure_prompt,
                        "#ONT(ontaffirm)")
 # -> usual
-
 df.set_error_successor(State.confrontation_intentional_motive_yn,State.confrontation_treatment_journaling)
 # -> advice
 
@@ -1908,7 +1938,13 @@ df.add_user_transition(State.S18,State.confrontation_treatment_relaxedbreathing,
 df.set_error_successor(State.S18,State.U15)
 
 
-df.set_error_successor(State.EXIT,error_successor=State.EXIT)
+# goodbye_statement
+# end
+df.set_error_successor(State.EXIT,State.goodbye_statement)
+df.add_system_transition(State.goodbye_statement,State.end,'"Goodbye!"')
+df.add_user_transition(State.end,State.goodbye_statement,"#ONT(ontaffirm)")
+df.set_error_successor(State.end,error_successor=State.end)
+
 
 if __name__ == '__main__':
     df.run(debugging=False)
