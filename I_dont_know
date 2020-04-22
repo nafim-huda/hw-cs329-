@@ -1,0 +1,5 @@
+dont_know = '[{' \
+            'dont know,do not know,unsure,[not,{sure,certain}],hard to say,no idea,uncertain,[!no {opinion,opinions,idea,ideas,thought,thoughts,knowledge}],' \
+            '[{dont,do not}, have, {opinion,opinions,idea,ideas,thought,thoughts,knowledge}],' \
+            '[!{cant,cannot,dont} {think,remember,recall}]' \
+            '}]'
