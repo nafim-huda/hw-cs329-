@@ -587,6 +587,7 @@ class State(Enum):
     ############# END Confrontation #####################
 
     corona_prompt  = auto()
+    corona_prompt1  = auto()
 
     school_prompt = auto()
     club_prompt = auto()
@@ -1403,15 +1404,9 @@ ontology = {
                 "fight",
                 "dispute",
                 "disagreement",
-                "physical",
                 "yelling",
-                "yelled",
                 "yell",
-                "name-calling",
                 "screaming",
-                "scream",
-                "confront",
-                "confronted",
                 "confrontation"
             ],
         ### anger ontologies ###
@@ -1462,7 +1457,16 @@ ontology = {
                 "week",
                 "recent",
                 "recently"
-            ]
+            ],
+        "ontnumber":
+        [
+            "one",
+
+        ],
+        "onttimeperiod":
+        [
+
+        ]
     }
 }
 knowledge = KnowledgeBase()
@@ -1489,7 +1493,10 @@ df.add_system_transition(State.First_feeling_positive, State.First_positive_prom
 
 ### small conversation branch for a positive response
 df.add_user_transition(State.First_positive_prompt,State.First_positive_answer,'$thing=[#POS(verb)]')
+## randomize response
 df.add_user_transition(State.First_positive_prompt, State.corona_prompt, '[$conju=#ONT(ontcorona)]')
+df.add_user_transition(State.First_positive_prompt, State.corona_prompt1, '[$conju=#ONT(ontcorona)]')
+
 #above does not catch worried?
 df.set_error_successor(State.First_positive_prompt,State.First_positive_end)
 
@@ -1525,9 +1532,9 @@ df.add_user_transition(State.First_negative_prompt, State.ANGER1, '[$confrontati
 
 #Angela transitions
 df.add_user_transition(State.First_negative_prompt, State.corona_prompt, '[$conju=#ONT(ontcorona)]')
-df.add_user_transition(State.First_negative_prompt, State.school_prompt, "[$response=#ONT(ontschool)]")
-df.add_user_transition(State.First_negative_prompt, State.family_prompt, "[$response=#ONT(ontfamily)]")
-df.add_user_transition(State.First_negative_prompt, State.work_prompt, "[$response=#ONT(ontwork)]")
+df.add_user_transition(State.First_negative_prompt, State.school_prompt, '[$response=#ONT(ontschool)]')
+df.add_user_transition(State.First_negative_prompt, State.family_prompt, '[$response=#ONT(ontfamily)]')
+df.add_user_transition(State.First_negative_prompt, State.work_prompt, '[$response=#ONT(ontwork)]')
 # df.add_user_transition(State.First_negative_prompt, State.eating_prompt, "[$response=#ONT(onteating)]")
 
 #Error state foes to corona
@@ -1715,12 +1722,12 @@ df.add_system_transition(State.work_stress_not, State.EXIT, '"It\'s awesome that
 
 ########### Confrontation Branch (Yuewu) ################################
 df.add_system_transition(State.confrontation_answer, State.confrontation_cause_prompt,
-                         '"How did the"$confrontation"start?"')
+                         '"That would make me feel"$negative"too. How did the"$confrontation"start?"')
 df.set_error_successor(State.confrontation_answer, State.confrontation_cause_self)
 # -> argument branchag
 
 df.add_system_transition(State.confrontation_cause_error, State.confrontation_noCatch_self_prompt,
-                         '"Do you feel like it had something to do with what you did?"')
+                         '"Do you feel like the"$confrontation"started with something you did?"')
 df.add_user_transition(State.confrontation_noCatch_self_prompt, State.confrontation_cause_self, "#ONT(ontaffirm)")
 df.set_error_successor(State.confrontation_noCatch_self_prompt, State.confrontation_cause_self)
 
@@ -1762,17 +1769,17 @@ df.set_error_successor(State.confrontation_intentional_motive_yn,State.confronta
 
 
 ##### usual
-df.add_user_transition(State.confrontation_usual_prompt, State.confrontation_usual_yn, "#ONT(ontaffirm)")
+df.add_user_transition(State.confrontation_usual_prompt, State.confrontation_usual_yn, '#ONT(ontaffirm)')
 df.add_system_transition(State.confrontation_usual_yn, State.confrontation_usual_when,
                          '"When was the last time this happened?"')
 
-df.add_user_transition(State.confrontation_usual_when, State.confrontation_usual_when1, "#ONT(ontshorttime)")
+df.add_user_transition(State.confrontation_usual_when, State.confrontation_usual_when1, '$number=#NER(NUM)')
 df.add_user_transition(State.confrontation_usual_when, State.confrontation_advice_yn, '[never]')
 df.set_error_successor(State.confrontation_usual_when, State.confrontation_usual_when_answer)
 
-
+# TODO: Fix this transition
 df.add_system_transition(State.confrontation_usual_when1,State.confrontation_usual_when_answer1,
-                         '"So, it\s fairly recent, then?"')
+                         '"$number"')
 df.add_user_transition(State.confrontation_usual_when_answer1, State.confrontation_usual_when2, "#ONT(ontaffirm)")
 df.set_error_successor(State.confrontation_usual_when_answer1,State.confrontation_usual_when_answer)
 
@@ -1851,6 +1858,9 @@ df.add_system_transition(State.ENDwGREET, State.EXIT, '"Alright, have a good day
 
 #############ANGELA
 df.add_system_transition(State.corona_prompt, State.S2, '"The world is pretty crazy now isn\'t it? Are you in the US?"')
+
+df.add_system_transition(State.corona_prompt1, State.S2, '"The world ain\'t crazy at all lol."')
+
 df.add_user_transition(State.S2, State.U7, "#ONT(ontaffirm)")
 df.add_user_transition(State.S2, State.U8, "#ONT(ontnegate)")
 df.add_system_transition(State.U7, State.S1, '"Which state are you in right now?"')
