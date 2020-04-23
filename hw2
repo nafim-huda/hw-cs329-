@@ -655,11 +655,28 @@ ontology = {
                 "ontmichigan",
                 "ontbadstate",
                 "ontokaystate",
+                "ontgeorgia",
                 "ontcorona",
                 "ontstillbusy",
                 "ontgoodactivities",
                 "ontbadactivities",
-                "ontwasteoftime"
+                "ontwasteoftime",
+                "ontlostjob"
+            ],
+        "ontlostjob":
+            [
+                "lost my job",
+                "lost job",
+                "unemployed",
+                "fired",
+                "laid off",
+                "layoff",
+                "layed off"
+            ],
+        "ontgeorgia":
+            [
+               "georgia",
+               "ga"
             ],
         "ontstillbusy":
             [
@@ -766,9 +783,6 @@ ontology = {
                 "money",
                 "financial",
                 "finances",
-                "lost my job",
-                "lost job",
-                "unemployed,",
                 "crying",
                 "cry",
                 "cried",
@@ -786,6 +800,10 @@ ontology = {
             ],
         "ontwasteoftime":
             [
+                "animalcrossings",
+                "animal crossings",
+                "animal crossing",
+                "animalcrossing",
                 "netflix",
                 "movies",
                 "tv",
@@ -845,8 +863,6 @@ ontology = {
                 "massachusetts",
                 "ma",
                 "illinois",
-                "georgia",
-                "ga",
                 "texas",
                 "washington",
                 "connecticut",
@@ -1473,6 +1489,8 @@ df.add_system_transition(State.First_feeling_positive, State.First_positive_prom
 
 ### small conversation branch for a positive response
 df.add_user_transition(State.First_positive_prompt,State.First_positive_answer,'$thing=[#POS(verb)]')
+df.add_user_transition(State.First_positive_prompt, State.corona_prompt, '[$conju=#ONT(ontcorona)]')
+#above does not catch worried?
 df.set_error_successor(State.First_positive_prompt,State.First_positive_end)
 
 df.add_system_transition(State.First_positive_answer,State.First_positive_reply,'"Were with anyone when you were"$thing"?"')
@@ -1490,6 +1508,13 @@ df.set_error_successor(State.First_positive_ending2,error_successor=State.First_
 
 df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt,
                          '[!"What\'s been making you feel"$negative"?"]')
+df.add_user_transition(State.First_negative_prompt, State.U45, '[$confrontation=#ONT(ontlostjob)]')
+df.add_user_transition(State.First_feeling_negative, State.U45, '[$confrontation=#ONT(ontlostjob)]')
+df.add_system_transition(State.U45, State.S45, '"I\'m sorry to hear that! These are crazy times. What are you going to do?"')
+df.add_user_transition(State.S45, State.U46, "#ONT(ontunsure)")
+df.add_system_transition(State.U46, State.S46, '"I know it feels like the end of the world, but at least you have more time to spend with family and friends. Jobs come and go, but people are forever."')
+df.add_user_transition(State.S46, State.U47, '$reason=/.*/]')
+df.add_system_transition(State.U47, State.S9, '"Well, how are you doing with social distancing?"')
 
 ####### Move to confrontation branch ##########################
 df.add_user_transition(State.First_negative_prompt, State.confrontation_answer,
@@ -1585,10 +1610,10 @@ df.add_user_transition(State.club_enjoy,State.club_enjoy_y,"#ONT(ontaffirm)")
 df.set_error_successor(State.club_enjoy,State.club_enjoy_n)
 
 
-df.add_system_transition(State.club_enjoy_y,State.EXIT,'"That\'s nice!"')
+df.add_system_transition(State.club_enjoy_y,State.EXIT,'"That\'s nice! I\'m glad you have balance in your life."')
 
 df.add_system_transition(State.club_enjoy_n, State.EXIT,
-                         '"There are plenty of clubs around, I think you should find a club that you enjoy."')
+                         '"There are plenty of clubs around. Maybe when campuses open again, you can find a club that you enjoy."')
 
 #add further depth if necessary
 
@@ -1739,7 +1764,7 @@ df.set_error_successor(State.confrontation_intentional_motive_yn,State.confronta
 ##### usual
 df.add_user_transition(State.confrontation_usual_prompt, State.confrontation_usual_yn, "#ONT(ontaffirm)")
 df.add_system_transition(State.confrontation_usual_yn, State.confrontation_usual_when,
-                         '"When was the last time this has happened?"')
+                         '"When was the last time this happened?"')
 
 df.add_user_transition(State.confrontation_usual_when, State.confrontation_usual_when1, "#ONT(ontshorttime)")
 df.add_user_transition(State.confrontation_usual_when, State.confrontation_advice_yn, '[never]')
@@ -1825,7 +1850,7 @@ df.add_system_transition(State.confrontation_treatment_journaling2,State.confron
 df.add_system_transition(State.ENDwGREET, State.EXIT, '"Alright, have a good day!"')
 
 #############ANGELA
-df.add_system_transition(State.corona_prompt, State.S2, '"Haha, the world is pretty crazy now isn\'t it? Are you in the US?"')
+df.add_system_transition(State.corona_prompt, State.S2, '"The world is pretty crazy now isn\'t it? Are you in the US?"')
 df.add_user_transition(State.S2, State.U7, "#ONT(ontaffirm)")
 df.add_user_transition(State.S2, State.U8, "#ONT(ontnegate)")
 df.add_system_transition(State.U7, State.S1, '"Which state are you in right now?"')
@@ -1835,12 +1860,15 @@ df.add_user_transition(State.S1, State.U3, "#ONT(ontcalifornia)")
 df.add_user_transition(State.S1, State.U4, "#ONT(ontmichigan)")
 df.add_user_transition(State.S1, State.U5, "#ONT(ontbadstate)")
 df.add_user_transition(State.S1, State.U6, "#ONT(ontokaystate)")
+df.add_user_transition(State.S1, State.U42, "#ONT(ontgeorgia)")
 df.set_error_successor(State.S1,State.U8)
 df.set_error_successor(State.S2,State.U8)
 ##### Error handle
 
 #####
-
+df.add_system_transition(State.U42, State.S40, '"I\'m in Georgia too! Don\'t you think the governor lifted the stay-at-home order too early?"')
+df.add_user_transition(State.S40, State.U41, '[$reason=/.*/]')
+df.add_system_transition(State.U41, State.S9, '"Well, how are you doing with social distancing?"')
 df.add_system_transition(State.U6, State.S3, '"Oh, I heard that corona not too bad there! How are you doing with social distancing?"')
 df.add_system_transition(State.U5, State.S4, '"Yikes, I hear corona is spreading very quickly there. How are you doing with social distancing?"')
 df.add_system_transition(State.U1, State.S5, '"Yikes, NJ is not a good place to be right now. How are you doing with social distancing?"')
@@ -1921,7 +1949,7 @@ df.add_user_transition(State.S14, State.U18, "[$checkin=#ONT(ontnegate)]")
 df.set_error_successor(State.S14,State.U19)
 
 #States U15
-df.add_system_transition(State.U13, State.EXIT, '"That\'s a great way to spend your time! If you keep doing that, I think you\'ll be okay once this all passes. I would also suggest reminding yourself of everything you have to be grateful for."')
+df.add_system_transition(State.U13, State.EXIT, '"That\'s a great way to spend your time! If you keep doing that, I think you\'ll be okay once this all passes. I would also suggest setting routines to instill normality during this crazy time."')
 df.add_system_transition(State.U14, State.S18, '[!"Do you think"$checkin"can be part of a healthy life?"]')
 df.set_error_successor(State.S18,State.U15)
 df.add_system_transition(State.U15, State.EXIT, '"That\'s not the best way to spend your time, but I get that things are a little crazy right now. At least you\'re relaxed. "')
@@ -1941,7 +1969,7 @@ df.set_error_successor(State.S18,State.U15)
 # goodbye_statement
 # end
 df.set_error_successor(State.EXIT,State.goodbye_statement)
-df.add_system_transition(State.goodbye_statement,State.end,'"Goodbye!"')
+df.add_system_transition(State.goodbye_statement,State.end,'"Goodbye! Talk to you some other time."')
 df.add_user_transition(State.end,State.goodbye_statement,"#ONT(ontaffirm)")
 df.set_error_successor(State.end,error_successor=State.end)
 
