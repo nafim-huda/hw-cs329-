@@ -425,6 +425,11 @@ class State(Enum):
     U99 = auto()
     U100 = auto()
 
+    name = auto()
+    name_prompt = auto()
+    name_answer = auto()
+    name_reponse = auto()
+
     First_positive_answer = auto()
     First_positive_end= auto()
     First_positive_reply= auto()
@@ -1473,7 +1478,19 @@ knowledge = KnowledgeBase()
 knowledge.load_json(ontology)
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge)
 
+#name
+#name_prompt
+#name_answer
+#name_reponse
+
+
+
 df.add_system_transition(State.START, State.PROMPT, '"Hi, how are you feeling today?"')
+df.add_system_transition(State.START, State.name, '"Hi, what\'s your name?"')
+
+df.add_user_transition(State.name, State.name_prompt, '$name=#POS(propn)')
+
+df.add_system_transition(State.name_prompt, State.PROMPT, '"Hi"$name"how are you?"')
 
 # The first user response feeling
 df.add_user_transition(State.PROMPT, State.First_feeling_positive, '[$positive=#ONT(ontpositive)]')
