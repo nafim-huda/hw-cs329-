@@ -1,5 +1,9 @@
 from emora_stdm import KnowledgeBase, DialogueFlow
 from enum import Enum, auto
+from emora_stdm import Macro
+from nltk.stem import WordNetLemmatizer
+
+
 
 
 # TODO: Update the State enum as needed
@@ -1450,6 +1454,13 @@ ontology = {
             ]
     }
 }
+
+
+'''class VERSION(Macro):
+
+    def run(self, ngrams, vars, args):'''
+
+
 knowledge = KnowledgeBase()
 knowledge.load_json(ontology)
 df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge)
@@ -1475,10 +1486,11 @@ df.add_system_transition(State.First_feeling_positive, State.First_positive_prom
 
 ### small conversation branch for a positive response
 # Need to make lemmatization for the verb
+lemmatizer = WordNetLemmatizer()
 df.add_user_transition(State.First_positive_prompt,State.First_positive_answer,'[$thing=#POS(verb)]')
 df.set_error_successor(State.First_positive_prompt,State.First_positive_end)
 
-df.add_system_transition(State.First_positive_answer,State.First_positive_reply,'"Did you"$thing"with other people?"')
+df.add_system_transition(State.First_positive_answer,State.First_positive_reply,'[!"Did you" $lemmatizer.lemmatize($thing) "with other people?"]')
 df.add_system_transition(State.First_positive_end,State.First_positive_ending,'"Cool, have a good day!"')
 
 df.add_user_transition(State.First_positive_reply,State.ENDwGREET,'[#ONT(ontnegate)]')
