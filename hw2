@@ -704,6 +704,8 @@ ontology = {
             ],
         "ontgoodactivities":
             [
+                "cook",
+                "cooking",
                 "knitting",
                 "draw",
                 "drew",
@@ -1014,6 +1016,7 @@ ontology = {
         "ontunsure":
             [
                 "unsure",
+                "not sure",
                 "dunno",
                 "uncertain",
                 "not",
@@ -1254,6 +1257,7 @@ ontology = {
                 "disgust",
                 "sadness",
                 "fear",
+                "hate",
                 "bad",
                 "scared",
                 "scare",
@@ -1276,7 +1280,8 @@ ontology = {
                 "worried",
                 "worry",
                 "worrying",
-                "not"
+                "not",
+                "terrible"
             ],
         "ontpositive":
             [
@@ -1874,8 +1879,8 @@ df.add_system_transition(State.confrontation_treatment_relaxedbreathing,State.co
 df.add_user_transition(State.confrontation_treatment_relaxedbreathing_response,State.confrontation_treatment_relaxedbreathing2,"#ONT(ontaffirm)")
 df.set_error_successor(State.confrontation_treatment_relaxedbreathing_response,State.ENDwGREET)
 df.add_system_transition(State.confrontation_treatment_relaxedbreathing2,State.confrontation_treatment_relaxedbreathing_response2,
-                         '"Mindfulness is the practice of taking a different perspective on various things, often in combination with breathing exercises and meditation. '
-                         'Things that mindfulness teaches are: Paying close attention to what is going on around you. Participating without being self-conscious, '
+                         '"Mindfulness is the practice of taking different perspectives on things, often with breathing exercises and meditation. '
+                         'Mindfulness can teach: Paying attention to what is going on around you. Participating without being self-conscious, '
                          'Taking a non-judgmental stance, Focusing on the moment without distraction from other ideas or events, '
                          'and Doing what works rather than second-guessing yourself."')
 ### Journaling
