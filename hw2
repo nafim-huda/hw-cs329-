@@ -1536,8 +1536,11 @@ df.add_user_transition(State.First_negative_prompt, State.U45, '[$confrontation=
 df.add_user_transition(State.First_feeling_negative, State.U45, '[$confrontation=#ONT(ontlostjob)]')
 df.add_system_transition(State.U45, State.S45, '"I\'m sorry to hear that! These are crazy times. What are you going to do?"')
 df.add_user_transition(State.S45, State.U46, "#ONT(ontunsure)")
+df.add_user_transition(State.S45, State.U48, "#ONT(ontbadactivities)")
+df.set_error_successor(State.S45, State.U48)
 df.add_system_transition(State.U46, State.S46, '"I know it feels like the end of the world, but at least you have more time to spend with family and friends. Jobs come and go, but people are forever."')
 df.add_user_transition(State.S46, State.U47, '$reason=/.*/]')
+df.add_system_transition(State.U48, State.S46, '"I know it feels like the end of the world, but at least you have more time to spend with family and friends. Jobs come and go, but people are forever."')
 df.add_system_transition(State.U47, State.S9, '"Well, how are you doing with social distancing?"')
 
 ####### Move to confrontation branch ##########################
@@ -1554,7 +1557,7 @@ df.add_user_transition(State.First_negative_prompt, State.family_prompt, '[$resp
 df.add_user_transition(State.First_negative_prompt, State.work_prompt, '[$response=#ONT(ontwork)]')
 # df.add_user_transition(State.First_negative_prompt, State.eating_prompt, "[$response=#ONT(onteating)]")
 
-#Error state foes to corona
+#Error state goes to corona
 df.set_error_successor(State.First_negative_prompt, State.corona_prompt)
 
 
@@ -1876,7 +1879,7 @@ df.add_system_transition(State.ENDwGREET, State.EXIT, '"Alright, have a good day
 #############ANGELA
 df.add_system_transition(State.corona_prompt, State.S2, '"The world is pretty crazy now isn\'t it? Are you in the US?"')
 
-df.add_system_transition(State.corona_prompt1, State.S2, '"The world ain\'t crazy at all lol."')
+df.add_system_transition(State.corona_prompt1, State.S2, '"The pandemic has changed our lives, hasn\'t it? Are you in the US?"')
 
 df.add_user_transition(State.S2, State.U7, "#ONT(ontaffirm)")
 df.add_user_transition(State.S2, State.U8, "#ONT(ontnegate)")
@@ -1996,8 +1999,8 @@ df.set_error_successor(State.S18,State.U15)
 # goodbye_statement
 # end
 df.set_error_successor(State.EXIT,State.goodbye_statement)
-df.add_system_transition(State.goodbye_statement,State.end,'"Goodbye! Talk to you some other time."')
-df.add_user_transition(State.end,State.goodbye_statement,"#ONT(ontaffirm)")
+df.add_system_transition(State.goodbye_statement, State.end,'"Goodbye! Talk to you some other time."')
+df.add_user_transition(State.end,State.goodbye_statement, "#ONT(ontaffirm)")
 df.set_error_successor(State.end,error_successor=State.end)
 
 
