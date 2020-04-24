@@ -667,7 +667,16 @@ ontology = {
                 "ontgoodactivities",
                 "ontbadactivities",
                 "ontwasteoftime",
-                "ontlostjob"
+                "ontlostjob",
+                "ontuserquestion"
+            ],
+        "ontuserquestion":
+            [
+                "what should",
+                "how should",
+                "what do",
+                "?",
+                "advice"
             ],
         "ontlostjob":
             [
@@ -780,7 +789,10 @@ ontology = {
                 "recipes",
                 "recipe",
                 "novels",
-                "novel"
+                "novel",
+                "start",
+                "starting",
+                "started"
             ],
         "ontbadactivities":
             [
@@ -799,10 +811,7 @@ ontology = {
                 "shocked",
                 "news",
                 "checking",
-                "refreshing",
-                "videogames",
-                "gaming",
-                "games"
+                "refreshing"
             ],
         "ontwasteoftime":
             [
@@ -815,10 +824,14 @@ ontology = {
                 "tv",
                 "television",
                 "hulu",
+                "gaming",
+                "games",
                 "nothing",
                 "blanking out",
                 "instagram",
                 "scrolling",
+                "snapchat",
+                "snapchatting",
                 "phone",
                 "bed",
                 "sleeping",
@@ -1657,7 +1670,7 @@ df.set_error_successor(State.family_talk_answer, State.family_talk_suggestion)
 
 #havent talked with family
 df.add_system_transition(State.family_talk_suggestion, State.EXIT,
-                         '"I feel like you should talk to them. Start with something small, and work your way though. '
+                         '"Start with something small, and work your way though. '
                          'Take your time, and if it gets heated, it means you\'re on the right track."')
 #already talked with family
 df.add_system_transition(State.family_talk_end, State.EXIT, '"Way to go!"')
@@ -1790,6 +1803,7 @@ df.set_error_successor(State.confrontation_intentional_motive_yn,State.confronta
 
 ##### usual
 df.add_user_transition(State.confrontation_usual_prompt, State.confrontation_usual_yn, '#ONT(ontaffirm)')
+###Angela: Sarah mentioned in her notes that confrontation_usual_prompt only expects an affirmative answer and it has no unexpected input handling
 df.add_system_transition(State.confrontation_usual_yn, State.confrontation_usual_when,
                          '"When was the last time this happened?"')
 
@@ -1817,6 +1831,7 @@ df.set_error_successor(State.confrontation_usual_when_answer3, State.ENDwGREET)
 # -> exposure (because no time catch)
 df.add_system_transition(State.confrontation_usual_when_answer, State.confrontation_usual_when_yn,
                          '"Have you had a"$confrontation"?"often?"')
+###Angela: error parsing above, as said in Sarah's notes
 
 df.add_user_transition(State.confrontation_usual_when_yn, State.confrontation_advice_yn, "#ONT(ontaffirm)")
 # -> advice
