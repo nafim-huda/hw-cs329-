@@ -7,9 +7,9 @@ class VERSION(Macro):
             d = int(vars['number'])
             m = vars['time_type']
             if m.startswith('months') and d >= 3:
-                print(f'{d} months is a long time. Could you tell me more about your struggles in that period?')
+                return (f'{d} months is a long time. Could you tell me more about your struggles in that period?')
             else:
-                print("I see well that's not too long compared to most patients who come in for a session")
+                return ("I see well that's not too long compared to most patients who come in for a session")
 
 class State(Enum):
     S0 = 0
@@ -29,9 +29,11 @@ df = DialogueFlow(State.S0, initial_speaker=DialogueFlow.Speaker.SYSTEM, macros=
 
 df.add_system_transition(State.S0, State.U0, r'[!how long have you been feeling this way"?"]')
 
-time_natex = r"{[$number=/\d+/,$time_type={months}]"
+time_natex = r"{[$number=/\d+/, $time_type={months}]"
 
 df.add_user_transition(State.U0, State.S2A, time_natex)
 
-df.add_system_transition(State.S2A, State.U2A, r'[!$model #VERSION]')
+df.add_system_transition(State.S2A, State.U2A, r'[!#VERSION]')
 
+if __name__ == '__main__':
+    df.run(debugging=False)
