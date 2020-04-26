@@ -3,8 +3,6 @@ from enum import Enum, auto
 from emora_stdm import Macro
 from nltk.stem import WordNetLemmatizer
 
-
-# TODO: Update the State enum as needed
 class State(Enum):
     START = 0
     PROMPT = 1
@@ -631,6 +629,25 @@ class State(Enum):
     work_enjoy_n = auto()
     work_stress_y = auto()
     work_stress_not = auto()
+
+    # affected
+    corona_located = auto()
+    corona_affected = auto()
+    corona_affected_response = auto()
+    corona_unknown = auto()
+    corona_unknown_response = auto()
+    corona_not_us = auto()
+
+    # extension
+    corona_activity = auto()
+    corona_activity_response = auto()
+    corona_activity_response_else = auto()
+    corona_not_regularly = auto()
+    corona_not_regularly_response = auto()
+    corona_not_regularly_help = auto()
+    corona_not_regularly_help_response = auto()
+    corona_unable_to_advance = auto()
+    corona_activity_okay = auto()
 
     # ending
     goodbye_statement = auto()
@@ -1497,7 +1514,28 @@ ontology = {
             ],
         "onttimeperiod":
             [
-
+                "yesterday",
+                "today",
+                "day",
+                "days",
+                "week",
+                "recent",
+                "recently",
+                "weeks",
+                "month"
+            ],
+        "ontaffected":
+            [
+                "china",
+                "shanghai",
+                "wuhan",
+                "beijing",
+                "spain",
+                "madrid",
+                "france",
+                "paris",
+                "korea",
+                "seoul"
             ]
     }
 }
@@ -1862,6 +1900,20 @@ df.set_error_successor(State.S1, State.U8)
 df.set_error_successor(State.S2, State.U8)
 ##### Error handle
 
+df.add_system_transition(State.corona_not_us, State.corona_located, '"Oh, where are you currently located?"')
+df.add_user_transition(State.corona_located, State.corona_affected, '[$country=#ONT(ontaffected)]')
+df.add_user_transition(State.corona_located, State.corona_unknown, '[$location=#POS(propn)]')
+df.set_error_successor(State.corona_located, State.U8)
+
+df.add_system_transition(State.corona_affected, State.corona_affected_response, '"I hear that cases are pretty serious in"$country", how are you doing?"')
+df.add_user_transition(State.corona_affected_response, State.U9, '[#ONT(ontpositive)]')
+df.add_user_transition(State.corona_affected_response, State.U10, '[#ONT(ontnegative)]')
+
+df.add_system_transition(State.corona_unknown, State.corona_unknown_response, '"I haven\'t heard much about"$location", can you tell me more about the situation there?"')
+df.add_user_transition(State.corona_unknown_response, State.U9, "#ONT(ontpositive)")
+df.add_user_transition(State.corona_unknown_response, State.U10, "#ONT(ontnegative)")
+df.set_error_successor(State.corona_unknown_response, State.U8)
+
 #####
 
 # df.add_system_transition(State.U6, State.S3, '"Oh, I heard that corona not too bad there! How are you doing with social distancing?"')
@@ -1986,6 +2038,28 @@ df.add_user_transition(State.S12, State.U15, '[$checkin=#ONT(ontwasteoftime)]')
 df.add_user_transition(State.S12, State.U16, '[$checkin=#ONT(ontaffirm)]')
 df.add_user_transition(State.S12, State.U17, '[$checkin=#ONT(ontnegate)]')
 df.set_error_successor(State.S12, State.U13)
+
+# #activity verb catch
+df.add_system_transition(State.corona_activity, State.corona_activity_response, '"That\'s great, do you do"$action"regularly?"')
+df.add_user_transition(State.corona_activity_response, State.U13, '[#ONT(ontaffirm)]')
+df.add_user_transition(State.corona_activity_response, State.corona_not_regularly, '[#ONT(ontnegate)]')
+df.set_error_successor(State.corona_activity_response, State.U30)
+
+df.add_system_transition(State.corona_not_regularly, State.corona_not_regularly_response, '"Hmmm... is it something that you would like to do more regularly?"')
+df.add_user_transition(State.corona_not_regularly_response, State.corona_not_regularly_help, '[$checkin=#ONT(ontaffirm)]')
+df.set_error_successor(State.corona_not_regularly_response, State.corona_unable_to_advance)
+
+df.add_system_transition(State.corona_not_regularly_help, State.corona_not_regularly_help_response, '"Would you like some help keeping a more consistent schedule?"')
+df.add_user_transition(State.corona_not_regularly_help_response, State.confrontation_treatment_journaling, '[$checkin=#ONT(ontaffirm)]')
+df.set_error_successor(State.corona_not_regularly_help_response, State.corona_activity_okay)
+
+df.add_system_transition(State.corona_activity_okay, State.corona_activity_response_else, '"That\'s alright, is there anything else you would like to talk about, maybe school or work or something else?"') #Working here
+df.add_user_transition(State.corona_activity_response_else, State.school_prompt, '[$response=#ONT(ontschool)]')
+df.add_user_transition(State.corona_activity_response_else, State.family_prompt, '[$response=#ONT(ontfamily)]')
+df.add_user_transition(State.corona_activity_response_else, State.work_prompt, '[$response=#ONT(ontwork)]')
+df.set_error_successor(State.corona_activity_response_else, State.corona_unable_to_advance)
+
+df.add_system_transition(State.corona_unable_to_advance, State.EXIT, '"Sorry, I\'m not quite advanced enough to handle that yet. Come back a bit later and see if I\'ve learned anything new."')
 
 # States S13
 #df.add_system_transition(State.U16, State.S13, '"Hmm. That\'s interesting."')
