@@ -1,0 +1,39 @@
+from emora_stdm import DialogueFlow, NatexNLU, Macro
+from enum import Enum
+
+class VERSION(Macro):
+    def run(self, ngrams, vars, args):
+        if 'number' in vars and 'time_type' in vars:
+            d = int(vars['number'])
+            m = vars['time_type']
+            if m.startswith('months') and d >= 3:
+                return (f'{d} months is a long time. Could you tell me more about your struggles in that period?')
+            else:
+                return ("I see well that's not too long compared to most patients who come in for a session")
+
+class State(Enum):
+    S0 = 0
+    U0 = 1
+    S1A = 2
+    U1A = 3
+    S2A = 4
+    S2B = 5
+    U2A = 6
+    U2B = 7
+    S3 = 8
+    END = 9
+    ERR = 10
+
+
+df = DialogueFlow(State.S0, initial_speaker=DialogueFlow.Speaker.SYSTEM, macros={"VERSION": VERSION()})
+
+df.add_system_transition(State.S0, State.U0, r'[!how long have you been feeling this way"?"]')
+
+time_natex = r"{[$number=/\d+/, $time_type={months}]}"
+
+df.add_user_transition(State.U0, State.S2A, time_natex)
+
+df.add_system_transition(State.S2A, State.U2A, r'[!#VERSION]')
+
+if __name__ == '__main__':
+    df.run(debugging=False)
