@@ -1,6 +1,5 @@
-from emora_stdm import KnowledgeBase, DialogueFlow
+from emora_stdm import KnowledgeBase, DialogueFlow, Macro
 from enum import Enum, auto
-from emora_stdm import Macro
 from nltk.stem import WordNetLemmatizer
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
@@ -10,15 +9,15 @@ class TIME(Macro):
             d = int(vars['number'])
             m = vars['time_type']
             if m.startswith('months') and d >= 3:
-                return (f'{d} months is a long time. Could you tell me more about your struggles in that period?')
+                return (f'{d} months. Fortuantely, there have been patients who have shown symptoms which last for a year or longer who have responded well to the therapy. Can you explain why you have felt this way?')
             elif m.startswith('years') and d > 1:
-                return (f'{d} years is a long time. Could you tell me more about your struggles in that period?')
+                return (f'{d} years is a long time. Can you explain why you have felt this way?')
             elif m.startswith('month') and d == 1:
-                return (f'{d} month is not too long. Could you tell me more about your struggles in that period?')
+                return ("At the one month stage is when we want to prevent negative thought patterns from extending. Can you explain why you have felt this way?")
             elif m.startswith('year') and d == 1:
-                return (f'{d} year is a long time. Could you tell me more about your struggles in that period?')
+                return ("The one year mark is when we classify patients in the long-duration category. Can you explain why you have felt this way?")
             else:
-                return ("I see well that's not too long compared to most patients who come in for a session")
+                return ("I see well that's not too long. Can you explain why you have felt this way?")
 
 
 class VERSION(Macro):
@@ -31,8 +30,9 @@ class VERSION(Macro):
             vs = analyzer.polarity_scores(sentence)
             print("{:-<65} {}".format(sentence, str(vs)))
 
-
 class State(Enum):
+
+    # time macro states
     time_duration_begin = auto()
     time_duration_end = auto()
     good_duration_begin = auto()
@@ -47,6 +47,12 @@ class State(Enum):
     anger_time_duration_end = auto()
     confrontation_time_duration_begin = auto()
     confrontation_time_duration_end = auto()
+
+    # activity scheduling states
+    activity_scheduling_intro = auto()
+    activity_scheduling_checkin = auto()
+    activity_scheduling_transition = auto()
+    activity_scheduling_end = auto()
 
 
     START = 0
@@ -1622,7 +1628,7 @@ ontology = {
 
 knowledge = KnowledgeBase()
 knowledge.load_json(ontology)
-df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge, macros={"VERSION":VERSION(), "TIME":TIME()})
+df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=knowledge, macros={"TIME":TIME(), "VERSION":VERSION()})
 
 # name
 # name_prompt
@@ -1631,8 +1637,10 @@ df = DialogueFlow(State.START, initial_speaker=DialogueFlow.Speaker.SYSTEM, kb=k
 
 #df.add_system_transition(State.START, State.PROMPT, '"Hi, how are you feeling today?"')
 df.add_system_transition(State.START, State.name, '"Hi, what\'s your name?"')
-df.add_user_transition(State.name, State.name_prompt, '$name=[#POS(propn)]')
+df.add_user_transition(State.name, State.name_prompt, '[$name=#POS(propn)]')
 df.add_system_transition(State.name_prompt, State.PROMPT, '"Hi"$name"how are you feeling?"')
+df.set_error_successor(State.PROMPT, State.corona_prompt)
+###Angela: I couldn't get the above error successor to work and it always crashes for me after "hi whats your name"
 
 df.add_system_transition(State.change_topic, State.start_topic, '"Then let\'s talk about something else that is bothering you in your life? What is stressing you out these days?"')
 df.add_user_transition(State.start_topic, State.ENDwGREET, '[#ONT(ontnegate)]')
@@ -1649,21 +1657,23 @@ df.add_user_transition(State.PROMPT, State.confrontation_duration_begin, '[$conf
 df.set_error_successor(State.PROMPT, State.corona_prompt)
 
 #time macro begins
-time_reg_exp = r"{[$number=/\d+/, $time_type={year, years, month months}]}"
+time_reg_exp = r"{[$number=/\d+/, $time_type={year, years, month, months}]}"
 df.add_system_transition(State.good_duration_begin, State.good_time_duration_begin, r'[!how long have you been feeling this way"?"]')
 df.add_system_transition(State.bad_duration_begin, State.bad_time_duration_begin, r'[!how long have you been feeling this way"?"]')
 df.add_system_transition(State.anger_duration_begin, State.anger_time_duration_begin, r'[!how long have you been feeling this way"?"]')
 df.add_system_transition(State.confrontation_duration_begin, State.confrontation_time_duration_begin, r'[!how long have you been feeling this way"?"]')
 
 df.add_user_transition(State.good_time_duration_begin, State.good_time_duration_end, time_reg_exp)
-df.add_system_transition(State.good_time_duration_end, State.First_feeling_positive, r'[!#TIME]')
+df.add_system_transition(State.good_time_duration_end, State.First_positive_prompt, r'[!#TIME]')
 df.add_user_transition(State.bad_time_duration_begin, State.bad_time_duration_end, time_reg_exp)
-df.add_system_transition(State.bad_time_duration_end, State.First_feeling_negative, r'[!#TIME]')
+df.add_system_transition(State.bad_time_duration_end, State.First_negative_prompt, r'[!#TIME]')
 df.add_user_transition(State.anger_time_duration_begin, State.anger_time_duration_end, time_reg_exp)
-df.add_system_transition(State.anger_time_duration_end, State.ANGER1, r'[!#TIME]')
+df.add_system_transition(State.anger_time_duration_end, State.QUESTION1, r'[!#TIME]')
 df.add_user_transition(State.confrontation_time_duration_begin, State.confrontation_time_duration_end, time_reg_exp)
-df.add_system_transition(State.confrontation_time_duration_end, State.confrontation_answer, r'[!#TIME]')
+df.add_system_transition(State.confrontation_time_duration_end, State.confrontation_cause_prompt, r'[!#TIME]')
 #time macro ends
+
+
 # Feeling Positive
 
 df.add_system_transition(State.First_feeling_positive, State.First_positive_prompt, '"That\'s great! Can you explain why?"')
@@ -1676,6 +1686,13 @@ df.add_user_transition(State.First_positive_prompt, State.corona_prompt, '[$conj
 df.add_user_transition(State.First_positive_prompt, State.corona_prompt1, '[$conju=#ONT(ontcorona)]')
 #! uncomment out above and the intro
 
+###04242020: angela: i commented out the bottom part because it wasn't in my patch and the above paragraph is what i had instead
+# above does not catch worried?
+### small conversation branch for a positive response
+# Need to make lemmatization for the verb
+# lemmatizer = WordNetLemmatizer()
+# df.add_user_transition(State.First_positive_prompt,State.First_positive_answer,'[$thing=#POS(verb)]')
+## randomize response
 
 df.set_error_successor(State.First_positive_prompt, State.First_positive_end)
 
@@ -2200,7 +2217,24 @@ df.add_system_transition(State.filtering, State.filtering_ans, '"Do you think yo
 df.add_user_transition(State.filtering_ans, State.filtering_yes, '[$affirm_filtering=#ONT(ontaffirm)]')
 df.add_user_transition(State.filtering_ans, State.filtering_no, '[$negate_filtering=#ONT(ontnegate)]')
 df.add_user_transition(State.filtering_ans, State.filtering_unsure, dont_know)
-df.add_system_transition(State.filtering_yes, State.filtering_treatment, '"I want to recommend some ways for you to cope with the way you are feeling."')
+df.add_system_transition(State.filtering_yes, State.filtering_treatment, '"I want to recommend a way for you to cope with the way you are feeling."')
+
+
+#activity-scheduling begins
+
+df.set_error_successor(State.filtering_treatment, State.activity_scheduling_intro)
+
+df.add_system_transition(State.activity_scheduling_intro, State.activity_scheduling_checkin, '"For your particular case. I would like to recommend you to try activity-scheduling for this week.  \n Activity-scheduling is a tool designed to reengage with your mind to find what activities during your day trigger certain moods. \n I would like you to keep a daily log of what activity you are engaging in at a certain time and your associated mood. \n One quick question, how are you feeling at this moment?"')
+#sentiment analyzer would be useful in this part
+df.add_user_transition(State.activity_scheduling_checkin, State.activity_scheduling_positive, '[$as_pos=#ONT(ontaffirm)]')
+df.add_user_transition(State.activity_scheduling_checkin, State.activity_scheduling_negative, '[$as_neg=#ONT(ontnegate)]')
+df.add_user_transition(State.activity_scheduling_checkin, State.activity_scheduling_neutral, '[$as_neut=#ONT(ontneutral)')
+df.set_error_successor(State.activity_scheduling_checkin, State.Incomprehensible_Exit)
+
+#Closing remark for activity_scheduling
+df.add_system_transition(State.activity_scheduling_positive, State.activity_scheduling_end, '"I\'m going to write down your present feeling, and need you to try activity-scheduling for this upcoming week. \n A daily log with time-recordings that last at least an hour along with the activity, other than sleeping, and a corresponding emotion and percentage. \n Taking action is the first step, so please try it out and we will see how it plays out in a weeks time. See you then! "')
+
+
 #df.error_successor(State.filtering_treatment, State.journal)
 #df.add_system_transition(State.journal, State.first_journal_entry, )
 #df.add_system_transition(State.polar_intro, State.polar, '"Why is it stressful?"')
