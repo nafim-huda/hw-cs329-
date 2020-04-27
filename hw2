@@ -2022,7 +2022,7 @@ df.add_system_transition(State.U75, State.S5, '"How are you doing with social di
 df.add_user_transition(State.S5, State.P4D, "[$response=#ONT(onthotline)]")
 
 ####
-df.add_system_transition(State.U2, State.S6, '"Yikes, NYC is very scary right now. Do you live with others?"')
+df.add_system_transition(State.U2, State.S6, '"I hope you are staying safe and social distancing in NYC. Do you live with others?"')
 df.add_user_transition(State.S6, State.U76, '[#ONT(ontaffirm)]')
 df.add_user_transition(State.S6, State.U77, '[#ONT(ontunsure)]')
 df.add_user_transition(State.S6, State.U78, '[#ONT(ontnegate)]')
