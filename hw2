@@ -699,6 +699,15 @@ class State(Enum):
     changed_focus = auto()
     more_journal = auto()
 
+    #activity
+    activity_scheduling_intro = auto()
+    activity_scheduling_checkin = auto()
+    activity_scheduling_transition = auto()
+    activity_scheduling_end = auto()
+    activity_scheduling_positive = auto()
+    activity_scheduling_negative = auto()
+    activity_scheduling_neutral = auto()
+
     # ending
     goodbye_statement = auto()
     end = auto()
