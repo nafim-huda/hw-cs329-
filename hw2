@@ -7032,7 +7032,6 @@ df.add_system_transition(State.activity_scheduling_positive, State.goodbye_state
 #df.add_system_transition(State.polar_intro, State.polar, '"Why is it stressful?"')
 # Change Realization
 df.add_system_transition(State.want_change, State.change_response, '[!"This is an excellent first step towards changing your life. \nYou most likely will not be able to cut"$checkin"out of your life entirely. Acknowledgement comes first then you have to evaluate your actions."]')
-df.add_user_transition(State.change_response, State.change_yes, '[#ONT(ontaffirm)]')
 df.add_user_transition(State.change_response, State.P4D, "[$response=#ONT(onthotline)]")
 df.add_system_transition(State.change_yes, State.change_focus, '"Now you need to focus on your habit. It appears to be a coping mechanism for you. \nI want you to think of something that you want to spend more of your time doing. Now you need to imagine yourself doing what you think is a better alternative. \nCan you do this?"')
 df.add_user_transition(State.change_focus, State.change_focus_yes, '[#ONT(ontaffirm)]')
@@ -7043,7 +7042,7 @@ df.add_system_transition(State.change_focus_yes, State.changed_focus, '"You are 
 df.add_user_transition(State.changed_focus, State.activity_scheduling_positive, '[#ONT(ontaffirm)]')
 df.add_user_transition(State.changed_focus, State.P4D, "[$response=#ONT(onthotline)]")
 #need to add more journal
-df.set_error_successor(State.change_response, State.ENDwGREET)
+df.set_error_successor(State.change_response, State.change_yes)
 df.set_error_successor(State.change_focus, State.ENDwGREET)
 df.set_error_successor(State.changed_focus, State.ENDwGREET)
 
