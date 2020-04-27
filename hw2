@@ -489,6 +489,10 @@ class State(Enum):
     First_positive_end2 = auto()
     First_positive_ending2 = auto()
 
+    activity_scheduling_positive = auto()
+    activity_scheduling_negative = auto()
+    activity_scheduling_neutral = auto()
+
     # Yuewu Zhou ######################################################################################################
     # confrontation branch ###################################################################
 
@@ -1390,6 +1394,7 @@ ontology = {
                 "worry",
                 "worrying",
                 "not",
+                "stressed",
                 "terrible"
             ],
         "ontpositive":
@@ -1665,12 +1670,20 @@ df.add_system_transition(State.confrontation_duration_begin, State.confrontation
 
 df.add_user_transition(State.good_time_duration_begin, State.good_time_duration_end, time_reg_exp)
 df.add_system_transition(State.good_time_duration_end, State.First_positive_prompt, r'[!#TIME]')
+df.set_error_successor(State.good_time_duration_end,State.First_positive_prompt)
+
 df.add_user_transition(State.bad_time_duration_begin, State.bad_time_duration_end, time_reg_exp)
 df.add_system_transition(State.bad_time_duration_end, State.First_negative_prompt, r'[!#TIME]')
+df.set_error_successor(State.bad_time_duration_end,State.First_negative_prompt)
+
 df.add_user_transition(State.anger_time_duration_begin, State.anger_time_duration_end, time_reg_exp)
 df.add_system_transition(State.anger_time_duration_end, State.QUESTION1, r'[!#TIME]')
+df.set_error_successor(State.anger_time_duration_end,State.QUESTION1)
+
 df.add_user_transition(State.confrontation_time_duration_begin, State.confrontation_time_duration_end, time_reg_exp)
 df.add_system_transition(State.confrontation_time_duration_end, State.confrontation_cause_prompt, r'[!#TIME]')
+df.set_error_successor(State.confrontation_time_duration_end,State.confrontation_cause_prompt)
+
 #time macro ends
 
 
@@ -2230,6 +2243,8 @@ df.add_user_transition(State.activity_scheduling_checkin, State.activity_schedul
 df.add_user_transition(State.activity_scheduling_checkin, State.activity_scheduling_negative, '[$as_neg=#ONT(ontnegate)]')
 df.add_user_transition(State.activity_scheduling_checkin, State.activity_scheduling_neutral, '[$as_neut=#ONT(ontneutral)')
 df.set_error_successor(State.activity_scheduling_checkin, State.Incomprehensible_Exit)
+
+
 
 #Closing remark for activity_scheduling
 df.add_system_transition(State.activity_scheduling_positive, State.activity_scheduling_end, '"I\'m going to write down your present feeling, and need you to try activity-scheduling for this upcoming week. \n A daily log with time-recordings that last at least an hour along with the activity, other than sleeping, and a corresponding emotion and percentage. \n Taking action is the first step, so please try it out and we will see how it plays out in a weeks time. See you then! "')
