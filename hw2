@@ -1620,8 +1620,7 @@ df.set_error_successor(State.PROMPT, State.corona_prompt)
 
 df.add_system_transition(State.change_topic, State.start_topic, '"Then let\'s talk about something else that is bothering you in your life? What is stressing you out these days?"')
 df.add_user_transition(State.start_topic, State.ENDwGREET, '[#ONT(ontnegate)]')
-df.add_user_transition(State.next_topic, State.First_feeling_negative, '[$negative=#ONT(ontnegative)]')
-df.set_error_successor(State.start_topic, State.Incomprehensible_Exit)
+df.set_error_successor(State.start_topic, State.filtering)
 
 # The first user response feeling
 df.add_user_transition(State.PROMPT, State.First_feeling_positive, '[$positive=#ONT(ontpositive)]')
@@ -1926,7 +1925,7 @@ df.add_user_transition(State.confrontation_exposure_yn, State.confrontation_expo
 # -> advice
 df.set_error_successor(State.confrontation_exposure_yn, State.confrontation_exposure_end)
 
-df.add_system_transition(State.confrontation_exposure_end, State.END, '"I think it\'s best to spend some time cooling off after a"$confrontation"."')
+df.add_system_transition(State.confrontation_exposure_end, State.end, '"I think it\'s best to spend some time cooling off after a"$confrontation"."')
 
 ##### Treatment branch
 ### Relaxed breathing
@@ -2076,7 +2075,7 @@ df.set_error_successor(State.S7, State.U16)
 df.set_error_successor(State.S8, State.U16)
 df.set_error_successor(State.S9, State.U16)
 
-df.add_system_transition(State.U9, State.S10, '"Well I\'m glad you\'re not suffering! What do you spend your free time doing?"')
+df.add_system_transition(State.U9, State.S10, '"Well I\'m glad you\'re not suffering! What activity do you spend most of your time doing?"')
 df.add_system_transition(State.U10, State.S11, '"Oh no! I\'m sorry that the current events have affected your mental health. What have you been doing to keep busy?"')
 df.add_user_transition(State.S11, State.P4D, "[$response=#ONT(onthotline)]")
 df.add_user_transition(State.S10, State.U12, '[$checkin=#ONT(ontstillbusy)]')
@@ -2139,7 +2138,7 @@ df.add_user_transition(State.S13, State.U15, '[$checkin=#ONT(ontwasteoftime)]')
 df.set_error_successor(State.S13, State.U30)
 
 # States S14
-df.add_system_transition(State.U17, State.S14, '"That\'s not good! I know that life feels like it\'s at a standstill right now, but you should still use your time wisely. Do you have any ideas for activities you could do?"')
+df.add_system_transition(State.U17, State.S14, '"That\'s not good! I know that life feels like it\'s at a standstill right now, but you should still use your time wisely. \nDo you have any ideas for activities you could do?"')
 df.add_user_transition(State.S14, State.P4D, "[$response=#ONT(onthotline)]")
 df.add_user_transition(State.S14, State.U13, '[$checkin=#ONT(ontgoodactivities)]')
 df.add_user_transition(State.S14, State.U14, '[$checkin=#ONT(ontbadactivities)]')
@@ -2159,7 +2158,7 @@ df.set_error_successor(State.change, State.ENDwGREET)
 ##States used: U30, U31, S30
 df.add_system_transition(State.U30, State.check_topic, '"Then let\'s talk about something else that is bothering you in your life? What is stressing you out these days?"') #cognitive distortion
 df.add_user_transition(State.check_topic, State.EXIT, '[#ONT(ontnegate)]')
-df.set_error_successor(State.check_topic, State.start_topic)
+df.set_error_successor(State.check_topic, State.filtering)
 
 # S18 Therapy section
 df.add_user_transition(State.S18, State.U15, '[$affirm_healthy=#ONT(ontaffirm)]')
@@ -2178,7 +2177,7 @@ df.set_error_successor(State.distortion, State.Incomprehensible_Exit)
 #df.add_user_transition(State.distortion, State.polar_intro, )
 df.add_system_transition(State.filtering, State.filtering_ans, '"Do you think you ignore the positive aspects of your life?"')
 df.add_user_transition(State.filtering_ans, State.filtering_yes, '[#ONT(ontaffirm)]')
-df.add_user_transition(State.filtering_ans, State.EXIT, '[#ONT(ontnegate)]')
+df.set_error_successor(State.filtering_ans, State.EXIT)
 df.add_user_transition(State.filtering_ans, State.filtering_unsure, dont_know)
 df.add_system_transition(State.filtering_yes, State.filtering_treatment, '"I want to recommend some ways for you to cope with the way you are feeling."')
 
@@ -2199,14 +2198,17 @@ df.add_system_transition(State.activity_scheduling_positive, State.goodbye_state
 #df.add_system_transition(State.journal, State.first_journal_entry, )
 #df.add_system_transition(State.polar_intro, State.polar, '"Why is it stressful?"')
 # Change Realization
-df.add_system_transition(State.want_change, State.change_response, '[!"This is an excellent first step towards changing your life. \nYou most likely will not be able to cut"$checkin"out of your life entirely. Acknowledgement is the first step. Do you want the next step?"]')
+df.add_system_transition(State.want_change, State.change_response, '[!"This is an excellent first step towards changing your life. \nYou most likely will not be able to cut"$checkin"out of your life entirely. Acknowledgement comes first then you have to evaluate your actions."]')
 df.add_user_transition(State.change_response, State.change_yes, '[#ONT(ontaffirm)]')
+df.add_user_transition(State.change_response, State.P4D, "[$response=#ONT(onthotline)]")
 df.add_system_transition(State.change_yes, State.change_focus, '"Now you need to focus on your habit. It appears to be a coping mechanism for you. \nI want you to think of something that you want to spend more of your time doing. Now you need to imagine yourself doing what you think is a better alternative. \nCan you do this?"')
 df.add_user_transition(State.change_focus, State.change_focus_yes, '[#ONT(ontaffirm)]')
+df.add_user_transition(State.change_focus, State.P4D, "[$response=#ONT(onthotline)]")
 df.add_system_transition(State.change_focus_yes, State.changed_focus, '"You are doing great. Now you should journal about the amount of time you spend on your old habit and your new habit. \nYou want to start doing a little bit of both in the beginning and slowly switch to what you want to be doing more of.\nWould you be interested in any other recommendations I have?"')
+
 #add activity scheduling
 df.add_user_transition(State.changed_focus, State.activity_scheduling_positive, '[#ONT(ontaffirm)]')
-
+df.add_user_transition(State.changed_focus, State.P4D, "[$response=#ONT(onthotline)]")
 #need to add more journal
 df.set_error_successor(State.change_response, State.ENDwGREET)
 df.set_error_successor(State.change_focus, State.ENDwGREET)
@@ -2225,7 +2227,7 @@ df.set_error_successor(State.changed_focus, State.ENDwGREET)
 # end
 df.add_system_transition(State.Incomprehensible_Exit, State.end, '"I\'m sorry I do not understand what you are saying"')
 df.set_error_successor(State.EXIT, State.goodbye_statement)
-df.add_system_transition(State.goodbye_statement, State.end, '"Goodbye! Talk to you some other time."')
+df.add_system_transition(State.goodbye_statement, State.end, '"Goodbye! Come back anytime you want another session."')
 ###Angela: above sent me in an infinite loop
 df.set_error_successor(State.end, error_successor=State.end)
 
@@ -2233,7 +2235,7 @@ df.set_error_successor(State.end, error_successor=State.end)
 df.add_user_transition(State.First_negative_prompt, State.P4D, "[$response=#ONT(onthotline)]")
 df.add_system_transition(State.P4D, State.U4D1, '"Oh no! I am very afraid that this may be a violent or life-threatening situation. Here are some hotlines: Suicide: 8002738255, Domestic violence: 8007997233, Sexual assault: 8006564673."')
 df.add_user_transition(State.U4D1, State.P4D1, "/.*/")
-df.add_system_transition(State.P4D1, State.END, '"Goodbye! Thanks for talking to me today!"')
+df.add_system_transition(State.P4D1, State.end, '"Goodbye! I recommend you call one of these numbers!"')
 
 if __name__ == '__main__':
     df.run(debugging=False)
