@@ -692,6 +692,7 @@ class State(Enum):
     start_topic = auto()
     next_topic = auto()
     change_focus = auto()
+    check_topic = auto()
 
     #focus
     change_focus_yes = auto()
@@ -1926,9 +1927,10 @@ df.set_error_successor(State.confrontation_treatment_relaxedbreathing_response, 
 df.add_system_transition(State.confrontation_treatment_relaxedbreathing2,
                          State.confrontation_treatment_relaxedbreathing_response2,
                          '"Mindfulness is the practice of taking different perspectives on things, often with breathing exercises and meditation. '
-                         'Mindfulness can teach: Paying attention to what is going on around you. Participating without being self-conscious, '
-                         'Taking a non-judgmental stance, Focusing on the moment without distraction from other ideas or events, '
-                         'and Doing what works rather than second-guessing yourself."')
+                         'First, take a non-judgmental stance, Focusing on the moment without distraction from other ideas or events,'
+                         'I want you to close your eyes and focus on your breath and your body, '
+                         'now think about the calm that you just felt and try to implement it into your life"')
+
 df.set_error_successor(State.confrontation_treatment_relaxedbreathing_response2, State.ENDwGREET)
 ### Journaling
 df.add_system_transition(State.confrontation_treatment_journaling, State.confrontation_treatment_relaxedbreathing_response, '"Based on your responses, I would recommend journaling. Is that something you\'d be interested in? "')
