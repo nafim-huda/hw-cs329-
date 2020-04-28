@@ -6621,7 +6621,7 @@ df.add_user_transition(State.family_answer, State.family_self, '[#ONT(ontnegate)
 df.set_error_successor(State.family_answer, State.family_talk)
 
 df.add_system_transition(State.family_talk, State.family_talk_answer, '"Have you talked to them about this stuff?"')
-df.add_user_transition(State.family_talk_answer, State.family_talk_end, '[#ONT(onaffirm)]')
+df.add_user_transition(State.family_talk_answer, State.family_talk_end, '[#ONT(ontaffirm)]')
 df.set_error_successor(State.family_talk_answer, State.family_talk_suggestion)
 
 # havent talked with family
