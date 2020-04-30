@@ -6504,11 +6504,17 @@ df.set_error_successor(State.First_positive_ending2, State.ENDwGREET)
 df.add_system_transition(State.First_feeling_negative, State.First_negative_prompt, '[!"What\'s been making you feel"$negative"?"]' r'[!#ANGELA]')
 
 df.add_user_transition(State.First_negative_prompt, State.U45, '[$confrontation=#ONT(ontlostjob)]')
+
+dont_know = '[{' \
+            'dont know,do not know,unsure,[not,{sure,certain}],hard to say,no idea,uncertain,[!no {opinion,opinions,idea,ideas,thought,thoughts,knowledge}],' \
+            '[{dont,do not}, have, {opinion,opinions,idea,ideas,thought,thoughts,knowledge}],' \
+            '[!{cant,cannot,dont} {think,remember,recall}]' \
+            '}]'
 #Not sure what this is supposed to lead from
 #df.add_user_transition(State.First_feeling_negative, State.U45, '[$confrontation=#ONT(ontlostjob)]')
 df.add_system_transition(State.U45, State.S45, '"I\'m sorry to hear that! These are crazy times. What are you going to do?"')
 df.add_user_transition(State.S45, State.P4D, "[$response=#ONT(onthotline)]")
-df.add_user_transition(State.S45, State.U46, "#ONT(ontunsure)")
+df.add_user_transition(State.S45, State.U46, dont_know)
 df.add_user_transition(State.S45, State.U48, "#ONT(ontbadactivities)")
 df.set_error_successor(State.S45, State.U48)
 df.add_system_transition(State.U46, State.S46, '"I know it feels like the end of the world, but at least you have more time to spend with family and friends. Jobs come and go, but people are forever."')
@@ -6823,11 +6829,11 @@ df.set_error_successor(State.corona_unknown_response, State.U8)
 df.add_system_transition(State.U42, State.S40, '"I\'m in Georgia too! Don\'t you think that the governor lifted the stay-at-home order too early?"')
 df.add_user_transition(State.S40, State.U80, "#ONT(ontaffirm)")
 df.add_user_transition(State.S40, State.U81, "#ONT(ontnegate)")
-df.add_user_transition(State.S40, State.U82, "#ONT(ontunsure)")
+df.add_user_transition(State.S40, State.U82, dont_know)
 df.set_error_successor(State.S40, State.S82)
 df.add_system_transition(State.U80, State.S80, '"President Trump disagreed with our Governor, too."')
 df.add_system_transition(State.U81, State.S81, '"Oh, well, I\'m sure there are people who agree with you."')
-df.add_system_transition(State.U82, State.S82, '"Well, I definitely think he did. President Trump does, too."')
+df.add_system_transition(State.U82, State.S82, '"Well, I definitely think he did."')
 df.add_user_transition(State.S80, State.U41, '[$reason=/.*/]')
 df.add_user_transition(State.S81, State.U41, '[$reason=/.*/]')
 df.add_user_transition(State.S82, State.U41, '[$reason=/.*/]')
@@ -6976,7 +6982,6 @@ df.set_error_successor(State.S14, State.U19)
 # States U15
 df.add_system_transition(State.U13, State.EXIT,'"That\'s a great way to spend your time! If you keep doing that, I think you\'ll be okay once this all passes. I would also suggest setting routines to instill normality."') #cognitive distortion
 df.add_system_transition(State.U14, State.S18, '[!"Do you think"$checkin"can be part of a healthy life?"]')
-df.set_error_successor(State.S18, State.U15)
 df.add_system_transition(State.U15, State.change, '"At least you\'re enjoying yourself. Do you think you would want to change this habit?"') #cognitive distortion
 df.add_system_transition(State.U19, State.EXIT, '"Thanks for talking to me today! Hope we can talk again sometime."') #cognitive distortion
 df.add_user_transition(State.change, State.want_change, '[$yes=#ONT(ontaffirm)]')
@@ -6993,11 +6998,7 @@ df.add_user_transition(State.S18, State.filtering, '[$negate_healthy=#ONT(ontneg
 df.set_error_successor(State.S18, State.U15)
 
 #Cognitive Distortions
-dont_know = '[{' \
-            'dont know,do not know,unsure,[not,{sure,certain}],hard to say,no idea,uncertain,[!no {opinion,opinions,idea,ideas,thought,thoughts,knowledge}],' \
-            '[{dont,do not}, have, {opinion,opinions,idea,ideas,thought,thoughts,knowledge}],' \
-            '[!{cant,cannot,dont} {think,remember,recall}]' \
-            '}]'
+
 df.add_system_transition(State.distortion_intro, State.distortion, '"Let\'s try to work through some of the problems you are facing."')
 df.add_user_transition(State.distortion, State.filtering, '[#ONT(ontaffirm)]')
 df.set_error_successor(State.distortion, State.Incomprehensible_Exit)
@@ -7018,7 +7019,7 @@ df.set_error_successor(State.activity_scheduling_checkin, State.goodbye_statemen
 
 #Closing remark for activity_scheduling
 df.add_system_transition(State.activity_scheduling_positive, State.activity_scheduling_negative, '"I\'m going to write down your present feeling, and need you to try activity-scheduling for this upcoming week. \n A daily log with time-recordings that last at least an hour along with the activity, other than sleeping, and a corresponding emotion and percentage. \n Taking action is the first step, so please try it out and we will see how it plays out in a weeks time. See you then! "')
-df.set_error_successor(State.activity_scheduling_negative, State.Incomprehensible_Exit)
+df.set_error_successor(State.activity_scheduling_negative, State.goodbye_statement)
 #df.error_successor(State.filtering_treatment, State.journal)
 #df.add_system_transition(State.journal, State.first_journal_entry, )
 #df.add_system_transition(State.polar_intro, State.polar, '"Why is it stressful?"')
