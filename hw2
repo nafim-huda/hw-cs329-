@@ -684,6 +684,7 @@ class State(Enum):
 
     # cognitive distortions
     distortion_intro = auto()
+    move_to_distortion = auto()
     distortion = auto()
     filtering = auto()
     filtering_ans = auto()
@@ -6451,7 +6452,8 @@ df.set_error_successor(State.PROMPT, State.corona_prompt)
 
 df.add_system_transition(State.change_topic, State.start_topic, '"Then let\'s talk about something else that is bothering you in your life? What is stressing you out these days?"')
 df.add_user_transition(State.start_topic, State.ENDwGREET, '[#ONT(ontnegate)]')
-df.add_user_transition(State.next_topic, State.First_feeling_negative, '[$negative=#ONT(ontnegative)]')
+df.add_user_transition(State.start_topic, State.First_feeling_negative, '[$negative=#ONT(ontnegative)]')
+df.add_user_transition(State.start_topic, State.First_feeling_positive, '$response=[[$positive=#ONT(ontpositive)]]')
 df.set_error_successor(State.start_topic, State.Incomprehensible_Exit)
 
 # The first user response feeling
@@ -6631,8 +6633,8 @@ df.add_user_transition(State.family_distortion, State.change_topic, '[#ONT(ontne
 df.set_error_successor(State.family_distortion, State.distortion_intro)
 
 # already talked with family Even if you are not ready to talk to them we can focus on finding a way for you to prepare to talk to them.
-df.add_system_transition(State.family_talk_end, State.distortion_intro, '"Way to go!"') ##transition into cognitive distortion
-
+df.add_system_transition(State.family_talk_end, State.move_to_distortion, '"Way to go!"') ##transition into cognitive distortion
+df.set_error_successor(State.move_to_distortion, State.distortion_intro)
 # pressure on self?
 df.add_system_transition(State.family_self, State.family_self_pressure, '"Do you place pressure on yourself?"')  # ->activities
 df.add_user_transition(State.family_self_pressure, State.family_talk_end, '[#ONT(ontnegate)]')
@@ -6644,7 +6646,7 @@ df.set_error_successor(State.family_self_pressure_college, State.family_self_pre
 
 df.add_system_transition(State.family_self_pressure_job, State.family_self_pressure_job_answer, '"Do you have a job?"')
 df.add_user_transition(State.family_self_pressure_job_answer, State.work_prompt, '[#ONT(ontaffirm)]')
-df.set_error_successor(State.family_self_pressure_job_answer, State.A111) ## State A111 does not exist
+df.set_error_successor(State.family_self_pressure_job_answer, State.work_answer) ## State A111 does not exist
 
 # job branch
 df.add_system_transition(State.work_prompt, State.work_answer, '"Where do you work?"')
@@ -6668,7 +6670,7 @@ df.add_system_transition(State.work_stress_not, State.EXIT, '"It\'s awesome that
 df.add_system_transition(State.confrontation_answer, State.confrontation_cause_prompt, '"That sounds serious. How did the"$confrontation"start?"'r'[!#ANGELA]')
 df.add_user_transition(State.confrontation_cause_prompt, State.P4D, "[$response=#ONT(onthotline)]")
 df.set_error_successor(State.confrontation_answer, State.confrontation_cause_self)
-argument branchag
+#argument branchag
 
 df.add_system_transition(State.confrontation_cause_error, State.confrontation_noCatch_self_prompt, '"Do you feel like the"$confrontation"started with something you did?"')
 df.add_user_transition(State.confrontation_noCatch_self_prompt, State.P4D, "[$response=#ONT(onthotline)]")
@@ -6918,14 +6920,6 @@ df.add_user_transition(State.S10, State.U15, '[$checkin=#ONT(ontwasteoftime)]')
 df.set_error_successor(State.S10, State.U16)
 df.set_error_successor(State.S11, State.U16)
 
-# We're skipping back to therapy section S17 / S18 (comments can be deleted)
-# error_state_activity
-# therapy_lead_in
-# therapy_lead_in_response
-# df.set_error_successor(State.S10,State.error_state_activity)
-# df.add_system_transition(State.error_state_activity,State.therapy_lead_in_response, '"How are you feeling right now?"')
-# df.add_user_transition()
-
 # States S11
 df.add_user_transition(State.S11, State.U12, '[$checkin=#ONT(ontstillbusy)]')
 df.add_user_transition(State.S11, State.U13, '[$checkin=#ONT(ontgoodactivities)]')
@@ -6985,12 +6979,12 @@ df.add_system_transition(State.U14, State.S18, '[!"Do you think"$checkin"can be 
 df.set_error_successor(State.S18, State.U15)
 df.add_system_transition(State.U15, State.change, '"At least you\'re enjoying yourself. Do you think you would want to change this habit?"') #cognitive distortion
 df.add_system_transition(State.U19, State.EXIT, '"Thanks for talking to me today! Hope we can talk again sometime."') #cognitive distortion
-df.add_user_transition(State.change, State.want_change, '[#ONT(ontaffirm)]')
+df.add_user_transition(State.change, State.want_change, '[$yes=#ONT(ontaffirm)]')
 df.set_error_successor(State.change, State.ENDwGREET)
 ##S17 Therapy Section
 ##States used: U30, U31, S30
 df.add_system_transition(State.U30, State.check_topic, '"Then let\'s talk about something else that is bothering you in your life? What is stressing you out these days?"') #cognitive distortion
-df.add_user_transition(State.check_topic, State.EXIT, '[#ONT(ontnegate)]')
+df.add_user_transition(State.check_topic, State.goodbye_statement, '[$no=#ONT(ontnegate)]')
 df.set_error_successor(State.check_topic, State.filtering)
 
 # S18 Therapy section
@@ -7011,7 +7005,7 @@ df.set_error_successor(State.distortion, State.Incomprehensible_Exit)
 df.add_system_transition(State.filtering, State.filtering_ans, '"Do you think you ignore the positive aspects of your life?"')
 df.add_user_transition(State.filtering_ans, State.filtering_yes, '[#ONT(ontaffirm)]')
 df.set_error_successor(State.filtering_ans, State.EXIT)
-df.add_user_transition(State.filtering_ans, State.filtering_unsure, dont_know)
+df.add_user_transition(State.filtering_ans, State.activity_scheduling_intro, dont_know)
 df.add_system_transition(State.filtering_yes, State.filtering_treatment, '"I want to recommend some ways for you to cope with the way you are feeling."')
 
 # Activity Scheduling
@@ -7020,13 +7014,11 @@ df.set_error_successor(State.filtering_treatment, State.activity_scheduling_intr
 df.add_system_transition(State.activity_scheduling_intro, State.activity_scheduling_checkin, '"For your particular case. I would like to recommend you to try activity-scheduling for this week.  \n Activity-scheduling is a tool designed to reengage with your mind to find what activities during your day trigger certain moods. \n I would like you to keep a daily log of what activity you are engaging in at a certain time and your associated mood. \n One quick question, how are you feeling at this moment?"')
 #sentiment analyzer would be useful in this part
 df.add_user_transition(State.activity_scheduling_checkin, State.activity_scheduling_positive, '[$as_pos=#ONT(ontaffirm)]')
-df.add_user_transition(State.activity_scheduling_checkin, State.activity_scheduling_negative, '[$as_neg=#ONT(ontnegate)]')
-df.add_user_transition(State.activity_scheduling_checkin, State.activity_scheduling_neutral, '[$as_neut=#ONT(ontneutral)')
-df.set_error_successor(State.activity_scheduling_checkin, State.Incomprehensible_Exit)
+df.set_error_successor(State.activity_scheduling_checkin, State.goodbye_statement)
 
 #Closing remark for activity_scheduling
-df.add_system_transition(State.activity_scheduling_positive, State.goodbye_statement, '"I\'m going to write down your present feeling, and need you to try activity-scheduling for this upcoming week. \n A daily log with time-recordings that last at least an hour along with the activity, other than sleeping, and a corresponding emotion and percentage. \n Taking action is the first step, so please try it out and we will see how it plays out in a weeks time. See you then! "')
-
+df.add_system_transition(State.activity_scheduling_positive, State.activity_scheduling_negative, '"I\'m going to write down your present feeling, and need you to try activity-scheduling for this upcoming week. \n A daily log with time-recordings that last at least an hour along with the activity, other than sleeping, and a corresponding emotion and percentage. \n Taking action is the first step, so please try it out and we will see how it plays out in a weeks time. See you then! "')
+df.set_error_successor(State.activity_scheduling_negative, State.Incomprehensible_Exit)
 #df.error_successor(State.filtering_treatment, State.journal)
 #df.add_system_transition(State.journal, State.first_journal_entry, )
 #df.add_system_transition(State.polar_intro, State.polar, '"Why is it stressful?"')
